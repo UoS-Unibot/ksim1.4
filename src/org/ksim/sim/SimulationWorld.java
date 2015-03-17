@@ -20,6 +20,7 @@ public class SimulationWorld {
 
     private final LinkedList objects = new LinkedList();
     private final LinkedList listeners = new LinkedList();
+    private final Vec2 bounds;
     private String filename = "";
 
     public String getFilename() {
@@ -39,6 +40,7 @@ public class SimulationWorld {
      * @param bounds Vec2 size of bounding box in metres.
      */
     public SimulationWorld(Vec2 bounds) {
+        this.bounds = bounds;
         double pi2 =  Math.PI / 2;
         double w =  bounds.x,
                 h =  bounds.y;
@@ -102,16 +104,21 @@ public class SimulationWorld {
     }
     
     public Vec2 getBounds() {
-        return new Vec2(5,5);
+        return bounds;
     }
 
+    /**
+     * Traces a single line throughout the world, getting the shortest distance to the nearest intersection.
+     * @param rangeFinderLine
+     * @return 
+     */
     public double traceRay(Line rangeFinderLine) {
-        double lowestDist = rangeFinderLine.getLength(); //will return this if no intersection found
+        double lowestDist = Double.NaN; //will return this if no intersection found
         for (Iterator it = objects.iterator(); it.hasNext();) {
             Shape2D obj = (Shape2D) it.next();
             Intersection li = obj.getSmallestIntersection(rangeFinderLine);
             if (li.isIntersection) {
-                if (li.getSmallestLineDist() < lowestDist) {
+                if (Double.isNaN(lowestDist) || li.getSmallestLineDist() < lowestDist) {
                     lowestDist = li.getSmallestLineDist();
                 }
             }

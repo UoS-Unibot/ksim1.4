@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ksim;
 
 import org.ksim.geometry.Rectangle;
@@ -30,18 +25,18 @@ public class example {
          * and height of 4 lines. instantiation creates these 4 lines centred
          * around the origin
          */
-        SimulationWorld world = new SimulationWorld(new Vec2(5, 5));
+        SimulationWorld world = new SimulationWorld(new Vec2(1.5, 1.5));
 
         /**
          * we'll add a few objects to the world. Here rectangles are used,
          * although any of the other geometry classes are okay
          */
-        world.createWorldObject(Rectangle.createFromCenter(new Vec2(2, 2),
-                new Vec2(1, 1), 0));
+        world.createWorldObject(Rectangle.createFromCenter(new Vec2(1, 1),
+                new Vec2(0.5, 0.5), 0));
         world.createWorldObject(Rectangle.createFromCenter(new Vec2(-1, -1),
-                new Vec2(1, 1), 0));
-        world.createWorldObject(Rectangle.createFromCenter(new Vec2(3, 3),
-                new Vec2(1, 1), 0));
+                new Vec2(0.5, 0.5), 0));
+        world.createWorldObject(Rectangle.createFromCenter(new Vec2(-1, 1),
+                new Vec2(0.5, 0.5), 0));
 
         //create robot and controller
         SimulatedKJunior robot = new SimulatedKJunior(world, timestep);
