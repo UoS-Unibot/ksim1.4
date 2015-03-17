@@ -72,6 +72,11 @@ public abstract class SimulatedRobotBody implements IRobotBody {
         return world;
     }
 
+    public double getTimeStep() {
+        return timeStepLength;
+    }
+
+    
     
 
 }

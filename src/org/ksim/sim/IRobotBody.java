@@ -34,4 +34,6 @@ public interface IRobotBody {
      * @param angularVelocity Angular velocity of the robot.
      */
     void step(double velocity, double angularVelocity);
+
+    double getTimeStep();
 }

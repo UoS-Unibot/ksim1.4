@@ -17,13 +17,13 @@ public class RunController {
 
     /**
      * Creates a new RunController with specified controller and robot, using
-     * default timestep 1/60s.
+     * the robot's timestep.
      *
      * @param controller IRobotController to get control data from.
      * @param robot IRobotBody to send velocity commands to.
      */
     public RunController(IRobotController controller, IRobotBody robot) {
-        this(controller, robot, 1f / 60f);
+        this(controller, robot, robot.getTimeStep());
     }
 
     /**
