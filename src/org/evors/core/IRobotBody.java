@@ -35,5 +35,25 @@ public interface IRobotBody {
      */
     public void step(double[] controlInputs);
 
+    /**
+     * Ranges that each robot control input expects.
+     * Eg. for K-Junior motor actuators: -20 to 20 for both.
+     * If only one range specified, all assumed the same.
+     * 
+     * @return Two dimensional double array.  First index for which control input.
+     * Second index 0 for lower and 1 for upper.
+     */
+    public double[][] getRobotControlInputRanges();
+    
+    /**
+     * Ranges that each robot output (or controller input) generates.
+     * Eg. for K-Junior IR sensors: 0 to 3500 for each.
+     * If ony one range specified, all assumed equal.
+     * 
+     * @return Two dimensional double array.  First index for which robot output (controller input).
+     * Second index 0 for lower and 1 for upper limit.
+     */
+    public double[][] getControllerInputRanges();
+    
     double getTimeStep();
 }

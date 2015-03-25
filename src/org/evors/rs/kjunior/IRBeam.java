@@ -12,7 +12,7 @@ import org.evors.rs.sim.core.SimulationWorld;
 public class IRBeam {
 
     public static final int IR_NOISE = 50;
-    private static final Random rand = new Random();
+    private static final Random rand = org.evors.core.EvoRSLib.random;
 
     private final double angleC, maxLength;
     private final Line[] beams;

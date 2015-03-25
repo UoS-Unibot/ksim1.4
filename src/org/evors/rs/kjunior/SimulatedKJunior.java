@@ -5,6 +5,7 @@ import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Vec2;
 import org.evors.rs.sim.core.SimulatedRobotBody;
 import org.evors.rs.sim.core.SimulationWorld;
+import org.evors.core.EvoRSLib;
 
 /**
  *
@@ -15,8 +16,10 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     private final double AXLE_WIDTH = 10; //equivalent to WHEEL_SEP in Phil's code
     private final double MOTOR_NOISE = 0.4; //noise to add to motor signals
     private final int NUM_IRs = 6;
+    private final double[][] ROB_CTRL_INPUT_RANGES = { { -20, 20 } };
+    private final double[][] ROB_CONTROLLER_INPUT_RANGES = { { 0, 3500 } };
 
-    public static final Random rand = new Random();
+    public static final Random rand = EvoRSLib.random;
 
     private final double maxIRLength;
     private final double radius;
@@ -77,6 +80,16 @@ public class SimulatedKJunior extends SimulatedRobotBody {
 
         y += rand.nextDouble() * 2 * MOTOR_NOISE - MOTOR_NOISE;
         return y;
+    }
+    
+    public double[][] getRobotControlInputRanges()
+    {
+    	return ROB_CTRL_INPUT_RANGES;
+    }
+    
+    public double[][] getControllerInputRanges()
+    {
+    	return ROB_CONTROLLER_INPUT_RANGES;
     }
 
 }
