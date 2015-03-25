@@ -27,11 +27,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         super(world, Circle.getFromCenter(Vec2.ZERO, 6.5), timeStepLength); //radius of 6.5cm
         maxIRLength = world.getBounds().getNorm();
         radius = 5.75;
-        irAngles = new double[NUM_IRs];
-        for (int i = 0; i < NUM_IRs; i++) {
-            irAngles[i] = (i * (2 * Math.PI / NUM_IRs));
-        }
-
+        irAngles = new double[] {5.498,5.934,0,0.349,0.785,3.142};
     }
 
     /**

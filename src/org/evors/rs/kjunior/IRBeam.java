@@ -17,11 +17,11 @@ public class IRBeam {
     private final double angleC, maxLength;
     private final Line[] beams;
     private final SimulationWorld world;
-
+    
     public IRBeam(Vec2 basePoint, double centralAngle,
             double maxLength, SimulationWorld world) {
         //initialise the IR beam with KJunior empirical values determined by Phil
-        this(basePoint, centralAngle, maxLength, world, 5, 0.437);
+        this(basePoint, centralAngle, maxLength, world, 5, 0.2183);
     }
 
     public IRBeam(Vec2 basePoint, double centralAngle,
@@ -43,7 +43,7 @@ public class IRBeam {
         double sum = 0;
         double count = 0;
         for (int i = 0; i < beams.length; i++) {
-            double dist = world.traceRay(beams[i]) * 1000;
+            double dist = world.traceRay(beams[i]);
             if (!Double.isNaN(dist)) {
                 count++;
                 sum += dist;

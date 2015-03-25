@@ -1,2 +1,5 @@
-/dist/
 /bin/
+.settings/org.eclipse.jdt.core.prefs
+.classpath
+.project
+*.class
