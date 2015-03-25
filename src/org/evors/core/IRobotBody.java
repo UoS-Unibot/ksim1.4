@@ -1,5 +1,7 @@
 package org.evors.core;
 
+import java.util.Hashtable;
+
 /**
  * Represents a simulated or real robot that can be controlled by setting
  * velocity and angular velocity at each timestep and provides sensor input.
@@ -56,4 +58,13 @@ public interface IRobotBody {
     public double[][] getControllerInputRanges();
     
     double getTimeStep();
+    
+    /**
+     * Request statistics from the Robot.  This call should also reset them.
+     * @return Hashtable containing robot run statistics.  Indeces are:
+     * "V" for total distance travelled by both wheels together.
+     * "D" for sum of wheel speed differences over time
+     * "i" maximum IR reading value in 0..1 range.
+     */
+    public Hashtable getStats();
 }

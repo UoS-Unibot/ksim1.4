@@ -12,6 +12,7 @@ import org.evors.rs.sim.core.SimulationWorld;
 public class IRBeam {
 
     public static final int IR_NOISE = 50;
+    public static final double IR_COEFF = 1; // Planed wood
     private static final Random rand = org.evors.core.EvoRSLib.random;
 
     private final double angleC, maxLength;
@@ -61,7 +62,7 @@ public class IRBeam {
 
     private double convertDistToReading(double d) {
         double k = -(d / 8.5) * (d / 8.5);
-        return 3371.0 * Math.exp(k);
+        return 3371.0 * Math.exp(k) * IR_COEFF;
     }
 
     public double getCentralAngle() {

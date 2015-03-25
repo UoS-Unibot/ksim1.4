@@ -1,6 +1,8 @@
 package org.evors.rs.kjunior;
 
+import java.util.Hashtable;
 import java.util.Random;
+
 import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Vec2;
 import org.evors.rs.sim.core.SimulatedRobotBody;
@@ -22,14 +24,16 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     public static final Random rand = EvoRSLib.random;
 
     private final double maxIRLength;
-    private final double radius;
+    private final double topRadius;
     private final double[] irAngles;
 
+    protected double V,D,maxIR;
+    
     public SimulatedKJunior(SimulationWorld world,
             double timeStepLength) {
         super(world, Circle.getFromCenter(Vec2.ZERO, 6.5), timeStepLength); //radius of 6.5cm
         maxIRLength = world.getBounds().getNorm();
-        radius = 5.75;
+        topRadius = 5.75;
         irAngles = new double[] {5.498,5.934,0,0.349,0.785,3.142};
     }
 
@@ -48,12 +52,14 @@ public class SimulatedKJunior extends SimulatedRobotBody {
                 vL = convertSpeed(mL), vR = convertSpeed(mR),
                 forwardV = (vL + vR) / 2,
                 angularV = (vL - vR) * getTimeStep() / AXLE_WIDTH;
+        V += Math.abs( vL ) + Math.abs( vR );
+        D += Math.abs( vR - vL );
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
         super.step(forwardV, angularV);
     }
 
     public Vec2 getIRBase(double angle) {
-        return getPosition().translatePolar(getHeading() + angle, radius);
+        return getPosition().translatePolar(getHeading() + angle, topRadius);
     }
 
     public double getIRReading(double angle) {
@@ -65,6 +71,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         double[] input = new double[NUM_IRs];
         for (int i = 0; i < NUM_IRs; i++) {
             input[i] = getIRReading(irAngles[i]);
+            maxIR = Math.max( maxIR, input[i]);
         }
         return input;
     }
@@ -92,4 +99,13 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     	return ROB_CONTROLLER_INPUT_RANGES;
     }
 
+    public Hashtable getStats()
+    {
+    	Hashtable rv = new Hashtable();
+    	rv.put("D", new Double(D));
+    	rv.put("V", new Double(V));
+    	rv.put("i", new Double(maxIR));
+    	D = V = maxIR = 0;
+    	return rv;
+    }
 }
