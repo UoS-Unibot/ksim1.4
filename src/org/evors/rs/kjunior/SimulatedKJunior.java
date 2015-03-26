@@ -34,7 +34,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         super(world, Circle.getFromCenter(Vec2.ZERO, 6.5), timeStepLength); //radius of 6.5cm
         maxIRLength = world.getBounds().getNorm();
         topRadius = 5.75;
-        irAngles = new double[] {5.498,5.934,0,0.349,0.785,3.142};
+        irAngles = new double[] {0.785,0.349,0,5.934,5.498,3.142};
     }
 
     /**
@@ -51,7 +51,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         double mL = controlInputs[0], mR = controlInputs[1],
                 vL = convertSpeed(mL), vR = convertSpeed(mR),
                 forwardV = (vL + vR) / 2,
-                angularV = (vL - vR) * getTimeStep() / AXLE_WIDTH;
+                angularV = (vR - vL) * getTimeStep() / AXLE_WIDTH;
         V += Math.abs( vL ) + Math.abs( vR );
         D += Math.abs( vR - vL );
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
@@ -104,7 +104,8 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     	Hashtable rv = new Hashtable();
     	rv.put("D", new Double(D));
     	rv.put("V", new Double(V));
-    	rv.put("i", new Double(maxIR));
+    	double i = ( maxIR / ROB_CONTROLLER_INPUT_RANGES[ 0 ][ 1 ] );
+    	rv.put("i", new Double( i ));
     	D = V = maxIR = 0;
     	return rv;
     }
