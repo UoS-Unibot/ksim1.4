@@ -25,18 +25,18 @@ public class example {
          * and height of 4 lines. instantiation creates these 4 lines centred
          * around the origin. Units are in cm as in Phil's simulation.
          */
-        SimulationWorld world = new SimulationWorld(new Vec2(150, 150));
+        SimulationWorld world = new SimulationWorld(new Vec2(200, 200));
 
         /**
          * we'll add a few objects to the world. Here rectangles are used,
          * although any of the other geometry classes are okay
          */
-        world.createWorldObject(Rectangle.createFromCenter(new Vec2(100, 100),
-                new Vec2(50, 50), 0));
-        world.createWorldObject(Rectangle.createFromCenter(new Vec2(-100, -100),
-                new Vec2(50, 50), 0));
-        world.createWorldObject(Rectangle.createFromCenter(new Vec2(-100, 100),
-                new Vec2(50, 50), 0));
+        world.createWorldObject(Rectangle.createFromCenter(new Vec2(30, 50),
+                new Vec2(20, 20), 0));
+        world.createWorldObject(Rectangle.createFromCenter(new Vec2(-55, -65),
+                new Vec2(20, 20), 0));
+        world.createWorldObject(Rectangle.createFromCenter(new Vec2(-20, 40),
+                new Vec2(20, 20), 0));
 
         //create robot and controller
         SimulatedKJunior robot = new SimulatedKJunior(world, timestep);
