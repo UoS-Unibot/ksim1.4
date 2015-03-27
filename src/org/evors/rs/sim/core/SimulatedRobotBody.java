@@ -30,9 +30,20 @@ public abstract class SimulatedRobotBody implements IRobotBody {
     public Vec2 getPosition() {
         return position;
     }
+    
+    public void setPosition( Vec2 position )
+    {
+    	this.position = position;
+    	shape.setCenter( position );
+    }
 
     public double getHeading() {
         return heading;
+    }
+    
+    public void setHeading( double heading )
+    {
+    	this.heading = heading;
     }
 
     public Shape2D getShape() {
