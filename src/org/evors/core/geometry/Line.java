@@ -40,8 +40,8 @@ public class Line extends Polygon {
         return fromCenterPoint(new Vec2(c1, c2), length, angle);
     }
 
-    Vec2 p1;
-    Vec2 p2;
+    public Vec2 p1;
+    public Vec2 p2;
 
     public void rotate(Vec2 pivot, double deltaAngle) {
         p1 = p1.getRotated(pivot, deltaAngle);
