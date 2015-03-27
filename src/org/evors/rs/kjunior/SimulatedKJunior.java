@@ -89,6 +89,10 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         y += rand.nextDouble() * 2 * MOTOR_NOISE - MOTOR_NOISE;
         return y;
     }
+
+    public double getTopRadius() {
+        return topRadius;
+    }
     
     public double[][] getRobotControlInputRanges()
     {
