@@ -1,5 +1,8 @@
 package org.evors.core.geometry;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
@@ -39,6 +42,16 @@ public class Line extends Polygon {
             double angle) {
         return fromCenterPoint(new Vec2(c1, c2), length, angle);
     }
+
+    public Collection getLines() {
+        //This method is necessary as otherwise a call to Line.getLines() 
+        //would actually invocate Polygon.getLines() returning an empty collection
+        ArrayList lines = new ArrayList();
+        lines.add(this);
+        return lines;
+    }
+    
+    
 
     public Vec2 p1;
     public Vec2 p2;
