@@ -9,6 +9,7 @@ public class Line extends Polygon {
     public Line(Vec2 p1, Vec2 p2) {
         this.p1 = p1;
         this.p2 = p2;
+        addLine( this );
     }
 
     public Line() {
