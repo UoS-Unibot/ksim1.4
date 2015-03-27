@@ -1,6 +1,8 @@
 package org.evors.rs.kjunior;
 
 import java.util.Random;
+
+import org.evors.core.EvoRSLib;
 import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Vec2;
 import org.evors.rs.sim.core.SimulationWorld;
@@ -13,11 +15,11 @@ public class IRBeam {
 
     public static final int IR_NOISE = 50;
     public static final double IR_COEFF = 1; // Planed wood
-    private static final Random rand = org.evors.core.EvoRSLib.random;
+    protected static final Random rand = org.evors.core.EvoRSLib.random;
 
-    private final double angleC, maxLength;
-    private final Line[] beams;
-    private final SimulationWorld world;
+    protected final double angleC, maxLength;
+    protected final Line[] beams;
+    protected final SimulationWorld world;
     
     public IRBeam(Vec2 basePoint, double centralAngle,
             double maxLength, SimulationWorld world) {
@@ -54,13 +56,13 @@ public class IRBeam {
                 / count);
         
         //add noise
-        reading += (rand.nextDouble() * 2 * IR_NOISE - IR_NOISE);
+        reading += EvoRSLib.uniformNoise( IR_NOISE );
         if(Double.isNaN(reading) || reading < 0)
             return 0;
         return Math.round(reading);
     }
 
-    private double convertDistToReading(double d) {
+    protected double convertDistToReading(double d) { // Phil's IRval
         double k = -(d / 8.5) * (d / 8.5);
         return 3371.0 * Math.exp(k) * IR_COEFF;
     }

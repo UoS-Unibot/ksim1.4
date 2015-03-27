@@ -64,8 +64,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     }
 
     public double getIRReading(double angle) {
-        return new IRBeam(getIRBase(angle), angle, maxIRLength, getWorld()).
-                getReading();
+        return new KJuniorIRBeam( getIRBase(angle), angle, getWorld() ).getReading();
     }
 
     public double[] getInput() {
@@ -86,7 +85,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
             y = 1.2 * x - 9;
         }
 
-        y += rand.nextDouble() * 2 * MOTOR_NOISE - MOTOR_NOISE;
+        y += EvoRSLib.uniformNoise( MOTOR_NOISE );
         return y;
     }
 

@@ -112,18 +112,40 @@ public class SimulationWorld {
      * @param rangeFinderLine
      * @return 
      */
-    public double traceRay(Line rangeFinderLine) {
+    public TraceRayResult traceRayFull(Line rangeFinderLine) {
         double lowestDist = Double.NaN; //will return this if no intersection found
+        Shape2D nearestObj = null;
         for (Iterator it = objects.iterator(); it.hasNext();) {
             Shape2D obj = (Shape2D) it.next();
             Intersection li = obj.getSmallestIntersection(rangeFinderLine);
             if (li.isIntersection) {
                 if (Double.isNaN(lowestDist) || li.getSmallestLineDist() < lowestDist) {
                     lowestDist = li.getSmallestLineDist();
+                    nearestObj = obj;
                 }
             }
         }
-        return  lowestDist;
+        return new TraceRayResult( lowestDist, nearestObj );
+    }
+    
+    public double traceRay(Line rangeFinderLine) {
+    	return traceRayFull( rangeFinderLine ).getDistance();
+    }
+    
+    public class TraceRayResult
+    {
+    	double dist;
+    	Shape2D obj;
+    	
+    	TraceRayResult( double dist, Shape2D obj )
+    	{
+    		this.dist = dist;
+    		this.obj = obj;
+    	}
+    	
+    	public double getDistance() { return dist; }
+    	
+    	public Shape2D getObject() { return obj; }
     }
 
 }
