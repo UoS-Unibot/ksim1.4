@@ -102,39 +102,44 @@ public class VisualiserFrame extends JFrame implements VisualiserListener {
         for (int i = 0; i < genes.length; i++) {
             genes[i] = Math.random();
         }
+        
+        double gain = 5;
+        double gainM = 3;
+        double bias = 3;
+        double tau = 2;
 
         CTRNN.CTRNNNeuron[] neurons = new CTRNN.CTRNNNeuron[]{
             //sensory
-            new CTRNN.CTRNNNeuron(genes[0], genes[1], genes[2], 
+            new CTRNN.CTRNNNeuron(genes[0]*gain, genes[1]*bias, genes[2]*tau, 
                     new double[]{
                         0,0, 0, 0, 0, 0, genes[3], genes[4]
                     }),
-            new CTRNN.CTRNNNeuron(genes[0], genes[1], genes[2], 
+            new CTRNN.CTRNNNeuron(genes[0]*gain, genes[1]*bias, genes[2]*tau, 
                     new double[]{
                         0,0, 0, 0, 0, 0, genes[5], genes[6]
                     }),
-            new CTRNN.CTRNNNeuron(genes[0], genes[1], genes[2], 
+            new CTRNN.CTRNNNeuron(genes[0]*gain, genes[1]*bias, genes[2]*tau, 
                     new double[]{
                         0, 0, 0, 0, 0, 0, genes[7], genes[8]
                     }),
-            new CTRNN.CTRNNNeuron(genes[0], genes[1], genes[2], 
+            new CTRNN.CTRNNNeuron(genes[0]*gain, genes[1]*bias, genes[2]*tau, 
                     new double[]{
                         0, 0, 0, 0, 0, 0, genes[8], genes[7]
                     }),
-            new CTRNN.CTRNNNeuron(genes[0], genes[1], genes[2], 
+            new CTRNN.CTRNNNeuron(genes[0]*gain, genes[1]*bias, genes[2]*tau, 
                     new double[]{
                         0, 0, 0, 0, 0, 0, genes[6], genes[5]
                     }),
-            new CTRNN.CTRNNNeuron(genes[0], genes[1], genes[2], 
+            new CTRNN.CTRNNNeuron(genes[0]*gain, genes[1]*bias, genes[2]*tau, 
                     new double[]{
                         0, 0, 0, 0, 0, 0, genes[4], genes[3]
                     }),
             //motors with recurrent connections
-            new CTRNN.CTRNNNeuron(genes[9], genes[10], genes[11],
+            new CTRNN.CTRNNNeuron(genes[9]*gainM, genes[10]*bias, genes[11]*tau,
                     new double[]{
                         0, 0, 0, 0, 0, 0, genes[12], genes[13]
                     }),
-            new CTRNN.CTRNNNeuron(genes[9], genes[10], genes[11],
+            new CTRNN.CTRNNNeuron(genes[9]*gainM, genes[10]*bias, genes[11]*tau,
                     new double[]{
                         0, 0, 0, 0, 0, 0, genes[13], genes[12]
                     })
