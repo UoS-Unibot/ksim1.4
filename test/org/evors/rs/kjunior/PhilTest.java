@@ -1,6 +1,5 @@
 package org.evors.rs.kjunior;
 
-import org.evors.core.IRobotController;
 import org.evors.core.RunController;
 import org.evors.core.geometry.Intersection;
 import org.evors.core.geometry.Line;
@@ -52,7 +51,7 @@ public class PhilTest {
 		robot.setPosition( new Vec2( 5, -35 ) );
 		robot.setHeading( Math.PI / 2 ); // N
 		
-		RunController sim = new RunController( pt.new PhilController(), robot );
+		RunController sim = new RunController( new PhilController(), robot );
 		
 		for( int i = 0; i < 2000; i++ )
 		{
@@ -94,52 +93,4 @@ public class PhilTest {
 		return world;
 	}
 	
-	class PhilController implements IRobotController
-	{
-
-		double[] IRVals;
-		
-		public void step(double[] input) {
-			IRVals = input;
-			
-		}
-
-		public double[] getControlOutputs() {
-			boolean highf = false;
-			boolean[] high = new boolean[ NUM_IRS ];
-			double[] mr = new double[ 2 ];
-			String print = "";
-			
-			for( int i = 0; i < NUM_IRS; i++ )
-			{
-				if( IRVals[ i ] > 2000 )
-				{
-					high[ i ] = true;
-					highf = true;
-				}
-			}
-			
-			if( !highf )
-			{
-				mr[ 0 ] = mr[ 1 ] = 15; 	print = "straight";
-			}else if( high[3] || high[4])
-			{
-				mr[ 0 ] = -20; mr[ 1 ] = 20; print = "right";
-			}else if( high[0] || high[1])
-			{
-				mr[ 0 ] = 20; mr[ 1 ] = -20; print = "left";
-			}else if( high[ 2 ] )
-			{
-				mr[ 0 ] = mr[ 1 ] = 15;		print = "just mid";
-			}else if( high[ 5] )
-			{
-				mr[ 0 ] = mr[ 1 ] = 15;		print = "hight at back";
-			}
-			//System.out.println( "... " + print + " ...");
-			//System.out.println( "ls " + mr[ 0 ] + " rs " + mr[ 1 ] );
-			return mr;
-		}
-		
-	}
-
 }
