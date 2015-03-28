@@ -24,7 +24,6 @@ public class SimulatedKJunior extends SimulatedRobotBody {
 
     public static final Random rand = EvoRSLib.random;
 
-    private final double maxIRLength;
     private final double topRadius;
     private final double[] irAngles;
 
@@ -33,7 +32,6 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     public SimulatedKJunior(SimulationWorld world,
             double timeStepLength) {
         super(world, Circle.getFromCenter(Vec2.ZERO, 6.5), timeStepLength); //radius of 6.5cm
-        maxIRLength = MAX_IR_LENGTH;
         topRadius = 5.75;
         irAngles = new double[] {0.785,0.349,0,5.934,5.498,3.142};
     }
@@ -49,10 +47,10 @@ public class SimulatedKJunior extends SimulatedRobotBody {
      */
     public void step(double[] controlInputs) {
         //convert motor signals to actual velocities in cm/s
-        double mL = controlInputs[0], mR = controlInputs[1],
-                vL = convertSpeed(mL), vR = convertSpeed(mR),
-                forwardV = (vL + vR) / 2,
-                angularV = (vR - vL) * getTimeStep() / AXLE_WIDTH;
+        double mL = controlInputs[0], mR = controlInputs[1];
+        double vL = convertSpeed(mL), vR = convertSpeed(mR);
+        double forwardV = (vL + vR) / 2,
+                angularV = (vR - vL) / AXLE_WIDTH; // Timestep multiplication already done in superclass as this is velocity, that is change.
         V += Math.abs( vL ) + Math.abs( vR );
         D += Math.abs( vR - vL );
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
@@ -64,7 +62,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     }
 
     public double getIRReading(double angle) {
-        return new KJuniorIRBeam( getIRBase(angle), angle, getWorld() ).getReading();
+        return new KJuniorIRBeam( getIRBase(angle), getHeading() + angle, getWorld() ).getReading();
     }
 
     public double[] getInput() {
