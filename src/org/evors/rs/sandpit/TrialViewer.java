@@ -198,6 +198,14 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
             SandpitRenderer.drawRobot(g2, robot);
         }
 
+        String controllerStr = "";
+        if(controller.getController() instanceof CTRNN) {
+            controllerStr = "Neurons: " + Arrays.toString(((CTRNN) controller.
+                            getController()).
+                            getNeurons());
+        } else
+            controllerStr = "Control outputs: " + Arrays.toString(controller.getController().getControlOutputs());
+        
         //set previous transform
         g2.setTransform(prevTrans);
         drawText(
@@ -207,9 +215,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
                     "Robot pos: " + robot.getPosition(),
                     "Heading: " + robot.getHeading(),
                     "Input: " + Arrays.toString(robot.getInput()),
-                    "Neurons: " + Arrays.toString(((CTRNN) controller.
-                            getController()).
-                            getNeurons())
+                    controllerStr
                 }
         );
     }
