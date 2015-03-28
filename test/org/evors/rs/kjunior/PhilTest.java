@@ -18,6 +18,7 @@ public class PhilTest {
 	public static final double TIME_STEP = 0.1;
 	public static final int NUM_IRS = 6;
 	public static final Vec2 WORLD_OFFSET = new Vec2( 75, 75 );
+	public static boolean consoleOutput = false;
 	
 	public PhilTest() {
 		// TODO Auto-generated constructor stub
@@ -32,23 +33,29 @@ public class PhilTest {
 		Line l1 = Line.fromCoords( 1, 1, 10, 1);
 		Line l2 = Line.fromCoords( 1, 2, 10, 2);
 		Intersection ix = l1.getSmallestIntersection( l2 );
-		System.out.println( ix.intersectionPoint ); 
+		if( consoleOutput ) System.out.println( ix.intersectionPoint ); 
 		
 		l1 = Line.fromCoords( 10, 0, 0, 10);
 		l2 = Line.fromCoords(0, 0, 10, 10);
 		ix = l1.getSmallestIntersection( l2 );
-		System.out.println( ix.intersectionPoint );
+		if( consoleOutput )System.out.println( ix.intersectionPoint );
+		
+		l1 = Line.fromCoords( -5,-5,0,0 );
+		l2 = Line.fromCoords( 1,1,10,10 );
+		ix = l1.getSmallestIntersection( l2 );
+		if( consoleOutput )System.out.println( ix.intersectionPoint );
+		
+		Vec2 p1 = new Vec2( 1, 1 );		
+		if( consoleOutput ) System.out.println( p1.distance( new Vec2( -3, -3 ) ) );
 		
 		l1 = Line.fromCoords( 0,0,10,10 );
 		l2 = Line.fromCoords( 10,0,9,100);
 		ix = l1.getSmallestIntersection( l2 );
-		System.out.println( ix.intersectionPoint );
-		
+		if( consoleOutput ) System.out.println( ix.intersectionPoint );
 		
 		robot.setPosition( new Vec2( -68, 65 ) );
-		
-		// Check collision here
-		
+		world.checkCollisions( robot );
+				
 		robot.setPosition( new Vec2( 5, -35 ) );
 		robot.setHeading( Math.PI / 2 ); // N
 		
@@ -59,15 +66,16 @@ public class PhilTest {
 			sim.step();
 			
 			Vec2 robpos = robot.getPosition().add( WORLD_OFFSET );
-			//System.out.println( "rob: " + robpos.x + " " + robpos.y + " " + trigToBearing( robot.getHeading()) );
-			System.out.println( robpos.x +  " " + robpos.y );
+			if( consoleOutput ) System.out.println( "rob: " + robpos.x + " " + robpos.y + " " + trigToBearing( robot.getHeading()) );
+			if( !consoleOutput ) System.out.println( robpos.x +  " " + robpos.y );
 			double[] robirs = robot.getInput();
+			String irs = "";
 			for( int j = 0; j < NUM_IRS; j++ )
 			{
-				//System.out.println( robirs[ j ] );
+				irs += ( (int) robirs[ j ] ) + " ";
 			}
 			
-			//System.out.println();
+			if( consoleOutput ) System.out.println( irs );
 			
 			// Check collision
 			if( !sim.isLive() )
@@ -135,8 +143,8 @@ public class PhilTest {
 			{
 				mr[ 0 ] = mr[ 1 ] = 15;		print = "hight at back";
 			}
-			//System.out.println( "... " + print + " ...");
-			//System.out.println( "ls " + mr[ 0 ] + " rs " + mr[ 1 ] );
+			if( consoleOutput ) System.out.println( "... " + print + " ...");
+			if( consoleOutput ) System.out.println( "ls " + mr[ 0 ] + " rs " + mr[ 1 ] );
 			return mr;
 		}
 		
