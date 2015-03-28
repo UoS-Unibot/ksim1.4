@@ -5,7 +5,7 @@ import org.evors.core.IRobotController;
 public class PhilController implements IRobotController{
 
     public static final int NUM_IRS = 6;
-    double[] IRVals;
+    double[] IRVals = new double[]{0,0,0,0,0,0};
 
     public void step(double[] input) {
         IRVals = input;
