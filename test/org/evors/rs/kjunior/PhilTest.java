@@ -25,6 +25,7 @@ public class PhilTest {
 	}
 
 	public static void main(String[] args) {
+		
 		PhilTest pt = new PhilTest();
 		SimulationWorld world = pt.createWorld();
 		SimulatedKJunior robot = new SimulatedKJunior( world, TIME_STEP );
@@ -38,12 +39,12 @@ public class PhilTest {
 		l1 = Line.fromCoords( 10, 0, 0, 10);
 		l2 = Line.fromCoords(0, 0, 10, 10);
 		ix = l1.getSmallestIntersection( l2 );
-		if( consoleOutput )System.out.println( ix.intersectionPoint );
+		if( consoleOutput ) System.out.println( ix.intersectionPoint );
 		
 		l1 = Line.fromCoords( -5,-5,0,0 );
 		l2 = Line.fromCoords( 1,1,10,10 );
 		ix = l1.getSmallestIntersection( l2 );
-		if( consoleOutput )System.out.println( ix.intersectionPoint );
+		if( consoleOutput ) System.out.println( ix.intersectionPoint );
 		
 		Vec2 p1 = new Vec2( 1, 1 );		
 		if( consoleOutput ) System.out.println( p1.distance( new Vec2( -3, -3 ) ) );
