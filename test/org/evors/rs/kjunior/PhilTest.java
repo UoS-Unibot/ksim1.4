@@ -27,7 +27,7 @@ public class PhilTest {
 	public static void main(String[] args) {
 		
 		PhilTest pt = new PhilTest();
-		SimulationWorld world = pt.createWorld();
+		SimulationWorld world = createWorld();
 		SimulatedKJunior robot = new SimulatedKJunior( world, TIME_STEP );
 		
 		// Geometry tests
@@ -94,7 +94,7 @@ public class PhilTest {
 		return rv % ( 2 * Math.PI );
 	}
 	
-	SimulationWorld createWorld()
+	public static SimulationWorld createWorld()
 	{
 		SimulationWorld world = new SimulationWorld( new Vec2( 150, 150 ));
 		world.createWorldObject( Line.fromCoords( -25, -50, -5, -45 ) );

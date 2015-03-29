@@ -16,13 +16,13 @@ import org.evors.core.EvoRSLib;
 public class SimulatedKJunior extends SimulatedRobotBody {
 
     private final double AXLE_WIDTH = 10; //equivalent to WHEEL_SEP in Phil's code
-    private final double MOTOR_NOISE = 0.4; //noise to add to motor signals
+    public static double MOTOR_NOISE = 0.4; //noise to add to motor signals - public for testing
     private final int NUM_IRs = 6;
     private final double[][] ROB_CTRL_INPUT_RANGES = { { -20, 20 } };
     private final double[][] ROB_CONTROLLER_INPUT_RANGES = { { 0, 3500 } };
     private final double MAX_IR_LENGTH = 25;
 
-    public static final Random rand = EvoRSLib.random;
+    protected static final Random rand = EvoRSLib.random;
 
     private final double topRadius;
     private final double[] irAngles;
@@ -49,8 +49,8 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         //convert motor signals to actual velocities in cm/s
         double mL = controlInputs[0], mR = controlInputs[1];
         double vL = convertSpeed(mL), vR = convertSpeed(mR);
-        double forwardV = (vL + vR) / 2,
-                angularV = (vR - vL) / AXLE_WIDTH; // Timestep multiplication already done in superclass as this is velocity, that is change.
+        double forwardV = (vL + vR) / 2;
+        double angularV = (vR - vL) / AXLE_WIDTH; // Timestep multiplication already done in superclass as this is velocity, that is change.
         V += Math.abs( vL ) + Math.abs( vR );
         D += Math.abs( vR - vL );
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
@@ -74,7 +74,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         return input;
     }
 
-    private double convertSpeed(double x) {
+    public double convertSpeed(double x) {
         double y = 0;
 
         if (x <= 15 && x >= -15) {

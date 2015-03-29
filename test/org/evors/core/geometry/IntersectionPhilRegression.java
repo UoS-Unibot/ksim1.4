@@ -19,7 +19,9 @@ public class IntersectionPhilRegression extends TestCase {
 			l3 = Line.fromCoords( -10, 0, 10, 0),
 			l4 = Line.fromCoords( 0, -10, 0, 10 ),
 			l5 = Line.fromCoords( rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ) ),
-			l6 = Line.fromCoords( rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ) );
+			l6 = Line.fromCoords( rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ), rnd.nextInt( RND_RANGE ) ),
+			l7 = Line.fromCoords(9, 6, 0, 6),
+			l8 = Line.fromCoords(1, 6, 1, 0 );
 	
 	public IntersectionPhilRegression(String testName) {
         super(testName);
@@ -124,6 +126,12 @@ public class IntersectionPhilRegression extends TestCase {
         assertEquals( iKSim.toString(), iPhil.toString() );
     }
 	
+	public void testL7L8() {
+        Vec2 iKSim =  l7.getSmallestIntersection(l8).intersectionPoint;
+        Vec2 iPhil = PhilIntersection_Point( l7, l8 );
+        assertEquals( iKSim.toString(), iPhil.toString() );
+    }
+	
 	public void testMultiple() {
 		int n = 50;
 		
@@ -135,12 +143,23 @@ public class IntersectionPhilRegression extends TestCase {
 	        Vec2 iKSim =  l5.getSmallestIntersection(l6).intersectionPoint;
 	        Vec2 iPhil = PhilIntersect( l5, l6 ) ? PhilIntersection_Point( l5, l6 ) : Vec2.NaN;
 	        
-	        if(!iKSim.toString().equals( iPhil.toString() ) ) System.out.println( l5 + " " + l6 + " '" + iKSim + "' '" + iPhil + "' " );
-	        assertEquals( iKSim.toString(), iPhil.toString() );
+	        Vec2 pP = iPhil == Vec2.NaN ? Vec2.NaN : new Vec2( sixDecPlaces( iPhil.x ), sixDecPlaces( iPhil.y) );
+			Vec2 kP = iKSim == Vec2.NaN ? Vec2.NaN : new Vec2( sixDecPlaces( iKSim.x ), sixDecPlaces( iKSim.y ) );
+			
+	        
+	        if(!kP.toString().equals( pP.toString() ) ) System.out.println( l5 + " " + l6 + " '" + kP + "' '" + pP + "' " );
+	        assertEquals( kP.toString(), pP.toString() );
 		}
     }
 	
-	
+	public double sixDecPlaces( double x )
+	{
+		double precision = 1000000;
+		double rv = x * precision;
+		rv = Math.round( rv );
+		rv /= precision;
+		return rv;
+	}
 
 	
 }
