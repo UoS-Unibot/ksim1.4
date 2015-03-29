@@ -74,5 +74,10 @@ public class Vec2 {
     public String toString() {
         return "Vec2{" + x + "," + y + '}';
     }
+    
+    public boolean equals( Vec2 obj )
+    {
+    	return ( x == obj.x ) && ( y == obj.y );
+    }
 
 }
