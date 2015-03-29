@@ -1,6 +1,6 @@
 package org.evors.rs.kjunior;
 
-import org.evors.core.IRobotController;
+import org.evors.core.RobotController;
 import org.evors.core.RunController;
 import org.evors.core.geometry.Intersection;
 import org.evors.core.geometry.Line;
@@ -102,7 +102,7 @@ public class PhilTest {
 		return world;
 	}
 	
-	class PhilController implements IRobotController
+	class PhilController implements RobotController
 	{
 
 		double[] IRVals;

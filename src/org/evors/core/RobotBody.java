@@ -8,7 +8,7 @@ import java.util.Hashtable;
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public interface IRobotBody {
+public interface RobotBody {
 
     /**
      * Gets sensory input data from this robot.

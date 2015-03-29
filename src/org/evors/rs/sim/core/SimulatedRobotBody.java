@@ -1,10 +1,10 @@
 package org.evors.rs.sim.core;
 
-import org.evors.core.IRobotBody;
+import org.evors.core.RobotBody;
 import org.evors.core.geometry.Shape2D;
 import org.evors.core.geometry.Vec2;
 
-public abstract class SimulatedRobotBody implements IRobotBody {
+public abstract class SimulatedRobotBody implements RobotBody {
 
     private final double timeStepLength;
     private Vec2 position;

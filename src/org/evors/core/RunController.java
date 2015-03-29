@@ -10,8 +10,8 @@ package org.evors.core;
  */
 public class RunController {
 
-    private final IRobotController controller;
-    private final IRobotBody robot;
+    private final RobotController controller;
+    private final RobotBody robot;
     private final double timeStep;
     private boolean live = true;
 
@@ -22,7 +22,7 @@ public class RunController {
      * @param controller IRobotController to get control data from.
      * @param robot IRobotBody to send commands to.
      */
-    public RunController(IRobotController controller, IRobotBody robot) {
+    public RunController(RobotController controller, RobotBody robot) {
         this(controller, robot, robot.getTimeStep());
     }
 
@@ -34,7 +34,7 @@ public class RunController {
      * @param robot IRobotBody to send commands to.
      * @param timeStep Timestep in seconds to use.
      */
-    public RunController(IRobotController controller, IRobotBody robot,
+    public RunController(RobotController controller, RobotBody robot,
             double timeStep) {
         this.controller = controller;
         this.robot = robot;
@@ -66,7 +66,7 @@ public class RunController {
      *
      * @return
      */
-    public IRobotController getController() {
+    public RobotController getController() {
         return controller;
     }
 
@@ -75,7 +75,7 @@ public class RunController {
      *
      * @return
      */
-    public IRobotBody getRobot() {
+    public RobotBody getRobot() {
         return robot;
     }
 

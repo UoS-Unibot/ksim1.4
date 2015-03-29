@@ -11,7 +11,7 @@ package org.evors.core;
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public interface IRobotController {
+public interface RobotController {
 
     /**
      * Integrates the controller one time step by providing a RobotInput

@@ -5,7 +5,7 @@ import java.awt.HeadlessException;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import org.evors.core.IRobotController;
+import org.evors.core.RobotController;
 import org.evors.core.RunController;
 import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Vec2;
@@ -94,7 +94,7 @@ public class VisualiserFrame extends JFrame implements VisualiserListener {
         robot.setHeading(Math.PI / 2); // N
 
         //CTRNNController nn = getController();
-        IRobotController nn = new PhilController();
+        RobotController nn = new PhilController();
 
         //this is the class that controls both and passes velocities/sensory input between them
         return new RunController(nn, robot);

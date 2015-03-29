@@ -1,8 +1,8 @@
 package org.evors.rs.kjunior;
 
-import org.evors.core.IRobotController;
+import org.evors.core.RobotController;
 
-public class PhilController implements IRobotController{
+public class PhilController implements RobotController{
 
     public static final int NUM_IRS = 6;
     double[] IRVals = new double[]{0,0,0,0,0,0};

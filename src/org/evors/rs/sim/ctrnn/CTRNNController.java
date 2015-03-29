@@ -6,14 +6,14 @@
 package org.evors.rs.sim.ctrnn;
 
 import org.evors.rs.sim.ctrnn.CTRNN;
-import org.evors.core.IRobotController;
+import org.evors.core.RobotController;
 
 
 /**
  * Simulates a CTRNN. Loads neurons into an array from a CTRNNLayout.
  * @author Miles
  */
-public class CTRNNController extends CTRNN implements IRobotController{
+public class CTRNNController extends CTRNN implements RobotController{
 
     private final double axleWidth;
     private final int leftMotorID,rightMotorID;
