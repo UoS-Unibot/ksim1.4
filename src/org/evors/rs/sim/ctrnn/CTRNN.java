@@ -30,7 +30,7 @@ public class CTRNN {
     }
 
     public CTRNNNeuron[] getNeurons() {
-        return (CTRNNNeuron[]) Arrays.copyOf(neurons, neurons.length);
+        return neurons;
     }
 
     private final CTRNNNeuron[] neurons;
