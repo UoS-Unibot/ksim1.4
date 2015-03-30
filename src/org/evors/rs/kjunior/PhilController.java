@@ -4,6 +4,15 @@ import org.evors.core.RobotController;
 
 public class PhilController implements RobotController{
 
+	protected boolean debugOutput = false;
+	
+	public PhilController() {}
+	
+	public PhilController( boolean debugOutput )
+	{
+		this.debugOutput = debugOutput;
+	}
+	
     public static final int NUM_IRS = 6;
     double[] IRVals = new double[]{0,0,0,0,0,0};
 
@@ -43,8 +52,8 @@ public class PhilController implements RobotController{
             mr[0] = mr[1] = 15;
             print = "hight at back";
         }
-        //System.out.println( "... " + print + " ...");
-        //System.out.println( "ls " + mr[ 0 ] + " rs " + mr[ 1 ] );
+        if( debugOutput ) System.out.println( "... " + print + " ...");
+        if( debugOutput ) System.out.println( "ls " + mr[ 0 ] + " rs " + mr[ 1 ] );
         return mr;
     }
 }

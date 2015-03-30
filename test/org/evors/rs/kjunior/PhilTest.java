@@ -1,5 +1,6 @@
 package org.evors.rs.kjunior;
 
+import org.evors.core.EvoRSLib;
 import org.evors.core.RobotController;
 import org.evors.core.RunController;
 import org.evors.core.geometry.Intersection;
@@ -27,7 +28,7 @@ public class PhilTest {
 	public static void main(String[] args) {
 		
 		PhilTest pt = new PhilTest();
-		SimulationWorld world = createWorld();
+		SimulationWorld world = EvoRSLib.getStandardKSimPhilWorld();
 		SimulatedKJunior robot = new SimulatedKJunior( world, TIME_STEP );
 		
 		// Geometry tests
@@ -60,7 +61,7 @@ public class PhilTest {
 		robot.setPosition( new Vec2( 5, -35 ) );
 		robot.setHeading( Math.PI / 2 ); // N
 		
-		RunController sim = new RunController( pt.new PhilController(), robot );
+		RunController sim = new RunController( new PhilController( consoleOutput ), robot );
 		
 		for( int i = 0; i < 2000; i++ )
 		{
@@ -94,61 +95,4 @@ public class PhilTest {
 		return rv % ( 2 * Math.PI );
 	}
 	
-	public static SimulationWorld createWorld()
-	{
-		SimulationWorld world = new SimulationWorld( new Vec2( 150, 150 ));
-		world.createWorldObject( Line.fromCoords( -25, -50, -5, -45 ) );
-		world.createWorldObject( Line.fromCoords( -5, -45, -5, 45));
-		world.createWorldObject( Line.fromCoords( -5, 45, 15, 47));
-		return world;
-	}
-	
-	class PhilController implements RobotController
-	{
-
-		double[] IRVals;
-		
-		public void step(double[] input) {
-			IRVals = input;
-			
-		}
-
-		public double[] getControlOutputs() {
-			boolean highf = false;
-			boolean[] high = new boolean[ NUM_IRS ];
-			double[] mr = new double[ 2 ];
-			String print = "";
-			
-			for( int i = 0; i < NUM_IRS; i++ )
-			{
-				if( IRVals[ i ] > 2000 )
-				{
-					high[ i ] = true;
-					highf = true;
-				}
-			}
-			
-			if( !highf )
-			{
-				mr[ 0 ] = mr[ 1 ] = 15; 	print = "straight";
-			}else if( high[3] || high[4])
-			{
-				mr[ 0 ] = -20; mr[ 1 ] = 20; print = "right";
-			}else if( high[0] || high[1])
-			{
-				mr[ 0 ] = 20; mr[ 1 ] = -20; print = "left";
-			}else if( high[ 2 ] )
-			{
-				mr[ 0 ] = mr[ 1 ] = 15;		print = "just mid";
-			}else if( high[ 5] )
-			{
-				mr[ 0 ] = mr[ 1 ] = 15;		print = "hight at back";
-			}
-			if( consoleOutput ) System.out.println( "... " + print + " ...");
-			if( consoleOutput ) System.out.println( "ls " + mr[ 0 ] + " rs " + mr[ 1 ] );
-			return mr;
-		}
-		
-	}
-
 }

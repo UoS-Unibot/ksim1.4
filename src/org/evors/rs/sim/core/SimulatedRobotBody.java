@@ -9,7 +9,7 @@ public abstract class SimulatedRobotBody implements RobotBody {
     private final double timeStepLength;
     private Vec2 position;
     private double heading;
-    private final SimulationWorld world;
+    private SimulationWorld world;
     private final Shape2D shape;
     private boolean live = true;
 
@@ -85,7 +85,10 @@ public abstract class SimulatedRobotBody implements RobotBody {
         return timeStepLength;
     }
 
-    
+    public void setWorld( SimulationWorld world )
+    {
+    	this.world = world;
+    }
     
 
 }
