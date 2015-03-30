@@ -1,6 +1,6 @@
 package org.evors.rs.sandpit;
 
-import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.HeadlessException;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -30,10 +30,10 @@ public class VisualiserFrame extends JFrame implements VisualiserListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("KJunior Simulator");
         setSize(800, 600);
-        setLayout(new CardLayout());
+        setLayout(new FlowLayout());
+        add(container);
 
         container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
-        add(container);
         this.rc = rc;
         trialv.loadSimulation(rc);
         trialv.stop();
