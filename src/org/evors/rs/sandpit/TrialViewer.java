@@ -31,7 +31,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
     protected BufferStrategy buffer;
 
     public TrialViewer() {
-        setPreferredSize(new Dimension(800, 600));
+        setSize(new Dimension(800, 600));
     }
 
     /**
@@ -91,7 +91,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
         if (!simulationLoaded) {
             return;
         }
-        beforeTime = System.nanoTime();
+        beforeTime = System.currentTimeMillis();
         while (!simulationStopped) {
             if (controller.isLive()) {
                 step();
@@ -99,7 +99,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
             draw();
             render();
             //maintaining a consistent frame rate
-            timeDiff = System.nanoTime() - beforeTime;
+            timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
             if (sleep < 0) {
                 sleep = 2;
@@ -110,7 +110,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
                 System.out.println("Interrupted: " + e.getMessage());
                 simulationStopped = true;
             }
-            beforeTime = System.nanoTime();
+            beforeTime = System.currentTimeMillis();
         }
 
     }
@@ -200,11 +200,11 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
 
         String controllerStr = "";
         if(controller.getController() instanceof CTRNN) {
-            controllerStr = "Neurons: " + Arrays.toString(((CTRNN) controller.
+            controllerStr = "Neurons: " + ((CTRNN) controller.
                             getController()).
-                            getNeurons());
+                            getNeurons().toString();
         } else
-            controllerStr = "Control outputs: " + Arrays.toString(controller.getController().getControlOutputs());
+            controllerStr = "Control outputs: " + controller.getController().getControlOutputs().toString();
         
         //set previous transform
         g2.setTransform(prevTrans);
@@ -214,7 +214,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
                     "Time: " + String.valueOf(time),
                     "Robot pos: " + robot.getPosition(),
                     "Heading: " + robot.getHeading(),
-                    "Input: " + Arrays.toString(robot.getInput()),
+                    "Input: " + robot.getInput().toString(),
                     controllerStr
                 }
         );

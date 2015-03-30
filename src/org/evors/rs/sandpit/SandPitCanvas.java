@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import javax.swing.event.MouseInputAdapter;
 import org.evors.core.geometry.Vec2;
 import org.evors.rs.sim.core.SimulationWorld;
 
@@ -20,7 +22,7 @@ public abstract class SandPitCanvas extends Canvas {
         camera = new SandPitCamera(Vec2.ZERO, Vec2.ZERO, 2);
         grid = new Grid(camera);
 
-        MouseAdapter mouseAdapter = new MouseAdapter() {
+        MouseInputAdapter mouseAdapter = new MouseInputAdapter() {
             private Vec2 prevCoord = Vec2.NaN;
 
             public void mouseDragged(MouseEvent me) {
@@ -38,17 +40,17 @@ public abstract class SandPitCanvas extends Canvas {
             public void mouseReleased(MouseEvent me) {
                 prevCoord = Vec2.NaN;
             }
-
-            public void mouseWheelMoved(MouseWheelEvent mwe) {
-                getCamera().changeScale(-0.05 * mwe.getUnitsToScroll());
-                draw();
-            }
-
         };
 
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
-        addMouseWheelListener(mouseAdapter);
+        addMouseWheelListener(new MouseWheelListener() {
+
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                getCamera().changeScale(-0.05 * e.getUnitsToScroll());
+                draw();
+            }
+        });
 
     }
 

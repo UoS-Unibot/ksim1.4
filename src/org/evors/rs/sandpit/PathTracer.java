@@ -2,7 +2,7 @@ package org.evors.rs.sandpit;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Path2D;
+import java.awt.geom.GeneralPath;
 import org.evors.core.geometry.Vec2;
 
 /**
@@ -10,16 +10,17 @@ import org.evors.core.geometry.Vec2;
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
 public class PathTracer {
-    Path2D curPath = new Path2D.Double();
+    GeneralPath curPath = new GeneralPath();
 
     public PathTracer(Vec2 initPosition) {
         //initialise with robot initial position
-        curPath.moveTo(initPosition.x, initPosition.y);
+        curPath.moveTo((float)initPosition.x, (float)initPosition.y);
+        
     }
     
     public void step(Vec2 newPosition) {
         //Adds a point to the path
-        curPath.lineTo(newPosition.x, newPosition.y);
+        curPath.lineTo((float)newPosition.x, (float)newPosition.y);
     }
     
     public void draw(Graphics2D g2) {

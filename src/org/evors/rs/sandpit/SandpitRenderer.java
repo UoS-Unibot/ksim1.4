@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
+import java.awt.geom.GeneralPath;
 import java.util.Iterator;
 import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Line;
@@ -53,16 +53,16 @@ public class SandpitRenderer {
                 Polygon poly = (Polygon) obj;
                 g2.setColor(Color.blue);
                 g2.setStroke(bstroke);
-                Path2D path = new Path2D.Double();
+                GeneralPath path = new GeneralPath();
                 boolean firstPointSet = false;
                 for (Iterator iterator1 = poly.getLines().iterator(); iterator1.
                         hasNext();) {
                     Line line = (Line) iterator1.next();
                     if (!firstPointSet) {
-                        path.moveTo(line.p1.x, line.p1.y);
+                        path.moveTo((float)line.p1.x, (float)line.p1.y);
                         firstPointSet = true;
                     }
-                    path.lineTo(line.p2.x, line.p2.y);
+                    path.lineTo((float)line.p2.x, (float)line.p2.y);
                 }
                 path.closePath();
                 g2.fill(path);
