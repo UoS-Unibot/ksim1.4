@@ -12,6 +12,7 @@ import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Polygon;
 import org.evors.core.geometry.Shape2D;
+import org.evors.core.geometry.Vec2;
 import org.evors.rs.kjunior.SimulatedKJunior;
 import org.evors.rs.sim.core.SimulationWorld;
 
@@ -59,10 +60,10 @@ public class SandpitRenderer {
                         hasNext();) {
                     Line line = (Line) iterator1.next();
                     if (!firstPointSet) {
-                        path.moveTo((float)line.p1.x, (float)line.p1.y);
+                        path.moveTo((float) line.p1.x, (float) line.p1.y);
                         firstPointSet = true;
                     }
-                    path.lineTo((float)line.p2.x, (float)line.p2.y);
+                    path.lineTo((float) line.p2.x, (float) line.p2.y);
                 }
                 path.closePath();
                 g2.fill(path);
@@ -82,6 +83,7 @@ public class SandpitRenderer {
 
     /**
      * Draws the robot on the given graphics context, using world coordinates.
+     *
      * @param g2 Graphics context.
      * @param robot SimulatedKJunior to draw.
      */
@@ -95,6 +97,27 @@ public class SandpitRenderer {
         circle2D.setFrameFromCenter(cx, cy, cx - r, cy - r);
         g2.fill(circle2D);
 
+        //draw heading
+        Line arrowLine = Line.fromPolarVec(robot.getPosition(), robot.
+                getHeading(), 5.75);
+        g2.setColor(Color.white);
+        g2.setStroke(new BasicStroke(0.5f));
+        g2.draw(new Line2D.Double(arrowLine.p1.x, arrowLine.p1.y, arrowLine.p2.x,
+                arrowLine.p2.y));
+
+        double irCircR = 1;
+        double[] readings = robot.getInput();
+        g2.setColor(Color.red);
+        //draw IRs
+        for (int i = 0; i < robot.irAngles.length; i++) {
+            double ang = robot.irAngles[i];
+            float reading = (float) (readings[i]/3500f);
+            g2.setColor(new Color(reading, 0, 0));
+            Vec2 circleCentre = robot.getIRBase(ang);
+            Ellipse2D circle = new Ellipse2D.Double();
+            circle.setFrameFromCenter(circleCentre.x, circleCentre.y, circleCentre.x - irCircR, circleCentre.y - irCircR);
+            g2.fill(circle);
+        }
     }
 
 }
