@@ -25,7 +25,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     protected static final Random rand = EvoRSLib.random;
 
     private final double topRadius;
-    private final double[] irAngles;
+    public final double[] irAngles;
 
     protected double V,D,maxIR;
     
