@@ -91,7 +91,7 @@ public class Grid {
         BigDecimal curXPos = getNearestMultipleOf(viewRect.getX(), gridMinorInterval);
         while (curXPos.compareTo(new BigDecimal(viewRect.getWidth())) < 0) {
             //keep drawing lines along x axis
-            if (curXPos.remainder(gridMajorInterval).abs().compareTo(new BigDecimal(0.001)) < 0) {
+            if (Math.abs(curXPos.doubleValue()) % gridMajorInterval.doubleValue() < 0.001) {
                 //this is a major interval
                 g2.setStroke(new BasicStroke((float) (0.5 / camera.getScale())));
             } else {
@@ -104,7 +104,7 @@ public class Grid {
         }
         BigDecimal curYPos = getNearestMultipleOf(viewRect.getY(), gridMinorInterval);
         while (curYPos.compareTo(new BigDecimal(viewRect.getHeight())) < 0) {
-            if (curYPos.remainder(gridMajorInterval).abs().compareTo(new BigDecimal(0.001)) < 0) {
+            if (Math.abs(curYPos.doubleValue()) % gridMinorInterval.doubleValue() < 0.001) {
                 g2.setStroke(new BasicStroke((float) (0.5 / camera.getScale())));
             } else {
                 g2.setStroke(new BasicStroke((float) ((0.2) / camera.getScale())));
@@ -132,11 +132,11 @@ public class Grid {
         //Gets the closest multiple to x, e.g. with a multiple of 5 and x of 22 this would return 20
         BigDecimal newX = new BigDecimal(x);
 
-        if (multiple == BigDecimal.ZERO) {
-            return BigDecimal.ZERO;
+        if (multiple == BigDecimal.valueOf(0)) {
+            return BigDecimal.valueOf(0);
         }
-        BigDecimal remainder = newX.abs().remainder(multiple);
-        if (remainder == BigDecimal.ZERO) {
+        BigDecimal remainder = new BigDecimal(Math.abs(newX.doubleValue()) % multiple.doubleValue());
+        if (remainder == BigDecimal.valueOf(0)) {
             return new BigDecimal(x);
         }
         if (x < 0) {
