@@ -28,10 +28,14 @@ public class TestUtils extends TestCase{
         
     public static void assertTwoVector2DsEqual(Vec2 v1, Vec2 v2,boolean assertion) {
         boolean result;
-        if(assertion)
-            result = v1.distance(v2) < EPS;
+        if( v1 == Vec2.NaN && v2 == Vec2.NaN ) result = assertion;
         else
-            result = v1.distance(v2) > EPS;
+        {
+	        if(assertion)
+	            result = v1.distance(v2) < EPS;
+	        else
+	            result = v1.distance(v2) > EPS;
+        }
         junit.framework.Assert.assertTrue(
                 "Expected: " + v1.toString() + ", actual: " + v2.toString(),
                 result

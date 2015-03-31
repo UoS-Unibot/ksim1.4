@@ -13,7 +13,7 @@ import org.evors.rs.sim.core.SimulationWorld;
  */
 public class IRBeam {
 
-    public static final int IR_NOISE = 50;
+    public static int IR_NOISE = 50;
     public static final double IR_COEFF = 1; // Planed wood
     protected static final Random rand = org.evors.core.EvoRSLib.random;
 

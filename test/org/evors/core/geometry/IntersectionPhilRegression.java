@@ -2,6 +2,8 @@ package org.evors.core.geometry;
 
 import java.util.Random;
 
+import org.evors.TestUtils;
+
 import junit.framework.TestCase;
 
 /**
@@ -27,7 +29,7 @@ public class IntersectionPhilRegression extends TestCase {
         super(testName);
     }
 	
-	int PhilOrientation(Vec2 p, Vec2 q, Vec2 r)
+	public static int PhilOrientation(Vec2 p, Vec2 q, Vec2 r)
 	{
 	    //orientation depends on whether slope of line segment p,q is less than, equal to
 		//or greater then slope of line q,r 
@@ -42,7 +44,7 @@ public class IntersectionPhilRegression extends TestCase {
 	/*****************************************************************/
 	// Given three colinear points p, q, r, the function checks if
 	// point r lies on line segment 'pq'
-	boolean PhilOnSegment(Vec2 p, Vec2 q, Vec2 r)
+	public static boolean PhilOnSegment(Vec2 p, Vec2 q, Vec2 r)
 	{
 	  // check x and y projections intersect
 		if (r.x <= Math.max(p.x, q.x) && r.x >= Math.min(p.x, q.x) &&
@@ -52,12 +54,16 @@ public class IntersectionPhilRegression extends TestCase {
 	    return false;
 	}
 	
-	boolean PhilIntersect( Line p1p2, Line p3p4 )
+	public static boolean PhilIntersect( Line p1p2, Line p3p4 )
+	{
+		return PhilIntersect( p1p2.p1, p1p2.p2, p3p4.p1, p3p4.p2 );
+	}
+	
+	public static boolean PhilIntersect( Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4 )
 	{
 		/******************************************************************/
 		// Function that returns true if line segments p1,p2
 		// and p3,p4 intersect.
-		Vec2 p1 = p1p2.p1, p2 = p1p2.p2, p3 = p3p4.p1, p4 = p3p4.p2;
 	    // Find the four orientations needed for general and
 	    // special cases
 	    int o1 = PhilOrientation(p1, p2, p3);
@@ -86,14 +92,18 @@ public class IntersectionPhilRegression extends TestCase {
 	    return false; // Doesn't fall in any of the above cases
 	}
 	
-	Vec2 PhilIntersection_Point( Line p1p2, Line p3p4 )
+	public static Vec2 PhilIntersection_Point( Line p1p2, Line p3p4 )
+	{
+		return PhilIntersection_Point( p1p2.p1, p1p2.p2, p3p4.p1, p3p4.p2 );
+	}
+	
+	public static Vec2 PhilIntersection_Point( Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4 )
 	{
 		// vect equns of lines are Pa = P1 + t( P2 - P1 )
 		// Pb = P3 + s( P4 - P3 ) 
 		// Solving for the point where Pa = Pb gives the following two equations in two unknowns (t and s)
 		//x1 + t(x2 - x1) = x3 + s(x4 - x3)  and
 		// y1 + t(y2 - y1) = y3 + s(y4 - y3) 
-		Vec2 p1 = p1p2.p1, p2 = p1p2.p2, p3 = p3p4.p1, p4 = p3p4.p2;
 		
 		double t,A;
 		A= ((p4.y - p3.y)*(p2.x - p1.x) - (p4.x - p3.x)*(p2.y - p1.y));
@@ -110,26 +120,30 @@ public class IntersectionPhilRegression extends TestCase {
 	public void testL1L2() {
         Vec2 iKSim =  l1.getSmallestIntersection(l2).intersectionPoint;
         Vec2 iPhil = PhilIntersect( l1, l2 ) ? PhilIntersection_Point( l1, l2 ) : Vec2.NaN;
-        assertEquals( iKSim.toString(), iPhil.toString() ); // JQuery not finding .equals method
+        //assertEquals( iKSim.toString(), iPhil.toString() ); // JQuery not finding .equals method
+        TestUtils.assertVEq( iKSim, iPhil ); 
     }
 	
 	public void testL3L4() {
         Vec2 iKSim =  l3.getSmallestIntersection(l4).intersectionPoint;
         Vec2 iPhil = PhilIntersection_Point( l3, l4 );
-        assertEquals( iKSim.toString(), iPhil.toString() );
+        //assertEquals( iKSim.toString(), iPhil.toString() );
+        TestUtils.assertVEq( iKSim, iPhil ); 
     }
 
 	public void testL5L6() {
         Vec2 iKSim =  l5.getSmallestIntersection(l6).intersectionPoint;
         Vec2 iPhil = PhilIntersect( l5, l6 ) ? PhilIntersection_Point( l5, l6 ) : Vec2.NaN;
         if(! iKSim.toString().equals(  iPhil.toString() ) ) System.out.println( l5 + " " + l6 + " '" + iKSim + "' '" + iPhil + "' " );
-        assertEquals( iKSim.toString(), iPhil.toString() );
+        //assertEquals( iKSim.toString(), iPhil.toString() );
+        TestUtils.assertVEq( iKSim, iPhil ); 
     }
 	
 	public void testL7L8() {
         Vec2 iKSim =  l7.getSmallestIntersection(l8).intersectionPoint;
         Vec2 iPhil = PhilIntersection_Point( l7, l8 );
-        assertEquals( iKSim.toString(), iPhil.toString() );
+        //assertEquals( iKSim.toString(), iPhil.toString() );
+        TestUtils.assertVEq( iKSim, iPhil ); 
     }
 	
 	public void testMultiple() {
@@ -143,23 +157,9 @@ public class IntersectionPhilRegression extends TestCase {
 	        Vec2 iKSim =  l5.getSmallestIntersection(l6).intersectionPoint;
 	        Vec2 iPhil = PhilIntersect( l5, l6 ) ? PhilIntersection_Point( l5, l6 ) : Vec2.NaN;
 	        
-	        Vec2 pP = iPhil == Vec2.NaN ? Vec2.NaN : new Vec2( sixDecPlaces( iPhil.x ), sixDecPlaces( iPhil.y) );
-			Vec2 kP = iKSim == Vec2.NaN ? Vec2.NaN : new Vec2( sixDecPlaces( iKSim.x ), sixDecPlaces( iKSim.y ) );
-			
-	        
-	        if(!kP.toString().equals( pP.toString() ) ) System.out.println( l5 + " " + l6 + " '" + kP + "' '" + pP + "' " );
-	        assertEquals( kP.toString(), pP.toString() );
+	        //assertEquals( kP.toString(), pP.toString() );
+	        TestUtils.assertVEq( iKSim, iPhil ); 
 		}
     }
-	
-	public double sixDecPlaces( double x )
-	{
-		double precision = 1000000;
-		double rv = x * precision;
-		rv = Math.round( rv );
-		rv /= precision;
-		return rv;
-	}
-
 	
 }
