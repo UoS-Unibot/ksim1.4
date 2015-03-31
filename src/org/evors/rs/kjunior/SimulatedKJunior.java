@@ -105,8 +105,8 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     public Hashtable getStats()
     {
     	Hashtable rv = new Hashtable();
-    	rv.put("D", new Double(D));
-    	rv.put("V", new Double(V));
+    	rv.put("D", new Double(D * getTimeStep() ));
+    	rv.put("V", new Double(V * getTimeStep() ));
     	double i = ( maxIR / ROB_CONTROLLER_INPUT_RANGES[ 0 ][ 1 ] );
     	rv.put("i", new Double( i ));
     	return rv;
