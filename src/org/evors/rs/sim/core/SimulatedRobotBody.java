@@ -35,6 +35,7 @@ public abstract class SimulatedRobotBody implements RobotBody {
     {
     	this.position = position;
     	shape.setCenter( position );
+    	live = true;
     }
 
     public double getHeading() {

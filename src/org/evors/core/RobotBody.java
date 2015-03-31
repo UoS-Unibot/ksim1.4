@@ -67,4 +67,6 @@ public interface RobotBody {
      * "i" maximum IR reading value in 0..1 range.
      */
     public Hashtable getStats();
+    
+    public void resetStats();
 }

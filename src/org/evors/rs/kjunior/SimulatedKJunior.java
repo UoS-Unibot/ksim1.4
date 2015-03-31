@@ -54,6 +54,7 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         V += Math.abs( vL ) + Math.abs( vR );
         D += Math.abs( vR - vL );
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
+        
         super.step(forwardV, angularV);
     }
 
@@ -108,7 +109,11 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     	rv.put("V", new Double(V));
     	double i = ( maxIR / ROB_CONTROLLER_INPUT_RANGES[ 0 ][ 1 ] );
     	rv.put("i", new Double( i ));
-    	D = V = maxIR = 0;
     	return rv;
+    }
+    
+    public void resetStats()
+    {
+    	V = D = maxIR = 0;
     }
 }
