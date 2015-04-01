@@ -1,5 +1,6 @@
 package org.evors.phil;
 
+import java.util.Hashtable;
 import java.util.Random;
 
 import org.evors.core.geometry.Vec2;
@@ -18,6 +19,7 @@ public class PhilSim {
 	public static final double ROBRAD = 6.5;
 	public static  double IRNOISE = 50;
 	public static  double MNOISE = 0.4;
+	public static final double DT = 0.1;
 	public Wall[] world = { new Wall( new Vec2( 0, 0 ), new Vec2( 150,0 ) ),
 							 new Wall( new Vec2( 150, 0 ), new Vec2( 150, 150 ) ),
 							 new Wall( new Vec2( 150, 150 ), new Vec2( 0, 150 ) ),
@@ -28,12 +30,24 @@ public class PhilSim {
 
 	protected PhilRobot robot = new PhilRobot();
 	protected static Random rnd = new Random();
+	protected double D,V,maxIR;
 	
 	public PhilSim() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public PhilRobot getRobot(){ return robot; }
+	
+	public void resetStats(){ D = V = maxIR = 0; }
+	
+    public Hashtable getStats()
+    {
+    	Hashtable rv = new Hashtable();
+    	rv.put("D", new Double(D * DT ));
+    	rv.put("V", new Double(V * DT ));
+    	double i = ( maxIR / 3500 );
+    	rv.put("i", new Double( i ));
+    	return rv;
+    }
 
 	double rob_speed(double x)
 	{
@@ -51,7 +65,6 @@ public class PhilSim {
 	
 	public Vec2 move_robot( double[] msig)
 	{
-		double DT = 0.1;
 		double ml = msig[ 0 ], mr = msig[ 1 ];
 		
 		double ls,rs, dx, dy,dtheta,v,oldx,oldy,oldtheta,k;
@@ -61,6 +74,9 @@ public class PhilSim {
 		v = (ls + rs)/2;
 		dx = v*Math.sin( robot.orientation )*DT;  // change in posn from decomposed linear motion
 		dy= v*Math.cos( robot.orientation )*DT; 
+		
+		V += Math.abs( ls ) + Math.abs( rs );
+		D += Math.abs( ls - rs );
 		
 		Vec2 rv = new Vec2( robot.position.x + dx , robot.position.y + dy );
 		dtheta = (ls - rs)*DT/WHEEL_SEP;    // change in orientation from decomposed rotational movement  v=wr etc
@@ -76,10 +92,13 @@ public class PhilSim {
 		double ir_ang,v,ang;
 
 		for(i=0;i<NUM_IR;i++)
-		{ir_ang = IRANGS[i];   // angle of IR sensor relative to mid point of robot at front, clockwise
-		v = ir_ang + robot.orientation;  // angle of mid ray from sensor, clockwise from due north
-		ang = ForceAngleInCircle(v);  // makes sure stays in range [0,twopi] to avoid trig calc errors
-		robot.IRvals[i]=ir_reading(ang);
+		{
+			ir_ang = IRANGS[i];   // angle of IR sensor relative to mid point of robot at front, clockwise
+			v = ir_ang + robot.orientation;  // angle of mid ray from sensor, clockwise from due north
+			ang = ForceAngleInCircle(v);  // makes sure stays in range [0,twopi] to avoid trig calc errors
+			double irVal = ir_reading(ang);
+			maxIR = Math.max( maxIR, irVal );
+			robot.IRvals[i]= irVal;
 		}
 
 	}

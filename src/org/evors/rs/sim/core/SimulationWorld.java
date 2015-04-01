@@ -31,7 +31,27 @@ public class SimulationWorld {
         this.filename = filename;
     }
     
-    
+    /**
+     * Creates a new SimulationWorld with specified bounds. Lines are
+     * automatically generated to form the bounding box.
+     *
+     * @param bounds Vec2 size of bounding box.
+     * @param positiveCoords centre is (0,0) if false, bottom left is (0,0) if true
+     */
+    public SimulationWorld(Vec2 bounds, boolean positiveCoords) {
+    	  this.bounds = bounds;
+          double pi2 =  Math.PI / 2;
+          double w =  bounds.x,
+                  h =  bounds.y;
+          
+          double xOff = positiveCoords ? 0 : ( -w / 2);
+          double yOff = positiveCoords ? 0 : ( -h / 2 );
+          
+          objects.add( Line.fromCoords( 0 + xOff, 0 + yOff, w + xOff, 0 + yOff ) ); // bottom
+          objects.add( Line.fromCoords( w + xOff, 0 + yOff, w + xOff, h + yOff ) ); // right
+          objects.add( Line.fromCoords( w + xOff, h + yOff, 0 + xOff, h + yOff ) ); // top
+          objects.add( Line.fromCoords( 0 + xOff, h + yOff, 0 + xOff, 0 + yOff ) ); // left
+    }
 
     /**
      * Creates a new SimulationWorld with specified bounds. Lines are
@@ -40,15 +60,7 @@ public class SimulationWorld {
      * @param bounds Vec2 size of bounding box.
      */
     public SimulationWorld(Vec2 bounds) {
-        this.bounds = bounds;
-        double pi2 =  Math.PI / 2;
-        double w =  bounds.x,
-                h =  bounds.y;
-        objects.add(Line.fromCenterPoint(0, h / 2, w, 0));
-        objects.add(Line.fromCenterPoint(w / 2, 0, h, pi2));
-        objects.add(Line.fromCenterPoint(0, -h / 2, w, 0));
-        objects.add(Line.fromCenterPoint(-w / 2, 0, h, pi2));
-
+      this( bounds, false );
     }
     
     public void addListener(CollisionListener listener) {
