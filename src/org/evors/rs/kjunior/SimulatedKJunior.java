@@ -122,6 +122,6 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     
     public void resetStats()
     {
-    	totV = totD = maxIR = step = 0;
+    	cumf = totV = totD = maxIR = step = 0;
     }
 }
