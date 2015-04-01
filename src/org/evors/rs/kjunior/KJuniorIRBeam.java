@@ -10,7 +10,7 @@ public class KJuniorIRBeam extends IRBeam {
 
 	public static final double MAX_LENGTH = 25;
 	public static final int N_BEAMS = 5;
-	public static final double[] DIV_ANGLES = { -0.437, -0.218, 0, 0.218, 0.437 };
+	public static final double[] DIV_ANGLES = { 0.437, 0.218, 0, -0.218, -0.437 };
 	
 	public KJuniorIRBeam(Vec2 basePoint, double centralAngle, SimulationWorld world) {
 		super(basePoint, centralAngle, MAX_LENGTH, world, N_BEAMS, 0 );

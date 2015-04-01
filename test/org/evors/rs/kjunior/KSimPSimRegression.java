@@ -3,6 +3,7 @@ package org.evors.rs.kjunior;
 import java.util.Random;
 
 import org.evors.TestUtils;
+import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Vec2;
 import org.evors.phil.PhilSim;
 import org.evors.phil.PhilSim.Wall;
@@ -74,8 +75,9 @@ public class KSimPSimRegression extends TestCase {
  		assertEquals(ksIR, pIR, 1.5 );
 	}
 	
-	public void testIRReadingMultipleAngles()
+	public void testIRReadingMultipleAnglesTop()
 	{
+		System.out.println("===Top===");
         robotKS.setPosition( new Vec2( 740, 740 ) );
  		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
 		robotPhil.position = new Vec2( 740, 740 );
@@ -89,17 +91,76 @@ public class KSimPSimRegression extends TestCase {
  			ps.readIRs();
  	 		double pIR = robotPhil.IRvals[ 2 ]; // 0 angle one
  	 		
- 	 		
  	 		if( Math.abs( ksIR - pIR ) > 0.5 )
  	 		{
  	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
  	 		}
- 	 		assertEquals( ksIR, pIR, 1.5 );
+ 	 		assertEquals( ksIR, pIR, 1.1 );
  	 		
  	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
  	 		robotPhil.orientation = PhilSim.ForceAngleInCircle( robotPhil.orientation - dA );
  		}
  		
+	}
+	
+	public void testIRReadingMultipleAnglesBottom()
+	{
+		System.out.println("===Bottom===");
+        robotKS.setPosition( new Vec2( -300, -740 ) );
+ 		robotKS.setHeading( 3 * Math.PI / 2 ); // S
+ 		robotPhil.position = new Vec2( -300, -740 );
+ 		robotPhil.orientation= Math.PI ; // S
+ 		
+ 		int n = 100;
+ 		double dA = 0.1;
+ 		for( int i = 0; i < n; i++ )
+ 		{
+ 			double ksIR = robotKS.getIRReading( 0 );
+ 	 		double pIR = ps.ir_reading( robotPhil.orientation );
+ 	 		if( Math.abs( ksIR - pIR ) > 0.5 )
+ 	 		{
+ 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
+ 	 		}
+ 	 		assertEquals( ksIR, pIR, 1.1 );
+ 	 		
+ 	 		
+ 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotPhil.orientation = PhilSim.ForceAngleInCircle( robotPhil.orientation - dA );
+ 		}
+ 		
+	}
+	
+	static double bearingToTrig( double theta )
+	{
+		double rv = Math.PI / 2 - theta;
+		return rv % ( 2 * Math.PI );
+	}
+	
+	public void testBugScenario()
+	{
+		ps = new PhilSim();
+		robotPhil = ps.getRobot();
+		SimulationWorld simWorld = new SimulationWorld( new Vec2( 300, 300 ) );
+		simWorld.createWorldObject( Line.fromCoords( 0, 0, 150, 0));
+		simWorld.createWorldObject( Line.fromCoords( 0, 0, 0, 150));
+		robotKS.setWorld( simWorld );
+		
+        robotKS.setPosition( new Vec2( 36, 6 ) );
+ 		robotKS.setHeading( bearingToTrig( 2.9191 ) );
+ 		robotPhil.position = new Vec2( 36, 6 );
+ 		robotPhil.orientation= 2.9191;
+ 		
+ 		int n = 1;
+ 		double dA = 0.1;
+ 		for( int i = 0; i < n; i++ )
+ 		{
+ 			double ksIR = robotKS.getIRReading( 0 );
+ 	 		double pIR = ps.ir_reading( robotPhil.orientation );
+ 	 		assertEquals( ksIR, pIR, 1.1 );
+ 	 		
+ 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotPhil.orientation = PhilSim.ForceAngleInCircle( robotPhil.orientation - dA );
+ 		}
 	}
 	
 }

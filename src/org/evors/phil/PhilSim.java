@@ -18,7 +18,7 @@ public class PhilSim {
 	public static final double ROBRAD = 6.5;
 	public static  double IRNOISE = 50;
 	public static  double MNOISE = 0.4;
-	public static Wall[] world = { new Wall( new Vec2( 0, 0 ), new Vec2( 150,0 ) ),
+	public Wall[] world = { new Wall( new Vec2( 0, 0 ), new Vec2( 150,0 ) ),
 							 new Wall( new Vec2( 150, 0 ), new Vec2( 150, 150 ) ),
 							 new Wall( new Vec2( 150, 150 ), new Vec2( 0, 150 ) ),
 							 new Wall( new Vec2( 0, 150), new Vec2( 0, 0 )),
@@ -108,7 +108,7 @@ public class PhilSim {
 			p2 = ray_end(sens_x,sens_y,a,spleft);
 			p3 = ray_end(sens_x,sens_y,a,spright );
 			Ray_HitNearestResult r1 = ray_hitNearest(p1,p2);
-			Ray_HitNearestResult r2 = ray_hitNearest(p1,p2);
+			Ray_HitNearestResult r2 = ray_hitNearest(p1,p3);
 			
 			if( r1.hit() && r2.hit() && r1.getWall() == r2.getWall() ) // bounding rays (of IR beam) both hit same wall as nearest obj
 				{val = FullIRval(p1,a,r1.getWall());cflag=true;}
@@ -218,7 +218,7 @@ public class PhilSim {
 				 }
 			i++;
 		}
-		if( mini >0 && mini < world.length ) rv=world[ mini ];   //to return min distance and index of with wall with min dist. by setting through pointers in arguments
+		if( mini >=0 && mini < world.length ) rv=world[ mini ];   //to return min distance and index of with wall with min dist. by setting through pointers in arguments
 		return new Ray_HitNearestResult( rv, dmin );
 	}
 	

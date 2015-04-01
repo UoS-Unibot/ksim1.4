@@ -6,7 +6,7 @@ import org.evors.phil.PhilSim;
 
 public class PhilPhilTest {
 
-	static boolean debugOutput = true;
+	static boolean debugOutput = false;
 	
 	public PhilPhilTest() {
 		// TODO Auto-generated constructor stub
@@ -64,7 +64,7 @@ public class PhilPhilTest {
 				ps.move_robot( pc.getControlOutputs() );
 				ps.readIRs();
 				printf("rob: "+robot.position+" "+robot.orientation );
-				if( !debugOutput ) System.out.println( robot.position.x + " " + robot.position.y );
+				if( !debugOutput ) System.out.println( robot.position.x + " " + robot.position.y + " " + robot.orientation );
 				printf( robot.IRvals[0]+" "+robot.IRvals[1]+" "+robot.IRvals[2]+" "+robot.IRvals[3]+" "+robot.IRvals[4]+" "+robot.IRvals[5]+" ");
 				if(ps.collision()) printf(" collided \n"); // checks to see if robot colided with a wall
 			}

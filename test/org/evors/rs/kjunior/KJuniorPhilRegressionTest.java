@@ -123,8 +123,9 @@ public class KJuniorPhilRegressionTest extends TestCase  {
  		assertEquals(ksIR, pIR, 1.5 );
 	}
 	
-	public void testIRReadingMultipleAngles()
+	public void testIRReadingMultipleAnglesTop()
 	{
+		System.out.println("====Top====");
         robotKS.setPosition( new Vec2( 740, 740 ) );
  		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
  		robotPhil.setPosition( new Vec2( 740, 740 ) );
@@ -136,7 +137,34 @@ public class KJuniorPhilRegressionTest extends TestCase  {
  		{
  			double ksIR = robotKS.getIRReading( 0 );
  	 		double pIR = ir_reading( robotPhil.getHeading() );
- 	 		if( Math.abs( ksIR - pIR ) > 0.5 )
+ 	 		if( Math.abs( ksIR - pIR ) > 1.5 )
+ 	 		{
+ 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
+ 	 		}
+ 	 		assertEquals( ksIR, pIR, 1.5 );
+ 	 		
+ 	 		
+ 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotPhil.setHeading( this.ForceAngleInCircle( robotPhil.getHeading() - dA ) );
+ 		}
+ 		
+	}
+	
+	public void testIRReadingMultipleAnglesBottom()
+	{
+		System.out.println("===Bottom===");
+        robotKS.setPosition( new Vec2( -300, -740 ) );
+ 		robotKS.setHeading( 3 * Math.PI / 2 ); // S
+ 		robotPhil.setPosition( new Vec2( -300, -740 ) );
+ 		robotPhil.setHeading( Math.PI  ); // S
+ 		
+ 		int n = 100;
+ 		double dA = 0.1;
+ 		for( int i = 0; i < n; i++ )
+ 		{
+ 			double ksIR = robotKS.getIRReading( 0 );
+ 	 		double pIR = ir_reading( robotPhil.getHeading() );
+ 	 		if( Math.abs( ksIR - pIR ) > 1.5 )
  	 		{
  	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
  	 		}
@@ -173,7 +201,7 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 			p2 = ray_end(sens_x,sens_y,a,spleft);
 			p3 = ray_end(sens_x,sens_y,a,spright );
 			Ray_HitNearestResult r1 = ray_hitNearest(p1,p2);
-			Ray_HitNearestResult r2 = ray_hitNearest(p1,p2);
+			Ray_HitNearestResult r2 = ray_hitNearest(p1,p3);
 			
 			if( r1.hit() && r2.hit() && r1.getWall() == r2.getWall() ) // bounding rays (of IR beam) both hit same wall as nearest obj
 				{val = FullIRval(p1,a,r1.getWall());cflag=true;}
@@ -283,7 +311,7 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 				 }
 			i++;
 		}
-		if( mini >0 && mini < world.length ) rv=world[ mini ];   //to return min distance and index of with wall with min dist. by setting through pointers in arguments
+		if( mini >=0 && mini < world.length ) rv=world[ mini ];   //to return min distance and index of with wall with min dist. by setting through pointers in arguments
 		return new Ray_HitNearestResult( rv, dmin );
 	}
 	
