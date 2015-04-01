@@ -1,50 +1,41 @@
-package org.evors.rs.kjunior;
+package org.evors.phil;
 
 import java.util.Random;
 
-import org.evors.TestUtils;
-import org.evors.core.EvoRSLib;
-import org.evors.core.geometry.IntersectionPhilRegression;
 import org.evors.core.geometry.Vec2;
-import org.evors.phil.PhilGeometry;
-import org.evors.phil.PhilSim;
-import org.evors.rs.sim.core.SimulationWorld;
 
-import junit.framework.TestCase;
-
-public class KJuniorPhilRegressionTest extends TestCase  {
-
+public class PhilSim {
+	
 	public static final double ROB_TOPRAD = 5.75;
-	public static final double[] IRrayAngs={-0.437,-0.218,0,0.218,0.437}; 
+	public static final double[] IRANGS = {5.498,5.934,0,0.349,0.785,3.142};  
+	public static final double[] IRrayAngs = {-0.437,-0.218,0,0.218,0.437}; 
 	public static final int WORLDSIZE = 10;
 	public static final double TWOPI = Math.PI * 2;
 	public static final double RAYLEN = 25;
 	public static final double IRCOEFF = 1.0;
 	public static final double WHEEL_SEP = 10;
-	public static Wall[] world = { new Wall( new Vec2( -750, -750 ), new Vec2( -750, 750 ) ),
-							 new Wall( new Vec2( -750, 750 ), new Vec2( 750, 750 ) ),
-							 new Wall( new Vec2( 750, 750 ), new Vec2( 750, -750 ) ),
-							 new Wall( new Vec2( 750, -750), new Vec2( -750, -750 )) };
+	public static final int NUM_IR = 6;
+	public static final double ROBRAD = 6.5;
+	public static  double IRNOISE = 50;
+	public static  double MNOISE = 0.4;
+	public static Wall[] world = { new Wall( new Vec2( 0, 0 ), new Vec2( 150,0 ) ),
+							 new Wall( new Vec2( 150, 0 ), new Vec2( 150, 150 ) ),
+							 new Wall( new Vec2( 150, 150 ), new Vec2( 0, 150 ) ),
+							 new Wall( new Vec2( 0, 150), new Vec2( 0, 0 )),
+							 new Wall( new Vec2( 70, 30), new Vec2( 70,120 )),
+							 new Wall( new Vec2( 50, 25), new Vec2( 70,30)),
+							 new Wall( new Vec2( 70, 120), new Vec2( 90, 122))};
+
+	protected PhilRobot robot = new PhilRobot();
+	protected static Random rnd = new Random();
 	
-	SimulatedKJunior robotKS, robotPhil;
-	Random rnd = new Random();
+	public PhilSim() {
+		// TODO Auto-generated constructor stub
+	}
 	
-	public KJuniorPhilRegressionTest(String testName) {
-        super(testName);
-        SimulationWorld simWorld = new SimulationWorld( new Vec2( 1500, 1500 ) );
-        robotKS = new SimulatedKJunior( simWorld , 0.1 );
-        robotPhil = new SimulatedKJunior( simWorld, 0.1 );
-        SimulatedKJunior.MOTOR_NOISE = PhilSim.MNOISE = 0; // Noise tested separatelly
-        IRBeam.IR_NOISE = PhilSim.IRNOISE = 0;
-         
-        robotKS.setPosition( new Vec2( 5, -35 ) );
-        robotKS.setHeading( Math.PI / 2 ); // N
-        
-        robotPhil.setPosition( new Vec2( 5, -35 ) );
-        robotPhil.setHeading( 0 );
-    }
-	
-	double Philrob_speed(double x)
+	public PhilRobot getRobot(){ return robot; }
+
+	double rob_speed(double x)
 	{
 		double y = 0;
 
@@ -54,114 +45,58 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 		else if(x > 15 || x < -15)
 			y=1.2*x -9;
 
-		// y += EvoRSLib.uniformNoise( 0.4 );
+		y += uniform_noise( MNOISE );
 		return y;
 	}
 	
-	Vec2 PhilMove_Robot( double[] msig)
+	public Vec2 move_robot( double[] msig)
 	{
 		double DT = 0.1;
 		double ml = msig[ 0 ], mr = msig[ 1 ];
 		
 		double ls,rs, dx, dy,dtheta,v,oldx,oldy,oldtheta,k;
 
-		ls = Philrob_speed(ml);  // convert to actuall cm/s speeds of rob
-		rs = Philrob_speed(mr);
+		ls = rob_speed(ml);  // convert to actuall cm/s speeds of rob
+		rs = rob_speed(mr);
 		v = (ls + rs)/2;
-		dx = v*Math.sin( robotPhil.getHeading() )*DT;  // change in posn from decomposed linear motion
-		dy= v*Math.cos( robotPhil.getHeading() )*DT; 
+		dx = v*Math.sin( robot.orientation )*DT;  // change in posn from decomposed linear motion
+		dy= v*Math.cos( robot.orientation )*DT; 
 		
-		Vec2 rv = new Vec2( robotPhil.getPosition().x + dx , robotPhil.getPosition().y + dy );
+		Vec2 rv = new Vec2( robot.position.x + dx , robot.position.y + dy );
 		dtheta = (ls - rs)*DT/WHEEL_SEP;    // change in orientation from decomposed rotational movement  v=wr etc
 
-		robotPhil.setHeading( ForceAngleInCircle( robotPhil.getHeading() + dtheta ) );
-		robotPhil.setPosition( rv );
+		robot.orientation = ForceAngleInCircle( robot.orientation + dtheta );
+		robot.position = rv;
 		return rv;
 	}
 	
-	public void testConvertSpeed()
+	public void readIRs( )
 	{
-		double msig = 15;
-		double lsPhil = Philrob_speed( msig );
-		double vKSim = robotKS.convertSpeed( msig );
-		assertEquals( new Double( lsPhil ), new Double( vKSim ) );
-	}
-	
-	public void testMoveRobot()
-	{
-		double[] msig = { 15, 15 };
-		Vec2 PhilRobPos = PhilMove_Robot( msig );
-		robotKS.step( msig );
-		Vec2 KSimRobPos = robotKS.getPosition();
-		TestUtils.assertVEq( KSimRobPos, PhilRobPos );
-	}
-	
-	public void testMoveRobotMultiple()
-	{
-		int n = 500;
-		for( int i = 0; i < n; i++ )
-		{
-			double[] msig = { rnd.nextDouble() * 40 - 20, rnd.nextDouble() * 40 - 20 };
-			Vec2 PhilRobPos = PhilMove_Robot( msig );
-			robotKS.step( msig );
-			Vec2 KSimRobPos = robotKS.getPosition();
-			TestUtils.assertVEq( KSimRobPos, PhilRobPos );
+		int i;
+		double ir_ang,v,ang;
+
+		for(i=0;i<NUM_IR;i++)
+		{ir_ang = IRANGS[i];   // angle of IR sensor relative to mid point of robot at front, clockwise
+		v = ir_ang + robot.orientation;  // angle of mid ray from sensor, clockwise from due north
+		ang = ForceAngleInCircle(v);  // makes sure stays in range [0,twopi] to avoid trig calc errors
+		robot.IRvals[i]=ir_reading(ang);
 		}
-	}
-	
-	public void testIRReading()
-	{
-        robotKS.setPosition( new Vec2( 740, 740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
- 		
- 		robotPhil.setPosition( new Vec2( 740, 740 ) );
- 		robotPhil.setHeading( 7 * Math.PI / 4 ); // NW
- 		
- 		double ksIR = robotKS.getIRReading( 0 );
- 		double pIR = ir_reading( robotPhil.getHeading() );
- 		
- 		assertEquals(ksIR, pIR, 1.5 );
-	}
-	
-	public void testIRReadingMultipleAngles()
-	{
-        robotKS.setPosition( new Vec2( 740, 740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
- 		robotPhil.setPosition( new Vec2( 740, 740 ) );
- 		robotPhil.setHeading( 7 * Math.PI / 4 ); // NW
- 		
- 		int n = 100;
- 		double dA = 0.1;
- 		for( int i = 0; i < n; i++ )
- 		{
- 			double ksIR = robotKS.getIRReading( 0 );
- 	 		double pIR = ir_reading( robotPhil.getHeading() );
- 	 		if( Math.abs( ksIR - pIR ) > 0.5 )
- 	 		{
- 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
- 	 		}
- 	 		assertEquals( ksIR, pIR, 1.5 );
- 	 		
- 	 		
- 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
- 	 		robotPhil.setHeading( this.ForceAngleInCircle( robotPhil.getHeading() - dA ) );
- 		}
- 		
+
 	}
 	
 	/*******************************************************************************/
 	// find the reading for a singel IR sensor
 	// 0- 3500 int val
 	// a is angle of ray thro sensor from centre robot
-	int ir_reading(double a)
+	public int ir_reading(double a)
 	{
 		double sens_x,sens_y,spleft,spright,val=0,dav,ang;
 		int i,count;
 		boolean cflag=false;
 		Vec2 p1,p2,p3;
 
-		sens_x = robotPhil.getPosition().x + ROB_TOPRAD*Math.sin(a); // posn of sensor
-		sens_y = robotPhil.getPosition().y + ROB_TOPRAD*Math.cos(a);
+		sens_x = robot.position.x + ROB_TOPRAD*Math.sin(a); // posn of sensor
+		sens_y = robot.position.y + ROB_TOPRAD*Math.cos(a);
 
 		spleft =  IRrayAngs[0]; // IRSPREAD*(-1.0/2);  // relative angles of bounding rays of IR beam, relative to central ray
 		spright =  IRrayAngs[4]; //IRSPREAD/2;
@@ -194,7 +129,7 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 		}
 		}
 		
-		// val += uniform_noise(IRNOISE); // NO noise for testing
+		val += uniform_noise(IRNOISE); // NO noise for testing
 		if(val <0) val=0;  // can only be positive
 		return ((int) val);
 	}
@@ -206,7 +141,7 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 
 		p2 = ray_end(p1.x,p1.y,a,0); // ray end along angle a;
 		p = PhilGeometry.intersection_point(p1, p2, wall.start, wall.end);  // find intersection point mid ray to wall along ray
-		d=dist(p1,p);
+		d=PhilGeometry.dist(p1,p);
 	//printf("d; %f   ",d); debug
 		return(IRval(d));
 	}
@@ -251,7 +186,7 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 
 	}
 	
-	double ForceAngleInCircle(double angle){
+	public static double ForceAngleInCircle(double angle){
 	    if (angle >= TWOPI) return ForceAngleInCircle(angle-TWOPI);
 	    else if (angle < 0.0) return ForceAngleInCircle(angle+TWOPI);
 	    else return angle;
@@ -275,7 +210,7 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 			if(PhilGeometry.intersect(p1,p2,world[i].start,world[i].end)) // line segmentp1,p2 is ray, does intersect with the wall?
 				{iflag=true;
 				p = PhilGeometry.intersection_point(p1, p2, world[i].start, world[i].end); // find intersection point
-				 dl = dist( p, p1 );
+				 dl = PhilGeometry.dist( p, p1 );
 				 if(dl<dmin)  //if min dist so far, store as min
 					 {dmin=dl;
 					  mini=i;
@@ -298,16 +233,38 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 		public boolean hit(){ return wall != null; }
 	}
 	
-	// distance a to b, pythag
-	double dist( Vec2 a,  Vec2 b)
-	{
-		double r, DX, DY;
-		DX= b.x - a.x;
-		DY = b.y - a.y; 
-		//return sqrt(((b.x - a.x)*(b.x - a.x)) + ((b.y - a.y)(b.y - a.y)));
-		r= Math.sqrt(DX*DX + DY*DY);
-		return(r);
+	// check if robot collides with any walls
 
+	public boolean collision( )
+	{
+		int i=0;
+		boolean cflag=false;
+
+		while(!cflag && i< WORLDSIZE && i < world.length)
+		{
+			if(wall_collision(world[i].start,world[i].end))
+				cflag=true;
+			i++;
+		}
+		return cflag;
+
+	}
+	
+	// check if robot has collided with an individual wall
+	//if shotest dist from robot centre to wall <= robot radius
+
+	boolean wall_collision(Vec2 p1, Vec2 p2)
+	{
+		if(PhilGeometry.shortest_dist(p1,p2,robot.position) <= ROBRAD)
+			return true;
+		return false;
+	}
+	
+	// return value in range [-val,val] uniformly distributed
+	static double uniform_noise(double val)
+	{
+		//return(drand48()*val*2 -val); // drand48 no longer in VS 2010
+		return( rnd.nextDouble()  *val*2 -val);
 	}
 	
 	public static class Wall
@@ -317,4 +274,13 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 		
 		public Wall( Vec2 s, Vec2 e){ start = s; end = e; }
 	}
+	
+	public static class PhilRobot
+	{
+		public double[] IRvals = new double[ NUM_IR ];
+		
+		public Vec2 position;
+		public double orientation;
+	}
+	
 }
