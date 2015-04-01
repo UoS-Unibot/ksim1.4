@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.util.Arrays;
+import org.evors.core.EvoRSLib;
 import org.evors.core.RunController;
 import org.evors.core.geometry.Vec2;
 import org.evors.rs.kjunior.SimulatedKJunior;
@@ -60,6 +61,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
         controller.step();
         path.step(robot.getPosition());
         time += controller.getTimeStep();
+        if( !controller.isLive() ) simulationStopped = true;
     }
 
     public void addNotify() {
@@ -204,7 +206,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
                             getController()).
                             getNeurons().toString();
         } else
-            controllerStr = "Control outputs: " + controller.getController().getControlOutputs().toString();
+            controllerStr = "Control outputs: " + EvoRSLib.arrayToString( controller.getController().getControlOutputs() );
         
         //set previous transform
         g2.setTransform(prevTrans);
@@ -214,11 +216,12 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
                     "Time: " + String.valueOf(time),
                     "Robot pos: " + robot.getPosition(),
                     "Heading: " + robot.getHeading(),
-                    "Input: " + robot.getInput().toString(),
+                    "Input: " + EvoRSLib.arrayToString( robot.getInput() ),
                     controllerStr
                 }
         );
     }
+   
 
     /**
      * Displays the current contents of the buffer. Should be called after

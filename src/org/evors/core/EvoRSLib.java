@@ -32,4 +32,16 @@ public abstract class EvoRSLib {
 		world.createWorldObject( Line.fromCoords( -5, 45, 15, 47));
 		return world;
 	}
+	
+    public static String arrayToString( double[] arr )
+    {
+    	StringBuffer sb = new StringBuffer( "{ " );
+    	if( arr.length > 0 ) sb.append( arr[ 0 ] ); 
+    	for( int i = 1; i < arr.length; i++ )
+    	{
+    		sb.append(", "); sb.append( arr[ i ] );
+    	}
+    	sb.append( " }" );
+    	return sb.toString();
+    }
 }

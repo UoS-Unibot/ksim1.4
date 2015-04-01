@@ -30,8 +30,8 @@ public class VisualiserFrame extends JFrame implements VisualiserListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("KJunior Simulator");
         setSize(800, 600);
-        setLayout(new FlowLayout());
-        add(container);
+        getContentPane().setLayout(new FlowLayout());
+        getContentPane().add(container);
 
         container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
         this.rc = rc;
