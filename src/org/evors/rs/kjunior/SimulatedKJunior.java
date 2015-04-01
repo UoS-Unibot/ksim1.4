@@ -27,7 +27,8 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     private final double topRadius;
     public final double[] irAngles;
 
-    protected double V,D,maxIR;
+    protected double totV,totD,maxIR,cumf;
+    protected int step;
     
     public SimulatedKJunior(SimulationWorld world,
             double timeStepLength) {
@@ -51,8 +52,13 @@ public class SimulatedKJunior extends SimulatedRobotBody {
         double vL = convertSpeed(mL), vR = convertSpeed(mR);
         double forwardV = (vL + vR) / 2;
         double angularV = (vR - vL) / AXLE_WIDTH; // Timestep multiplication already done in superclass as this is velocity, that is change.
-        V += Math.abs( vL ) + Math.abs( vR );
-        D += Math.abs( vR - vL );
+        
+        double instV =  ( Math.abs( vL ) + Math.abs( vR ) ) * getTimeStep();
+        double instD = ( Math.abs( vR - vL ) ) * getTimeStep();
+        totV += instV;
+        totD += instD;
+        cumf += instV * ( 1 - Math.sqrt( instD ) );
+        step++;
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
         
         super.step(forwardV, angularV);
@@ -105,15 +111,17 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     public Hashtable getStats()
     {
     	Hashtable rv = new Hashtable();
-    	rv.put("D", new Double(D * getTimeStep() ));
-    	rv.put("V", new Double(V * getTimeStep() ));
+    	rv.put("D", new Double(totD ));
+    	rv.put("V", new Double(totV  ));
     	double i = ( maxIR / ROB_CONTROLLER_INPUT_RANGES[ 0 ][ 1 ] );
     	rv.put("i", new Double( i ));
+    	rv.put("f", new Double( cumf ) );
+    	rv.put("step", new Integer( step ) );
     	return rv;
     }
     
     public void resetStats()
     {
-    	V = D = maxIR = 0;
+    	totV = totD = maxIR = step = 0;
     }
 }
