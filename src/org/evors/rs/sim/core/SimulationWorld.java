@@ -21,6 +21,7 @@ public class SimulationWorld {
     private final LinkedList objects = new LinkedList();
     private final LinkedList listeners = new LinkedList();
     private final Vec2 bounds;
+    private final Vec2 bottomLeft;
     private String filename = "";
 
     public String getFilename() {
@@ -46,6 +47,7 @@ public class SimulationWorld {
           
           double xOff = positiveCoords ? 0 : ( -w / 2);
           double yOff = positiveCoords ? 0 : ( -h / 2 );
+          bottomLeft = new Vec2( xOff, yOff );
           
           objects.add( Line.fromCoords( 0 + xOff, 0 + yOff, w + xOff, 0 + yOff ) ); // bottom
           objects.add( Line.fromCoords( w + xOff, 0 + yOff, w + xOff, h + yOff ) ); // right
@@ -117,6 +119,11 @@ public class SimulationWorld {
     
     public Vec2 getBounds() {
         return bounds;
+    }
+    
+    public Vec2 getBottomLeft()
+    {
+    	return bottomLeft;
     }
 
     /**

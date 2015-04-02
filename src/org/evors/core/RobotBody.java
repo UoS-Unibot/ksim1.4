@@ -68,5 +68,5 @@ public interface RobotBody {
      */
     public Hashtable getStats();
     
-    public void resetStats();
+    public void newRun();
 }

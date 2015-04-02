@@ -12,6 +12,8 @@ public abstract class SimulatedRobotBody implements RobotBody {
     private SimulationWorld world;
     private final Shape2D shape;
     private boolean live = true;
+    protected boolean graphingEnabled = false;
+    protected StringBuffer graphData = new StringBuffer();
 
     public SimulatedRobotBody(SimulationWorld world, Shape2D shape,
             double timeStepLength) {
@@ -65,6 +67,8 @@ public abstract class SimulatedRobotBody implements RobotBody {
                 sin(heading));
         shape.translate(changeV);
         position = position.add(changeV);
+        
+        if( this.graphingEnabled ) this.graphData.append( position.x + " " + position.y + "\n" );
 
         //Calculate actual rotation
         double changeA = (angularVelocity * timeStepLength) % (2 * Math.PI);
@@ -91,5 +95,16 @@ public abstract class SimulatedRobotBody implements RobotBody {
     	this.world = world;
     }
     
+    public void setGraphing( boolean graphingEnabled ){ this.graphingEnabled = graphingEnabled; }
+    
+    public String getGraphData()
+    {
+    	return graphData.toString();
+    }
+    
+    public void newRun()
+    {
+    	graphData = new StringBuffer();
+    }
 
 }

@@ -120,8 +120,9 @@ public class SimulatedKJunior extends SimulatedRobotBody {
     	return rv;
     }
     
-    public void resetStats()
+    public void newRun()
     {
     	cumf = totV = totD = maxIR = step = 0;
+    	super.newRun();
     }
 }
