@@ -31,6 +31,8 @@ public class PhilSim {
 	protected static Random rnd = new Random();
 	protected double totD,totV,cumf,maxIR;
 	protected int step;
+	protected boolean graphingEnabled = false;
+	protected StringBuffer graphData = new StringBuffer();
 	
 	public PhilSim() {
 	}
@@ -86,6 +88,8 @@ public class PhilSim {
 		step++;
 		
 		Vec2 rv = new Vec2( robot.position.x + dx , robot.position.y + dy );
+		if( graphingEnabled ) graphData.append( rv.x + " " + rv.y + "\n" );
+		
 		dtheta = (ls - rs)*DT/WHEEL_SEP;    // change in orientation from decomposed rotational movement  v=wr etc
 
 		robot.orientation = ForceAngleInCircle( robot.orientation + dtheta );
@@ -307,6 +311,19 @@ public class PhilSim {
 		
 		public Vec2 position;
 		public double orientation;
+	}
+	
+	public void setGraphing( boolean graphingEnabled ){ this.graphingEnabled = graphingEnabled; }
+	
+	public String getGraphData()
+	{
+		return graphData.toString();
+	}
+	
+	public void newRun()
+	{
+		graphData = new StringBuffer();
+		resetStats();
 	}
 	
 }
