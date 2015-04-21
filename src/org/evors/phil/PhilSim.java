@@ -37,7 +37,7 @@ public class PhilSim {
 	
 	public PhilRobot getRobot(){ return robot; }
 	
-	public void resetStats(){ totD = totV = cumf = maxIR = 0; }
+	public void resetStats(){ totD = totV = cumf = maxIR = step = 0; }
 	
     public Hashtable getStats()
     {
