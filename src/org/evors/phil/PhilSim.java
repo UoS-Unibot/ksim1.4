@@ -10,7 +10,6 @@ public class PhilSim {
 	public static final double ROB_TOPRAD = 5.75;
 	public static final double[] IRANGS = {5.498,5.934,0,0.349,0.785,3.142};  
 	public static final double[] IRrayAngs = {-0.437,-0.218,0,0.218,0.437}; 
-	public static final int WORLDSIZE = 10;
 	public static final double TWOPI = Math.PI * 2;
 	public static final double RAYLEN = 25;
 	public static final double IRCOEFF = 1.0;
@@ -30,22 +29,25 @@ public class PhilSim {
 
 	protected PhilRobot robot = new PhilRobot();
 	protected static Random rnd = new Random();
-	protected double D,V,maxIR;
+	protected double totD,totV,cumf,maxIR;
+	protected int step;
 	
 	public PhilSim() {
 	}
 	
 	public PhilRobot getRobot(){ return robot; }
 	
-	public void resetStats(){ D = V = maxIR = 0; }
+	public void resetStats(){ totD = totV = cumf = maxIR = 0; }
 	
     public Hashtable getStats()
     {
     	Hashtable rv = new Hashtable();
-    	rv.put("D", new Double(D * DT ));
-    	rv.put("V", new Double(V * DT ));
+    	rv.put("D", new Double( totD ));
+    	rv.put("V", new Double( totV ));
     	double i = ( maxIR / 3500 );
     	rv.put("i", new Double( i ));
+    	rv.put("f", new Double( cumf ) );
+    	rv.put( "step", new Integer( step ) );
     	return rv;
     }
 
@@ -75,8 +77,13 @@ public class PhilSim {
 		dx = v*Math.sin( robot.orientation )*DT;  // change in posn from decomposed linear motion
 		dy= v*Math.cos( robot.orientation )*DT; 
 		
-		V += Math.abs( ls ) + Math.abs( rs );
-		D += Math.abs( ls - rs );
+		double instV =  ( Math.abs( ls ) + Math.abs( rs ) ) * DT;
+		double instD = Math.abs( ls - rs ) * DT;
+		
+		totV += instV;
+		totD += instD;
+		cumf += instV * ( 1 - Math.sqrt( instD ) );
+		step++;
 		
 		Vec2 rv = new Vec2( robot.position.x + dx , robot.position.y + dy );
 		dtheta = (ls - rs)*DT/WHEEL_SEP;    // change in orientation from decomposed rotational movement  v=wr etc
@@ -182,7 +189,7 @@ public class PhilSim {
 		int i=0;
 		Vec2 p2 = ray_end(p1.x,p1.y,a1,a2 ); // find end of ray at angle a2
 
-		while(!iflag && i< WORLDSIZE && i < world.length)
+		while(!iflag && i < world.length)
 		{
 			if(PhilGeometry.intersect(p1,p2,world[i].start,world[i].end)) // line segmentp1,p2 is ray, does intersect with a wall?
 				iflag=true;
@@ -224,7 +231,7 @@ public class PhilSim {
 		Wall rv = null;
 		
 
-		while(i< WORLDSIZE && i < world.length )
+		while( i < world.length )
 		{
 			if(PhilGeometry.intersect(p1,p2,world[i].start,world[i].end)) // line segmentp1,p2 is ray, does intersect with the wall?
 				{iflag=true;
@@ -259,7 +266,7 @@ public class PhilSim {
 		int i=0;
 		boolean cflag=false;
 
-		while(!cflag && i< WORLDSIZE && i < world.length)
+		while(!cflag && i < world.length)
 		{
 			if(wall_collision(world[i].start,world[i].end))
 				cflag=true;
