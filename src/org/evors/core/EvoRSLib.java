@@ -3,6 +3,7 @@ package org.evors.core;
 import java.util.Random;
 
 import org.evors.core.geometry.Line;
+import org.evors.core.geometry.Rectangle;
 import org.evors.core.geometry.Vec2;
 import org.evors.rs.sim.core.SimulationWorld;
 
@@ -31,6 +32,14 @@ public abstract class EvoRSLib {
 		world.createWorldObject( Line.fromCoords( -5, -45, -5, 45));
 		world.createWorldObject( Line.fromCoords( -5, 45, 15, 47));
 		return world;
+	}
+	
+	public static SimulationWorld getGC5Arena()
+	{
+		SimulationWorld w = new SimulationWorld( new Vec2(152, 97 ) );
+		w.createWorldObject( Rectangle.createFromCenter( new Vec2( 10, 0 ), new Vec2( 61, 1.5) , 0 ) );
+		w.createWorldObject( Rectangle.createFromCenter( new Vec2( -20.5, 0 ), new Vec2( 1.5, 61 ), 0 ) );
+		return w;
 	}
 	
     public static String arrayToString( double[] arr )
