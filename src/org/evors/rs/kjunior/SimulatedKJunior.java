@@ -16,7 +16,7 @@ import org.evors.core.EvoRSLib;
 public class SimulatedKJunior extends SimulatedRobotBody {
 
     private final double AXLE_WIDTH = 10; //equivalent to WHEEL_SEP in Phil's code
-    public static double MOTOR_NOISE = 0.4; //noise to add to motor signals - public for testing
+    public static double MOTOR_NOISE = 0.6; //noise to add to motor signals - public for testing
     private final int NUM_IRs = 6;
     private final double[][] ROB_CTRL_INPUT_RANGES = { { -20, 20 } };
     private final double[][] ROB_CONTROLLER_INPUT_RANGES = { { 0, 3500 } };
