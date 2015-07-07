@@ -1,7 +1,9 @@
 package org.evors.vision;
 
+import java.awt.image.BufferedImage;
 import java.util.BitSet;
 
+import org.evors.core.EvoRSLib;
 import org.evors.core.Programmable;
 import org.evors.core.geometry.Vec2;
 
@@ -35,8 +37,17 @@ public class VisualSensor implements Programmable {
 	}
 
 	public void program(BitSet bits) {
-		// TODO Auto-generated method stub
-		
+		int currentBit = 0;
+		filter = filterMapping[ EvoRSLib.bitsToInt(bits, currentBit, bitsFilterType)];  currentBit += bitsFilterType;
+		centrePerc = new Vec2( EvoRSLib.getProportionValue(bits, currentBit, currentBit + bitsCentreX ),
+							   EvoRSLib.getProportionValue(bits, currentBit + bitsCentreX, currentBit + bitsCentreX + bitsCentreY ) );
+		currentBit += bitsCentreX + bitsCentreY;
+		heightPerc = EvoRSLib.getProportionValue(bits, currentBit, currentBit+bitsHeight);
+	}
+	
+	public double getValue( BufferedImage img, double rotation, Vec2 imgCentre )
+	{
+		return filter.getValue( img, rotation, imgCentre, centrePerc, heightPerc );
 	}
 
 }

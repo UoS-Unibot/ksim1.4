@@ -1,5 +1,6 @@
 package org.evors.core;
 
+import java.util.BitSet;
 import java.util.Random;
 
 import org.evors.core.geometry.Line;
@@ -83,5 +84,31 @@ public abstract class EvoRSLib {
     public static double headingToPolar( double heading )
     {
     	return ( Math.PI / 2 ) - heading;
+    }
+    
+    /** From jaga.BitSet: Takes two integers defining a range in the bitset
+     * and returns the integer represented by these bits.  LSB last.
+     * @param bitset to get bits from
+     * @param first inclusive first bit in sequence to be converted
+     * @param last exclusive last bit in sequence to be converted
+     */
+    public static int bitsToInt( BitSet bitset, int first, int last )
+    {
+        int rv = 0;
+        for( int bitLoop = first; bitLoop < last; bitLoop++ )
+        {
+            if( bitset.get( bitLoop ) )
+            {
+                rv += 1 << ( last - 1 - bitLoop);
+            }
+        }
+        return rv;
+    }
+    
+    public static double getProportionValue( BitSet bits, int first, int last )
+    {
+    	double top = bitsToInt( bits, first, last );
+    	double bottom = 1 << ( last - first );
+    	return top / bottom;
     }
 }

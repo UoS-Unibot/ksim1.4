@@ -7,5 +7,5 @@ import org.evors.core.geometry.Vec2;
 
 public interface VisualFilter extends Serializable
 {
-	public double read( BufferedImage img, Vec2 img_centre, Vec2 filter_centre, double h );
+	public double getValue( BufferedImage img, double rotation, Vec2 imgCentre, Vec2 filter_centre, double h );
 }

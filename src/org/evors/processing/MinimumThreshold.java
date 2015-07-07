@@ -1,8 +1,13 @@
 package org.evors.processing;
 
-public class MinimumThreshold implements Threshold {
+import java.util.BitSet;
+
+import org.evors.core.EvoRSLib;
+
+public class MinimumThreshold implements ProgrammableThreshold {
 
 	protected double threshold = 0;
+	protected int definitionBits = 4;
 	
 	public MinimumThreshold(){}
 	
@@ -17,6 +22,10 @@ public class MinimumThreshold implements Threshold {
 	public void setThreshold( double threshold )
 	{
 		this.threshold = threshold;
+	}
+
+	public void program(BitSet bits) {
+		threshold = EvoRSLib.getProportionValue( bits, 0, definitionBits );
 	}
 
 }
