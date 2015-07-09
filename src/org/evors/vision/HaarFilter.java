@@ -21,8 +21,11 @@ public class HaarFilter implements VisualFilter {
 	
 	public HaarFilter( String filter ) {
 		this.filter = filter;
-		int lines = filter.length() - filter.replace('\n', '\0').length() + 1;
+		int lines = 1;
+		for( int cl = 0; cl < filter.length(); cl++ ) if( filter.charAt( cl ) == '\n' ) lines++;
+		
 		int cols = filter.indexOf( "\n" ) < 0 ? filter.length() : ( filter.substring(0, filter.indexOf("\n") ) ).length();
+		
 		this.proportionalDimension = new Vec2( cols, lines );
 		filterMap = new boolean[ cols ][ lines ];
 		
