@@ -18,7 +18,7 @@ public class PhilSim {
 	public static final double ROBRAD = 6.5;
 	public static  double IRNOISE = 50;
 	public static  double MNOISE = 0.4;
-	public static final double DT = 0.1;
+	public static final double DT = 0.2;
 	public Wall[] world = { new Wall( new Vec2( 0, 0 ), new Vec2( 150,0 ) ),
 							 new Wall( new Vec2( 150, 0 ), new Vec2( 150, 150 ) ),
 							 new Wall( new Vec2( 150, 150 ), new Vec2( 0, 150 ) ),
