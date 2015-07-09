@@ -1,10 +1,12 @@
 package org.evors.rs.sim.core;
 
+import org.evors.core.EvoRSLib;
+import org.evors.core.PositionOrientationSource;
 import org.evors.core.RobotBody;
 import org.evors.core.geometry.Shape2D;
 import org.evors.core.geometry.Vec2;
 
-public abstract class SimulatedRobotBody implements RobotBody {
+public abstract class SimulatedRobotBody implements RobotBody, PositionOrientationSource {
 
     private final double timeStepLength;
     private Vec2 position;
@@ -40,8 +42,20 @@ public abstract class SimulatedRobotBody implements RobotBody {
     	live = true;
     }
 
+    /**
+     * This is actually in polar coordinates (confusing)
+     * @return
+     */
     public double getHeading() {
         return heading;
+    }
+    
+    /**
+     * Orientation in standard "heading" nomenclature
+     */
+    public double getOrientation()
+    {
+    	return EvoRSLib.polarToHeading( getHeading() );
     }
     
     public void setHeading( double heading )

@@ -26,7 +26,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
     private boolean simulationLoaded = false; //whether a simulation has been loaded.
     private SimulatedKJunior robot; //robot to render.
     private PathTracer path; //path of robot
-    private volatile long DELAY = Math.round(1000 / 60); //delay in milliseconds between frames.
+    public static long DELAY = Math.round(1000 / 60); //delay in milliseconds between frames.
     private volatile boolean simulationStopped = false; //whether the simulation has been stopped.
     private float time = 0; //current timestep of the simulation in seconds.
     protected BufferStrategy buffer;
