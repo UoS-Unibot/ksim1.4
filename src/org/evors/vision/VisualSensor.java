@@ -20,7 +20,7 @@ public class VisualSensor implements Programmable {
 				new HaarFilter(".\nx\n."), // 4
 				new HaarFilter("x.\n.x"),
 				new HaarFilter(".x\nx."),
-				new HaarFilter("x")
+				new HaarFilter(".")
 			};
 	
 	protected Vec2 centrePerc;

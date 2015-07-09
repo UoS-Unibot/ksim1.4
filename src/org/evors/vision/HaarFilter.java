@@ -15,7 +15,7 @@ import org.evors.core.geometry.Vec2;
  */
 public class HaarFilter implements VisualFilter {
 
-	protected static final boolean debug = true;
+	protected static final boolean debug = false; // TODO should be false *** Should optimise away
 	protected String filter;
 	protected Vec2 proportionalDimension;
 	protected boolean[][] filterMap; // in top left 0,0 coordinates, true is light
@@ -60,7 +60,9 @@ public class HaarFilter implements VisualFilter {
 		// Need to find r_max, r_min, theta_max, theta_min
 		double y_min = filterCentrePerc.y - heightPerc / 2; double y_max = filterCentrePerc.y + heightPerc / 2; // may be outside range
 		double r_min = r_in + ( r_out - r_in ) * y_min; double r_max = r_in + ( r_out - r_in ) * y_max;
-		double widthAngle = heightPerc * proportionalDimension.x / ( proportionalDimension.y * Math.PI ); // *** ?
+		double magicConstant = 2.0; // Experimentally derived
+		double widthAngle = magicConstant * heightPerc * proportionalDimension.x / ( proportionalDimension.y * Math.PI ); 
+
 		
 		double theta_min = sensorPolarCentreAngle - widthAngle / 2;
 		double theta_max = sensorPolarCentreAngle + widthAngle / 2;
@@ -95,22 +97,29 @@ public class HaarFilter implements VisualFilter {
 					if( filterMap[ column ][ row ] )
 					{
 						valueCountRaw += blue; // light area
+						//System.out.println( "pre light area " + blue + " rawTotal " + valueCountRaw );
+						
 						if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() );
+						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
+						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
 					else
 					{
-						valueCountRaw -= blue; // dark area
+						//System.out.println( "pre dark area " + blue + " rawTotal " + valueCountRaw );
+						valueCountRaw += ( 255 - blue ); // dark area
 						if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() );
+						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
+						//System.out.println( "post dark area " + blue + " rawTotal " + valueCountRaw + " of " + ( pixelCount * 255 ) );
 					}
 				}
 			}
 		}
 		
-		double minusOneToOneValue = valueCountRaw / ( 255.0 * pixelCount );
+		double zeroToOneValue = valueCountRaw / ( 255.0 * pixelCount );
 		
-		double zeroToOneValue = minusOneToOneValue / 2 + 1;
+		//double zeroToOneValue = minusOneToOneValue / 2 + 1;
 		
-		return zeroToOneValue;
+		return Math.min(1.0, zeroToOneValue);
 	}
 	
 	/**
