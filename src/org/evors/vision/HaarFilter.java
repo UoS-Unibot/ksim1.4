@@ -28,16 +28,27 @@ public class HaarFilter implements VisualFilter {
 		filterMap = new boolean[ cols ][ lines ];
 		
 		int row = 0;
-		Scanner scanner = new Scanner(filter);
-		while (scanner.hasNextLine()) {
-		  String line = scanner.nextLine();
-		  for( int cl = 0; cl < line.length(); cl++ )
-		  {
-			  filterMap[ cl ][ row ] = line.charAt( cl ) != 'x';
-		  }
+		
+		// Scan line by line
+		int stringPos = 0;
+		boolean end = false;
+		while( !end )
+		{
+			int nextLine = filter.indexOf('\n', stringPos);
+			if( nextLine < 0 )
+			{
+				end = true;
+				nextLine = filter.length();
+			}
+			String line = filter.substring(stringPos, nextLine );
+			stringPos = nextLine+1;
+			
+			for( int cl = 0; cl < line.length(); cl++ )
+			{
+				  filterMap[ cl ][ row ] = line.charAt( cl ) != 'x';
+			}
 		  row++;
 		}
-		scanner.close();
 	}
 
 	public double getValue( BufferedImage img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc )
