@@ -89,7 +89,7 @@ public class HaarFilterTest extends TestCase {
 		}
 	}
 
-	/*
+	
 	public void testFilterPosition()
 	{
 		double orientation = Math.PI / 2;
@@ -105,7 +105,7 @@ public class HaarFilterTest extends TestCase {
 			// ShowImg si = new ShowImg( img ); si.show();
 		}
 		//try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
-	}*/
+	}
 
 	
 	public void testValuePositive()

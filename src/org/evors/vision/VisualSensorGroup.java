@@ -12,7 +12,7 @@ import org.evors.processing.ProgrammableThreshold;
 public class VisualSensorGroup implements Programmable {
 	
 	protected ImageSource imgSource;
-	protected int sensorCount = 5;
+	public static final int DEFAULT_SENSOR_COUNT = 5;
 	protected VisualSensor[] sensors;
 	protected ProgrammableThreshold[] thresholds;
 	
@@ -35,17 +35,22 @@ public class VisualSensorGroup implements Programmable {
 		
 	protected void init()
 	{
-		sensors = new VisualSensor[ sensorCount ];
-		thresholds = new ProgrammableThreshold[ sensorCount ];
-		for( int sl = 0; sl < sensorCount; sl++ )
+		sensors = new VisualSensor[ DEFAULT_SENSOR_COUNT ];
+		thresholds = new ProgrammableThreshold[ DEFAULT_SENSOR_COUNT ];
+		for( int sl = 0; sl < DEFAULT_SENSOR_COUNT; sl++ )
 		{
 			sensors[ sl ] = new VisualSensor( this, BITS_FILTER_TYPE, BITS_CENTRE_X, BITS_CENTRE_Y, BITS_HEIGHT );
 			thresholds[ sl ] = new MinimumThreshold();
 		}
 	}
+	
+	public int getSensorCount()
+	{
+		return DEFAULT_SENSOR_COUNT;
+	}
 
 	public void program(BitSet bits) {
-		for( int sl = 0; sl < sensorCount; sl++ )
+		for( int sl = 0; sl < DEFAULT_SENSOR_COUNT; sl++ )
 		{
 			BitSet sensorBits = bits.get( BITS_BLOCK * sl, BITS_BLOCK * sl + BITS_SENSOR );
 			BitSet thresholdBits = bits.get( BITS_BLOCK * sl + BITS_SENSOR, BITS_BLOCK * ( sl + 1 ) );
@@ -61,7 +66,7 @@ public class VisualSensorGroup implements Programmable {
 		// 3. Read sensors
 		// 4. Apply thresholds
 		
-		double[] rv = new double[ sensorCount ];
+		double[] rv = new double[ DEFAULT_SENSOR_COUNT ];
 		
 		// 1.
 		BufferedImage img = imgSource.getImage();
@@ -80,7 +85,7 @@ public class VisualSensorGroup implements Programmable {
 		
 		// 3 & 4.
 		
-		for( int sl = 0; sl < sensorCount; sl++ )
+		for( int sl = 0; sl < DEFAULT_SENSOR_COUNT; sl++ )
 		{
 			rv[ sl ] = thresholds[ sl ].threshold( sensors[ sl ].getValue( greyimg, rotation, imgCentre ) );
 			// TODO *** apply Noise
