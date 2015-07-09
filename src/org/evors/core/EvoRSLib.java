@@ -78,12 +78,16 @@ public abstract class EvoRSLib {
     
     public static double polarToHeading( double polar )
     {
-    	return ( 2 * Math.PI - polar ) + Math.PI / 2;
+    	double rv = ( 2 * Math.PI - polar ) + Math.PI / 2;
+    	if( rv < 0 ) rv += Math.PI * 2; // % is remainder, not modulus in java
+    	return rv % ( 2 * Math.PI );
     }
     
     public static double headingToPolar( double heading )
     {
-    	return ( Math.PI / 2 ) - heading;
+    	double rv = ( Math.PI / 2 ) - heading;
+    	if( rv < 0 ) rv += Math.PI * 2; // % is remainder, not modulus in java
+    	return rv % ( 2 * Math.PI );
     }
     
     /** From jaga.BitSet: Takes two integers defining a range in the bitset

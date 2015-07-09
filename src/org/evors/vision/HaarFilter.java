@@ -5,6 +5,13 @@ import java.util.Scanner;
 
 import org.evors.core.geometry.Vec2;
 
+/**
+ * This Haar filter class is written to work on circular (conical mirror) images
+ * as per our specific setup.
+ * 
+ * @author michaelgarvie
+ *
+ */
 public class HaarFilter implements VisualFilter {
 
 	protected String filter;
@@ -14,7 +21,7 @@ public class HaarFilter implements VisualFilter {
 	public HaarFilter( String filter ) {
 		this.filter = filter;
 		int lines = filter.length() - filter.replace("\n", "").length() + 1;
-		int cols = filter.indexOf( "\n" ) >= 0 ? filter.length() : ( filter.substring(0, filter.indexOf("\n") ) ).length();
+		int cols = filter.indexOf( "\n" ) < 0 ? filter.length() : ( filter.substring(0, filter.indexOf("\n") ) ).length();
 		this.proportionalDimension = new Vec2( cols, lines );
 		filterMap = new boolean[ cols ][ lines ];
 		
@@ -33,7 +40,7 @@ public class HaarFilter implements VisualFilter {
 
 	public double getValue( BufferedImage img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc )
 	{
-		//
+		// Setup variables
 		int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
 		
 		// Use polar coordinates (orientation is "heading")
@@ -91,6 +98,24 @@ public class HaarFilter implements VisualFilter {
 		double zeroToOneValue = minusOneToOneValue / 2 + 1;
 		
 		return zeroToOneValue;
+	}
+	
+	/**
+	 * Mainly for testing
+	 * @return
+	 */
+	public Vec2 getProportionalDimension()
+	{
+		return this.proportionalDimension;
+	}
+	
+	/**
+	 * Mainly for testing
+	 * @return
+	 */
+	public boolean[][] getMap()
+	{
+		return this.filterMap;
 	}
 
 }

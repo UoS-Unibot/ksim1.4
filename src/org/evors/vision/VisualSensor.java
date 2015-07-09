@@ -27,7 +27,7 @@ public class VisualSensor implements Programmable {
 	protected double heightPerc;
 	protected VisualFilter filter;
 	protected VisualSensorGroup group;
-	
+		
 	public VisualSensor( VisualSensorGroup group,int bitsFilterType,int bitsCentreX,int bitsCentreY,int bitsHeight ) {
 		this.group = group;
 		this.bitsFilterType = bitsFilterType;
@@ -49,5 +49,9 @@ public class VisualSensor implements Programmable {
 	{
 		return filter.getValue( img, rotation, imgCentre, centrePerc, heightPerc );
 	}
+	
+	public Vec2 getCentrePerc(){ return centrePerc; }
+	public double getHeightPerc(){ return heightPerc; }
+	public VisualFilter getFilter(){ return filter; }
 
 }
