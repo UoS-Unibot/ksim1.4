@@ -11,7 +11,7 @@ public class VisualSensor implements Programmable {
 
 	protected int bitsFilterType, bitsCentreX, bitsCentreY, bitsHeight;
 	
-	protected static VisualFilter[] filterMapping = new VisualFilter[]
+	public static final VisualFilter[] FILTER_MAPPING = new VisualFilter[]
 			{ 
 				new HaarFilter("x"), //0
 				new HaarFilter("x.x"),
@@ -38,11 +38,11 @@ public class VisualSensor implements Programmable {
 
 	public void program(BitSet bits) {
 		int currentBit = 0;
-		filter = filterMapping[ EvoRSLib.bitsToInt(bits, currentBit, bitsFilterType)];  currentBit += bitsFilterType;
-		centrePerc = new Vec2( EvoRSLib.getProportionValue(bits, currentBit, currentBit + bitsCentreX ),
-							   EvoRSLib.getProportionValue(bits, currentBit + bitsCentreX, currentBit + bitsCentreX + bitsCentreY ) );
+		filter = FILTER_MAPPING[ EvoRSLib.bitsToInt(bits, currentBit, bitsFilterType)];  currentBit += bitsFilterType;
+		centrePerc = new Vec2( EvoRSLib.getProportionGreyValue(bits, currentBit, currentBit + bitsCentreX ),
+							   EvoRSLib.getProportionGreyValue(bits, currentBit + bitsCentreX, currentBit + bitsCentreX + bitsCentreY ) );
 		currentBit += bitsCentreX + bitsCentreY;
-		heightPerc = EvoRSLib.getProportionValue(bits, currentBit, currentBit+bitsHeight);
+		heightPerc = EvoRSLib.getProportionGreyValue(bits, currentBit, currentBit+bitsHeight);
 	}
 	
 	public double getValue( BufferedImage img, double rotation, Vec2 imgCentre )

@@ -32,10 +32,11 @@ public class VisualSensorGroup implements Programmable {
 		this.imgSource = imgSource;
 		init();
 	}
-	
+		
 	protected void init()
 	{
 		sensors = new VisualSensor[ sensorCount ];
+		thresholds = new ProgrammableThreshold[ sensorCount ];
 		for( int sl = 0; sl < sensorCount; sl++ )
 		{
 			sensors[ sl ] = new VisualSensor( this, BITS_FILTER_TYPE, BITS_CENTRE_X, BITS_CENTRE_Y, BITS_HEIGHT );

@@ -8,8 +8,8 @@ public class FakePositionOrientationSource implements PositionOrientationSource 
 	public FakePositionOrientationSource() {
 	}
 	
-	protected Vec2 position;
-	protected double orientation;
+	protected Vec2 position = new Vec2( 30,30 );
+	protected double orientation = 0;
 	
 	public void setPosition( Vec2 position )
 	{

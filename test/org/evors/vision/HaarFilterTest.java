@@ -1,5 +1,8 @@
 package org.evors.vision;
 
+import java.awt.image.BufferedImage;
+import java.util.BitSet;
+
 import org.evors.TestUtils;
 import org.evors.core.geometry.Vec2;
 
@@ -7,6 +10,11 @@ import junit.framework.TestCase;
 
 public class HaarFilterTest extends TestCase {
 
+	ImageSource imgSource = VisionTestLib.getImageSource();
+	VisualSensorGroup vsg = new VisualSensorGroup( imgSource );
+	VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
+	Vec2 imgCentre = new Vec2( VisualSensorGroup.IMG_GUESS_CENTRE_X, VisualSensorGroup.IMG_GUESS_CENTRE_Y );
+	
 	HaarFilter[] filterMapping = new HaarFilter[]
 			{ 
 				new HaarFilter("x"), //0
@@ -18,6 +26,15 @@ public class HaarFilterTest extends TestCase {
 				new HaarFilter(".x\nx."),
 				new HaarFilter("x")
 			};
+	
+	String[] encoded = {
+			"0110100000100010000",
+			"0100110010110001101",
+			"0000001000010000100",
+			"1101011000100001000",
+			"1001101001000101000",
+			"1010100000100001000"
+	};
 	
 	public HaarFilterTest( String name) {
 		super(name);
@@ -74,6 +91,17 @@ public class HaarFilterTest extends TestCase {
 
 	public void testFilterPosition()
 	{
-		
+		for( int fl = 0; fl < encoded.length; fl++ )
+		{
+			BitSet bits = new BitSet();
+			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
+			
+			vs.program( bits );
+			BufferedImage img = imgSource.getImage();
+			double value = vs.getValue(img, 0, imgCentre);
+			
+			ShowImg si = new ShowImg( img ); si.show();
+		}
+		try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 	}
 }

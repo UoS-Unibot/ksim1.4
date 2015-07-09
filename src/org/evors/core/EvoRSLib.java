@@ -65,6 +65,11 @@ public abstract class EvoRSLib {
     		return n ^ (n >> 1) ;
     }
     
+    public static int toGreyCodeFake( int n )
+    {
+    		return n ;
+    }
+    
     /**
      * Source http://www2.mpia-hd.mpg.de/~mathar/progs/gray.java
      * @param n
@@ -109,10 +114,63 @@ public abstract class EvoRSLib {
         return rv;
     }
     
-    public static double getProportionValue( BitSet bits, int first, int last )
+    public static double getProportionGreyValue( BitSet bits, int first, int last )
     {
-    	double top = bitsToInt( bits, first, last );
-    	double bottom = 1 << ( last - first );
+    	double top = fromGreyCode( bitsToInt( bits, first, last ) );
+    	double bottom = ( 1 << ( last - first ) ) - 1; // eg. max for 5 bits is 31
     	return top / bottom;
+    }
+    
+    /** 
+     * From jaga.BitSet - sets bitset values to represent integer, LSB to the right
+     * @param bits
+     * @param num
+     * @param pos
+     * @param length
+     */
+    public static void intToBits( BitSet bits, int num, int pos, int length )
+    {
+        String binStr = int2BinStr( num, length );
+        for( int l = 0; l < length; l++ )
+        {
+            boolean value = binStr.charAt( l ) == '1';
+            if( value ) bits.set( pos + l ); else bits.clear( pos + l );
+        }
+    }
+    
+    public static String int2BinStr( int num, int width )
+    {
+        String rv = "";
+        for( int bl = 0; bl < width; bl++ )
+        {
+            if( ( num & ( 1 << bl ) ) > 0 )
+            {
+                rv = "1" + rv;
+            }else
+            {
+                rv = "0" + rv;
+            }
+        }
+        return rv;
+    }
+    
+    public static String bitsToString( BitSet bits, int length)
+    {
+    	int codeBase = 1;
+    	char[] codes = { '0','1' };
+        StringBuffer rv = new StringBuffer();
+        
+        // trailing bits are taken as if they were 0s.
+        for( int bl = 0; bl <= ( ( length - 1 ) / codeBase ) * codeBase; bl += codeBase )
+        {
+            int code = 0;
+            for( int cbl = 0; cbl < codeBase; cbl++ )
+            {
+                code += ( 1 << cbl ) * ( bits.get( bl + codeBase - 1 - cbl ) ? 1 : 0 );
+            }
+            rv.append( codes[ code ] );
+        }
+        
+        return rv.toString();   	
     }
 }

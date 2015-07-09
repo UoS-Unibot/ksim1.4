@@ -1,5 +1,6 @@
 package org.evors.vision;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
@@ -14,6 +15,7 @@ import org.evors.core.geometry.Vec2;
  */
 public class HaarFilter implements VisualFilter {
 
+	protected static final boolean debug = true;
 	protected String filter;
 	protected Vec2 proportionalDimension;
 	protected boolean[][] filterMap; // in top left 0,0 coordinates, true is light
@@ -56,9 +58,9 @@ public class HaarFilter implements VisualFilter {
 		double sensorCentreRadius = r_in + ( r_out - r_in ) * filterCentrePerc.y;
 		
 		// Need to find r_max, r_min, theta_max, theta_min
-		double y_min = filterCentrePerc.y - heightPerc / 2; double y_max = filterCentrePerc.y + heightPerc / 2;
+		double y_min = filterCentrePerc.y - heightPerc / 2; double y_max = filterCentrePerc.y + heightPerc / 2; // may be outside range
 		double r_min = r_in + ( r_out - r_in ) * y_min; double r_max = r_in + ( r_out - r_in ) * y_max;
-		double widthAngle = heightPerc * proportionalDimension.x / ( proportionalDimension.y * Math.PI );
+		double widthAngle = heightPerc * proportionalDimension.x / ( proportionalDimension.y * Math.PI ); // *** ?
 		
 		double theta_min = sensorPolarCentreAngle - widthAngle / 2;
 		double theta_max = sensorPolarCentreAngle + widthAngle / 2;
@@ -77,19 +79,30 @@ public class HaarFilter implements VisualFilter {
 			// then along line from r_min (near ceiling) to r_max (near floor)
 			for( double rayR = r_min; rayR < r_max; rayR++ )
 			{
-				int row = ( int ) ( ( rayR - r_min ) * proportionalDimension.y / ( r_max - r_min ) );
+				if( rayR > VisualSensorGroup.IMG_DISC_RADIUS && rayR < VisualSensorGroup.IMG_OUTER_RADIUS )
+				{
+					int row = ( int ) ( ( rayR - r_min ) * proportionalDimension.y / ( r_max - r_min ) );
 				
-				// Find pixel coordinates
-				Vec2 rayPoint = imgCentre.translatePolar( rayTheta, rayR );
-				int blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
-				
-				// Add to totals
-				pixelCount++;
-				if( filterMap[ column ][ row ] )
-					valueCountRaw += blue; // light area
-				else
-					valueCountRaw -= blue; // dark area
-				
+					// Find pixel coordinates
+					// Image coordinates are y-inverted so angle
+					Vec2 offset = new Vec2( 0,0 ).translatePolar(rayTheta, rayR);
+					Vec2 invOffset = new Vec2( offset.x, -1 * offset.y );
+					Vec2 rayPoint = imgCentre.add( invOffset );
+					int blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
+					
+					// Add to totals
+					pixelCount++;
+					if( filterMap[ column ][ row ] )
+					{
+						valueCountRaw += blue; // light area
+						if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() );
+					}
+					else
+					{
+						valueCountRaw -= blue; // dark area
+						if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() );
+					}
+				}
 			}
 		}
 		
