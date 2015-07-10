@@ -43,6 +43,12 @@ public abstract class EvoRSLib {
 		return w;
 	}
 	
+	public static SimulationWorld getDemoArena()
+	{
+		SimulationWorld w = new SimulationWorld( new Vec2( 114, 66 ), true );
+		return w;
+	}
+	
     public static String arrayToString( double[] arr )
     {
     	StringBuffer sb = new StringBuffer( "{ " );
