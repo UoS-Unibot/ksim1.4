@@ -173,4 +173,19 @@ public abstract class EvoRSLib {
         
         return rv.toString();   	
     }
+    
+    /** Takes two integers start,seclen and returns the BitSet of length seclen starting
+     * at position start of this bitset.  NOT ROBUST, assumes start + seclen <= length
+    */
+    public static BitSet getChunk( BitSet bits, int start, int seclen )
+    {
+        BitSet rv = new BitSet( seclen );
+        
+        for( int bl = 0; bl < seclen; bl++ )
+        {
+            if( bits.get( start + bl ) ) rv.set( bl );
+        }
+        
+        return rv;
+    }
 }

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.BitSet;
 
+import org.evors.core.EvoRSLib;
 import org.evors.core.Programmable;
 import org.evors.core.geometry.Vec2;
 import org.evors.processing.MinimumThreshold;
@@ -52,8 +53,8 @@ public class VisualSensorGroup implements Programmable {
 	public void program(BitSet bits) {
 		for( int sl = 0; sl < DEFAULT_SENSOR_COUNT; sl++ )
 		{
-			BitSet sensorBits = bits.get( BITS_BLOCK * sl, BITS_BLOCK * sl + BITS_SENSOR );
-			BitSet thresholdBits = bits.get( BITS_BLOCK * sl + BITS_SENSOR, BITS_BLOCK * ( sl + 1 ) );
+			BitSet sensorBits = EvoRSLib.getChunk( bits, BITS_BLOCK * sl, BITS_BLOCK * sl + BITS_SENSOR );
+			BitSet thresholdBits = EvoRSLib.getChunk( bits, BITS_BLOCK * sl + BITS_SENSOR, BITS_BLOCK * ( sl + 1 ) );
 			sensors[ sl ].program( sensorBits );
 			thresholds[ sl ].program( thresholdBits );
 		}
