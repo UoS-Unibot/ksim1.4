@@ -128,7 +128,7 @@ public class HaarFilter implements VisualFilter {
 			}
 		}
 		
-		double zeroToOneValue = valueCountRaw / ( 255.0 * pixelCount );
+		double zeroToOneValue = pixelCount == 0 ? 0 : valueCountRaw / ( 255.0 * pixelCount );
 		
 		//double zeroToOneValue = minusOneToOneValue / 2 + 1;
 		

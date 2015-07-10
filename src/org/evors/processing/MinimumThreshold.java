@@ -23,6 +23,11 @@ public class MinimumThreshold implements ProgrammableThreshold {
 	{
 		this.threshold = threshold;
 	}
+	
+	public double getThreshold()
+	{
+		return threshold;
+	}
 
 	public void program(BitSet bits) {
 		threshold = EvoRSLib.getProportionGreyValue( bits, 0, definitionBits );
