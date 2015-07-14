@@ -13,12 +13,14 @@ import org.evors.core.geometry.Vec2;
 public class StoredImageSource implements ImageSource {
 
 	protected double CAMERA_FROM_CENTRE = 4; // *** radius of camera from centre of robot
-	protected double STORED_Y_MAX = 20;
-	protected double STORED_X_MAX = 12;
+	protected int STORED_Y_MAX = 20;
+	protected int STORED_X_MAX = 12;
 	
 	protected String imagePath;
 	protected final String imageExtension = ".jpg";
 	protected PositionOrientationSource locationSource; // Assuming KSIM coordinate system
+	
+	protected BufferedImage[][] imgCache = new BufferedImage[ STORED_X_MAX ][ STORED_Y_MAX ];
 	
 	public StoredImageSource( String imagePath, PositionOrientationSource locationSource ) {
 		this.imagePath = imagePath;
@@ -33,18 +35,21 @@ public class StoredImageSource implements ImageSource {
 		int storedPhoto_x = ( int ) imgFileCoords.x;
 		int storedPhoto_y = ( int ) imgFileCoords.y;
 		
-		// 2. Read image
-		String imageFile = imagePath + storedPhoto_y + "_" + storedPhoto_x + ".jpg"; // [sic] bad day when captured!..
-		
-		BufferedImage img = null;
-		try {
-		    img = ImageIO.read(new File( imageFile ));
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit( 0 );
+		// 2a. Check Cache
+		if( imgCache[ storedPhoto_x ][ storedPhoto_y ] == null ) 
+		{
+			// 2b. Read image
+			String imageFile = imagePath + storedPhoto_y + "_" + storedPhoto_x + ".jpg"; // [sic] bad day when captured!..
+			
+			try {
+				imgCache[ storedPhoto_x ][ storedPhoto_y ] = ImageIO.read(new File( imageFile ));
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit( 0 );
+			}
 		}
 		
-		return img;
+		return imgCache[ storedPhoto_x ][ storedPhoto_y ];
 	}
 	
 	public Vec2 getImageFileCoordinates()
@@ -57,8 +62,8 @@ public class StoredImageSource implements ImageSource {
 		Vec2 cameraPosition = robotPosition.translatePolar( EvoRSLib.headingToPolar(robotHeading), CAMERA_FROM_CENTRE );
 		
 		// 1b. Find stored photo position
-		double storedPhoto_x = Math.min(STORED_X_MAX, Math.max(0, Math.round( ( cameraPosition.x - 6.35 ) / 5 ) ) );
-		double storedPhoto_y = Math.min(STORED_Y_MAX, Math.max(0, Math.round( ( cameraPosition.y - 10 - CAMERA_FROM_CENTRE ) / 5 ) ) );
+		double storedPhoto_x = Math.min(STORED_X_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.x - 6.35 ) / 5 ) ) );
+		double storedPhoto_y = Math.min(STORED_Y_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.y - 10 - CAMERA_FROM_CENTRE ) / 5 ) ) );
 		
 		return new Vec2( storedPhoto_x, storedPhoto_y );
 	}
