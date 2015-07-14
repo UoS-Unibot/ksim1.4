@@ -20,7 +20,7 @@ public class StoredImageSource implements ImageSource {
 	protected final String imageExtension = ".jpg";
 	protected PositionOrientationSource locationSource; // Assuming KSIM coordinate system
 	
-	protected BufferedImage[][] imgCache = new BufferedImage[ STORED_X_MAX ][ STORED_Y_MAX ];
+	protected BufferedImage[][] imgCache = new BufferedImage[ STORED_X_MAX + 1 ][ STORED_Y_MAX + 1 ];
 	
 	public StoredImageSource( String imagePath, PositionOrientationSource locationSource ) {
 		this.imagePath = imagePath;
