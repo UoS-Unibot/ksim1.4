@@ -10,7 +10,7 @@ import org.evors.core.EvoRSLib;
 import org.evors.core.PositionOrientationSource;
 import org.evors.core.geometry.Vec2;
 
-public class StoredImageSource implements ImageSource {
+public class StoredImageSource implements ImageSource, KeyGenerator {
 
 	protected double CAMERA_FROM_CENTRE = 4; // *** radius of camera from centre of robot
 	protected int STORED_Y_MAX = 20;
@@ -70,6 +70,10 @@ public class StoredImageSource implements ImageSource {
 
 	public double getRotation() {
 		return locationSource.getOrientation();
+	}
+
+	public Object getKey() {
+		return getImageFileCoordinates();
 	}
 
 }

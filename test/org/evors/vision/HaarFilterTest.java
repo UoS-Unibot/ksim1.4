@@ -11,7 +11,8 @@ import junit.framework.TestCase;
 public class HaarFilterTest extends TestCase {
 
 	ImageSource imgSource = VisionTestLib.getImageSource();
-	VisualSensorGroup vsg = new VisualSensorGroup( imgSource );
+	ProcessedGreyImageSource pgimgSrc = new ImageGreyProcessor( imgSource );
+	VisualSensorGroup vsg = new VisualSensorGroup( pgimgSrc );
 	VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
 	Vec2 imgCentre = new Vec2( VisualSensorGroup.IMG_GUESS_CENTRE_X, VisualSensorGroup.IMG_GUESS_CENTRE_Y );
 	
@@ -99,7 +100,7 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			
 			vs.program( bits );
-			BufferedImage img = imgSource.getImage();
+			int[][] img = pgimgSrc.getImage();
 			double value = vs.getValue(img, orientation, imgCentre);
 			
 			// ShowImg si = new ShowImg( img ); si.show();
@@ -112,7 +113,8 @@ public class HaarFilterTest extends TestCase {
 	{
 		double orientation = Math.PI / 2;
 		FakeImageSource fakeImgSrc = new FakeImageSource();
-		VisualSensorGroup vsg2 = new VisualSensorGroup( fakeImgSrc );
+		ProcessedGreyImageSource fakepgImgSrc = new ImageGreyProcessor( fakeImgSrc );
+		VisualSensorGroup vsg2 = new VisualSensorGroup( fakepgImgSrc );
 		VisualSensor vs2 = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
 		Vec2 fakeImgCentre = new Vec2( 404, 238 );
 		
@@ -123,7 +125,7 @@ public class HaarFilterTest extends TestCase {
 			vs2.program( bits );
 			
 			fakeImgSrc.setID( fl );
-			BufferedImage img = fakeImgSrc.getImage();
+			int[][] img = fakepgImgSrc.getImage();
 			
 			double value = vs2.getValue( img, orientation, fakeImgCentre);
 			//try { ShowImg si = new ShowImg( img ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
@@ -144,7 +146,8 @@ public class HaarFilterTest extends TestCase {
 		
 		double orientation = Math.PI / 2;
 		FakeImageSource fakeImgSrc = new FakeImageSource();
-		VisualSensorGroup vsg2 = new VisualSensorGroup( fakeImgSrc );
+		ProcessedGreyImageSource fakepgImgSrc = new ImageGreyProcessor( fakeImgSrc );
+		VisualSensorGroup vsg2 = new VisualSensorGroup( fakepgImgSrc );
 		VisualSensor vs2 = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
 		Vec2 fakeImgCentre = new Vec2( 404, 238 );
 		
@@ -155,7 +158,7 @@ public class HaarFilterTest extends TestCase {
 			vs2.program( bits );
 			
 			fakeImgSrc.setID( fl );
-			BufferedImage img = fakeImgSrc.getImage();
+			int[][] img = fakepgImgSrc.getImage();
 			
 			double value = vs2.getValue( img, orientation, fakeImgCentre);
 			// if( fl==0) try { ShowImg si = new ShowImg( img ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
