@@ -103,6 +103,7 @@ public class HaarFilter implements VisualFilter {
 					Vec2 offset = new Vec2( 0,0 ).translatePolar(rayTheta, rayR);
 					Vec2 invOffset = new Vec2( offset.x, -1 * offset.y );
 					Vec2 rayPoint = imgCentre.add( invOffset );
+					rayPoint = new Vec2( rayPoint.x, Math.max(0, Math.min( img.getHeight(), rayPoint.y)) );
 					int blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 					
 					// Add to totals
