@@ -12,7 +12,7 @@ import org.evors.processing.ProgrammableThreshold;
 
 public class VisualSensorGroup implements Programmable {
 	
-	protected ImageSource imgSource;
+	protected ProcessedGreyImageSource imgSource;
 	public static final int DEFAULT_SENSOR_COUNT = 5;
 	protected VisualSensor[] sensors;
 	protected ProgrammableThreshold[] thresholds;
@@ -29,7 +29,7 @@ public class VisualSensorGroup implements Programmable {
 	public static int IMG_WIDTH = 752, IMG_HEIGHT = 480, IMG_GUESS_CENTRE_X = 404, IMG_GUESS_CENTRE_Y = 260, IMG_DISC_RADIUS = 120, IMG_OUTER_RADIUS = 258;
 	protected static int IMG_CENTRE_RING_THRESHOLD = 0; // How dark the ring is
 	
-	public VisualSensorGroup( ImageSource imgSource )  {
+	public VisualSensorGroup( ProcessedGreyImageSource imgSource )  {
 		this.imgSource = imgSource;
 		init();
 	}
@@ -70,16 +70,10 @@ public class VisualSensorGroup implements Programmable {
 		double[] rv = new double[ DEFAULT_SENSOR_COUNT ];
 		
 		// 1.
-		BufferedImage img = imgSource.getImage();
+		int[][] greyimg = imgSource.getImage();
 		double rotation = imgSource.getRotation();
 		
 		// 2.
-		// 2ii. Grayscale
-		
-		BufferedImage greyimg = new BufferedImage(752, 480, BufferedImage.TYPE_BYTE_GRAY);  
-		Graphics g = greyimg.getGraphics();  
-		g.drawImage(img, 0, 0, null);  
-		g.dispose();
 		
 		// 2iii. Find centre
 		Vec2 imgCentre = new Vec2( this.IMG_GUESS_CENTRE_X, this.IMG_GUESS_CENTRE_Y );

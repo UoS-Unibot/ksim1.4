@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 public class VisualSensorTest extends TestCase {
 	
-	VisualSensorGroup vsg = new VisualSensorGroup( VisionTestLib.getImageSource() );
+	VisualSensorGroup vsg = new VisualSensorGroup( new ImageGreyProcessor( VisionTestLib.getImageSource() ) );
 	
 	public VisualSensorTest( String name) {
 		super( name );

@@ -53,7 +53,7 @@ public class HaarFilter implements VisualFilter {
 		}
 	}
 
-	public double getValue( BufferedImage img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc )
+	public double getValue( int[][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc )
 	{
 		// Setup variables
 		int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
@@ -103,8 +103,8 @@ public class HaarFilter implements VisualFilter {
 					Vec2 offset = new Vec2( 0,0 ).translatePolar(rayTheta, rayR);
 					Vec2 invOffset = new Vec2( offset.x, -1 * offset.y );
 					Vec2 rayPoint = imgCentre.add( invOffset );
-					rayPoint = new Vec2( rayPoint.x, Math.max(0, Math.min( img.getHeight(), rayPoint.y)) );
-					int blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
+					rayPoint = new Vec2( rayPoint.x, Math.max(0, Math.min( img[0].length, rayPoint.y)) );
+					int blue = img[ (int) rayPoint.x ][ (int) rayPoint.y ];
 					
 					// Add to totals
 					pixelCount++;
@@ -113,7 +113,7 @@ public class HaarFilter implements VisualFilter {
 						valueCountRaw += blue; // light area
 						//System.out.println( "pre light area " + blue + " rawTotal " + valueCountRaw );
 						
-						if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() );
+						//if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() );
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
@@ -121,7 +121,7 @@ public class HaarFilter implements VisualFilter {
 					{
 						//System.out.println( "pre dark area " + blue + " rawTotal " + valueCountRaw );
 						valueCountRaw += ( 255 - blue ); // dark area
-						if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() );
+						//if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() );
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post dark area " + blue + " rawTotal " + valueCountRaw + " of " + ( pixelCount * 255 ) );
 					}
