@@ -12,13 +12,14 @@ import org.evors.core.geometry.Vec2;
 
 public class StoredImageSource implements ImageSource, KeyGenerator {
 
-	protected double CAMERA_FROM_CENTRE = 4; // *** radius of camera from centre of robot
+	protected double CAMERA_FROM_CENTRE = 3.7; // radius of camera from centre of robot
 	protected int STORED_Y_MAX = 20;
 	protected int STORED_X_MAX = 12;
 	
 	protected String imagePath;
 	protected final String imageExtension = ".jpg";
 	protected PositionOrientationSource locationSource; // Assuming KSIM coordinate system
+	protected boolean cache = false;
 	
 	protected BufferedImage[][] imgCache = new BufferedImage[ STORED_X_MAX ][ STORED_Y_MAX ];
 	
@@ -35,6 +36,8 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 		int storedPhoto_x = ( int ) imgFileCoords.x;
 		int storedPhoto_y = ( int ) imgFileCoords.y;
 		
+		BufferedImage rv = null;
+		
 		// 2a. Check Cache
 		if( imgCache[ storedPhoto_x ][ storedPhoto_y ] == null ) 
 		{
@@ -42,14 +45,21 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 			String imageFile = imagePath + storedPhoto_y + "_" + storedPhoto_x + ".jpg"; // [sic] bad day when captured!..
 			
 			try {
-				imgCache[ storedPhoto_x ][ storedPhoto_y ] = ImageIO.read(new File( imageFile ));
+				rv = ImageIO.read(new File( imageFile ));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit( 0 );
 			}
+			
+			// If caching, store
+			if( cache ) imgCache[ storedPhoto_x ][ storedPhoto_y ] = rv;
+		}else
+		{
+			// Cache hit, retrieve
+			rv = imgCache[ storedPhoto_x ][ storedPhoto_y ];
 		}
 		
-		return imgCache[ storedPhoto_x ][ storedPhoto_y ];
+		return rv;
 	}
 	
 	public Vec2 getImageFileCoordinates()
