@@ -83,8 +83,8 @@ public class Vec2 {
     public int hashCode()
     {
     	int hash = 17;
-	    hash = hash * 23 + Double.valueOf(x).hashCode();
-	    hash = hash * 23 + Double.valueOf(y).hashCode();
+	    hash = hash * 23 + new Double(x).hashCode();
+	    hash = hash * 23 + new Double(y).hashCode();
 	    return hash;
     }
 
