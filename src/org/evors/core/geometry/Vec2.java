@@ -80,6 +80,15 @@ public class Vec2 {
     	return ( x == obj.x ) && ( y == obj.y );
     }
     
+    public boolean equals( Object obj )
+    {
+    	if( obj instanceof Vec2 )
+    	{
+    		return equals( ( Vec2 ) obj );
+    	}
+    	return false;
+    }
+    
     public int hashCode()
     {
     	int hash = 17;
