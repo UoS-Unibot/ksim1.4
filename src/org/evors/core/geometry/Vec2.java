@@ -79,5 +79,13 @@ public class Vec2 {
     {
     	return ( x == obj.x ) && ( y == obj.y );
     }
+    
+    public int hashCode()
+    {
+    	int hash = 17;
+	    hash = hash * 23 + Double.valueOf(x).hashCode();
+	    hash = hash * 23 + Double.valueOf(y).hashCode();
+	    return hash;
+    }
 
 }
