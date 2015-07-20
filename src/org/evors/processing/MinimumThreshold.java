@@ -32,5 +32,12 @@ public class MinimumThreshold implements ProgrammableThreshold {
 	public void program(BitSet bits) {
 		threshold = EvoRSLib.getProportionGreyValue( bits, 0, definitionBits );
 	}
+	
+	public String toString()
+	{
+		StringBuffer rv = new StringBuffer();
+		rv.append("Minimum Threshold with threshold = " + threshold );
+		return rv.toString();
+	}
 
 }

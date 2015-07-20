@@ -155,4 +155,11 @@ public class HaarFilter implements VisualFilter {
 		return this.filterMap;
 	}
 
+	public String toString()
+	{
+		StringBuffer rv = new StringBuffer();
+		rv.append( "\tHaarFilter with:" );
+		rv.append("\n\t\tfilter = " + filter);
+		return rv.toString();
+	}
 }
