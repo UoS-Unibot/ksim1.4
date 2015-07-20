@@ -116,14 +116,14 @@ public class HaarFilter implements VisualFilter {
 					if( filterMap[ column ][ row ] )
 					{
 						valueCountRaw += blue; // light area
-						if( debugImage != null ) debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() );
+						if( debugImage != null ) { System.out.println("ss");debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() ); }
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
 					else
 					{
 						valueCountRaw += ( 255 - blue ); // dark area
-						if( debugImage != null ) debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() );
+						if( debugImage != null ) { System.out.println("xx"); debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() ); }
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 					}
 				}
