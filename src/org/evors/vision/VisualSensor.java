@@ -58,5 +58,15 @@ public class VisualSensor implements Programmable {
 	public Vec2 getCentrePerc(){ return centrePerc; }
 	public double getHeightPerc(){ return heightPerc; }
 	public VisualFilter getFilter(){ return filter; }
+	
+	public String toString()
+	{
+		StringBuffer rv = new StringBuffer();
+		rv.append("VisualSensor with:");
+		rv.append("\n\tFilter = " + filter);
+		rv.append("\n\tCentre% = " + centrePerc );
+		rv.append("\n\tHeight% = " + heightPerc );
+		return rv.toString();
+	}
 
 }

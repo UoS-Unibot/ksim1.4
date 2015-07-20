@@ -15,7 +15,6 @@ public class VisualSensorGroup implements Programmable {
 	protected ProcessedGreyImageSource imgSource;
 	public ImageSource debugImgSource = null;
 	protected BufferedImage debugImage = null;
-	protected static final boolean debug = false;
 	public static final int DEFAULT_SENSOR_COUNT = 5;
 	protected VisualSensor[] sensors;
 	protected ProgrammableThreshold[] thresholds;
@@ -60,6 +59,12 @@ public class VisualSensorGroup implements Programmable {
 			BitSet thresholdBits = EvoRSLib.getChunk( bits, BITS_BLOCK * sl + BITS_SENSOR, BITS_BLOCK * ( sl + 1 ) );
 			sensors[ sl ].program( sensorBits );
 			thresholds[ sl ].program( thresholdBits );
+			
+			if( this.debugImgSource != null )
+			{
+				System.out.println("Sensor " + sl + " = " + sensors[ sl ] );
+				System.out.println("Threshold " + sl + " = " + thresholds[ sl ] );
+			}
 		}
 	}
 	
