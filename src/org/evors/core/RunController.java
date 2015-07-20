@@ -14,6 +14,8 @@ public class RunController {
     private final RobotBody robot;
     private final double timeStep;
     private boolean live = true;
+    protected int maxSteps = Integer.MAX_VALUE;
+    protected int step = 0;
 
     /**
      * Creates a new RunController with specified controller and robot, using
@@ -40,6 +42,12 @@ public class RunController {
         this.robot = robot;
         this.timeStep = timeStep;
     }
+    
+    public RunController(RobotController controller, RobotBody robot,
+            double timeStep, int maxSteps) {
+        this( controller, robot, timeStep );
+        this.maxSteps = maxSteps;
+    }
 
     /**
      * Updates the RunController, stepping the IRobotController with the
@@ -49,7 +57,7 @@ public class RunController {
     public void step() {
         controller.step(robot.getInput());
         robot.step(controller.getControlOutputs());
-        live = robot.isLive();
+        live = robot.isLive() && ( step++ < maxSteps );
     }
 
     /**
