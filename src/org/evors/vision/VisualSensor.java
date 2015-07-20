@@ -45,9 +45,14 @@ public class VisualSensor implements Programmable {
 		heightPerc = EvoRSLib.getProportionGreyValue(bits, currentBit, currentBit+bitsHeight);
 	}
 	
+	public double getValue( int[][] img, double rotation, Vec2 imgCentre, BufferedImage debugImage )
+	{
+		return filter.getValue( img, rotation, imgCentre, centrePerc, heightPerc, debugImage );
+	}
+	
 	public double getValue( int[][] img, double rotation, Vec2 imgCentre )
 	{
-		return filter.getValue( img, rotation, imgCentre, centrePerc, heightPerc );
+		return getValue( img, rotation, imgCentre, null );
 	}
 	
 	public Vec2 getCentrePerc(){ return centrePerc; }

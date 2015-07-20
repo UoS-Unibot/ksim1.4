@@ -13,6 +13,9 @@ import org.evors.processing.ProgrammableThreshold;
 public class VisualSensorGroup implements Programmable {
 	
 	protected ProcessedGreyImageSource imgSource;
+	public ImageSource debugImgSource = null;
+	protected BufferedImage debugImage = null;
+	protected static final boolean debug = false;
 	public static final int DEFAULT_SENSOR_COUNT = 5;
 	protected VisualSensor[] sensors;
 	protected ProgrammableThreshold[] thresholds;
@@ -80,15 +83,23 @@ public class VisualSensorGroup implements Programmable {
 		
 		// 3 & 4.
 		
+		BufferedImage debugWorkImage = this.debugImgSource == null ? null : debugImgSource.getImage();
 		for( int sl = 0; sl < DEFAULT_SENSOR_COUNT; sl++ )
 		{
-			rv[ sl ] = thresholds[ sl ].threshold( sensors[ sl ].getValue( greyimg, rotation, imgCentre ) );
+			rv[ sl ] = thresholds[ sl ].threshold( sensors[ sl ].getValue( greyimg, rotation, imgCentre, debugWorkImage ) );
 			rv[ sl ] += EvoRSLib.uniformNoise( 0.15 );
 			rv[ sl ] = Math.max( 0.0, Math.min( 1.0, rv[ sl ]) );
 		}
+		debugImage = debugWorkImage;
 		
 		return rv;
 	}
+	
+	public BufferedImage getDebugImage()
+	{
+		return debugImage;
+	}
+	
 	
 	public static Vec2 findCentre( BufferedImage greyimg )
 	{

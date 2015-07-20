@@ -55,6 +55,11 @@ public class HaarFilter implements VisualFilter {
 
 	public double getValue( int[][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc )
 	{
+		return getValue( img, rotation, imgCentre, filterCentrePerc, heightPerc, null );
+	}
+	
+	public double getValue( int[][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc, BufferedImage debugImage )
+	{
 		// Setup variables
 		int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
 		
@@ -111,19 +116,15 @@ public class HaarFilter implements VisualFilter {
 					if( filterMap[ column ][ row ] )
 					{
 						valueCountRaw += blue; // light area
-						//System.out.println( "pre light area " + blue + " rawTotal " + valueCountRaw );
-						
-						//if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() );
+						if( debugImage != null ) debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() );
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
 					else
 					{
-						//System.out.println( "pre dark area " + blue + " rawTotal " + valueCountRaw );
 						valueCountRaw += ( 255 - blue ); // dark area
-						//if( debug ) img.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() );
+						if( debugImage != null ) debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() );
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
-						//System.out.println( "post dark area " + blue + " rawTotal " + valueCountRaw + " of " + ( pixelCount * 255 ) );
 					}
 				}
 			}
