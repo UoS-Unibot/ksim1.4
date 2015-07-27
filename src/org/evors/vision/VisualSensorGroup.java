@@ -92,7 +92,7 @@ public class VisualSensorGroup implements Programmable {
 		for( int sl = 0; sl < DEFAULT_SENSOR_COUNT; sl++ )
 		{
 			rv[ sl ] = thresholds[ sl ].threshold( sensors[ sl ].getValue( greyimg, rotation, imgCentre, debugWorkImage ) );
-			rv[ sl ] += EvoRSLib.uniformNoise( 0.15 );
+			rv[ sl ] += EvoRSLib.uniformNoise( 0.10 ); // *** was 0.15
 			rv[ sl ] = Math.max( 0.0, Math.min( 1.0, rv[ sl ]) );
 		}
 		debugImage = debugWorkImage;
