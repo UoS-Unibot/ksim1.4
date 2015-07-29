@@ -31,7 +31,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     private final double topRadius;
     public final double[] irAngles;
 
-    protected double totV,totD,maxIR,cumf;
+    protected double totV,totD,maxIR,cumf,cumvf;
     protected int step;
     
     protected VisualSensorGroup visualSensorGroup;
@@ -69,6 +69,14 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         totV += instV;
         totD += instD;
         cumf += instV * ( 1 - Math.sqrt( instD ) );
+        
+        if( this.referencePosition != null )
+        {
+        	double startDist = lastSetPosition.distance( referencePosition );
+        	double nowDist = getPosition().distance( referencePosition );
+        	cumvf += 1 - ( nowDist / startDist );
+        }
+        
         step++;
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
         
@@ -137,13 +145,14 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     	double i = ( maxIR / ROB_CONTROLLER_INPUT_RANGES[ 0 ][ 1 ] );
     	rv.put("i", new Double( i ));
     	rv.put("f", new Double( cumf ) );
+    	rv.put("vf", new Double( cumvf ));
     	rv.put("step", new Integer( step ) );
     	return rv;
     }
     
     public void newRun()
     {
-    	cumf = totV = totD = maxIR = step = 0;
+    	cumvf = cumf = totV = totD = maxIR = step = 0;
     	super.newRun();
     }
 

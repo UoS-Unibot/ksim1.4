@@ -10,6 +10,8 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
 
     private final double timeStepLength;
     private Vec2 position;
+    protected Vec2 lastSetPosition;
+    protected Vec2 referencePosition;
     private double heading;
     private SimulationWorld world;
     private final Shape2D shape;
@@ -38,10 +40,16 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
     public void setPosition( Vec2 position )
     {
     	this.position = position;
+    	this.lastSetPosition = position;
     	shape.setCenter( position );
     	live = true;
     }
 
+    public void setReferencePosition( Vec2 position )
+    {
+    	this.referencePosition = position;
+    }
+    
     /**
      * This is actually in polar coordinates (confusing)
      * @return
