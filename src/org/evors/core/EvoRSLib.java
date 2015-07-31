@@ -1,6 +1,7 @@
 package org.evors.core;
 
 import java.util.BitSet;
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import org.evors.core.geometry.Line;
@@ -56,6 +57,22 @@ public abstract class EvoRSLib {
     	for( int i = 1; i < arr.length; i++ )
     	{
     		sb.append(", "); sb.append( arr[ i ] );
+    	}
+    	sb.append( " }" );
+    	return sb.toString();
+    }
+    
+    public static String arrayToStringInputs( double[] arr )
+    {
+    	DecimalFormat df1 = new DecimalFormat("0000");
+    	DecimalFormat df2 = new DecimalFormat("#.00"); 
+    	
+    	StringBuffer sb = new StringBuffer( "{ " );
+    	if( arr.length > 0 ) sb.append( df1.format(arr[ 0 ]) ); 
+    	for( int i = 1; i < arr.length; i++ )
+    	{
+    		DecimalFormat df = i < 6 ? df1 : df2;
+    		sb.append(", "); sb.append( df.format( arr[ i ] ) );
     	}
     	sb.append( " }" );
     	return sb.toString();

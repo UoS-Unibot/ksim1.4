@@ -216,7 +216,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
                     "Time: " + String.valueOf(time),
                     "Robot pos: " + robot.getPosition(),
                     "Heading: " + robot.getHeading(),
-                    "Input: " + EvoRSLib.arrayToString( robot.getInput() ),
+                    "Input: " + EvoRSLib.arrayToStringInputs( robot.getInput() ),
                     controllerStr
                 }
         );
