@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class LiveImageSource implements ImageSource {
 
-	protected String URL = "http://192.168.0.101:8080/stream.html";
+	protected String URL = "http://172.19.4.226:8080/?action=snapshot";
 	
 	public LiveImageSource() {
 	}
