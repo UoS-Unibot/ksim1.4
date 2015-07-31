@@ -8,7 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
+import java.text.DecimalFormat;
 import java.util.Arrays;
+
 import org.evors.core.EvoRSLib;
 import org.evors.core.RunController;
 import org.evors.core.geometry.Vec2;
@@ -149,7 +151,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
      */
     public void drawText(Graphics2D g2, String[] strings) {
         FontMetrics fm = g2.getFontMetrics();
-        float x1 = 40, y = 40;
+        float x1 = 40, y = 530;
         int dx = 0;
         for (int i = 0; i < strings.length; i++) {
             int width = fm.stringWidth(strings[i]);
@@ -172,6 +174,10 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
      * Draws the simulation.
      */
     public void draw() {
+    	DecimalFormat timeF = new DecimalFormat("#0.00" );
+    	DecimalFormat posF = timeF;
+    	DecimalFormat headF = timeF;
+    	
         if (buffer == null) {
             return;
         }
@@ -213,13 +219,14 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
         drawText(
                 g2,
                 new String[]{
-                    "Time: " + String.valueOf(time),
-                    "Robot pos: " + robot.getPosition(),
-                    "Heading: " + robot.getHeading(),
+                    "Time: " + timeF.format(time),
+                    "Robot pos: " + posF.format(robot.getPosition().x) + ", " + posF.format(robot.getPosition().y),
+                    "Heading: " + headF.format(robot.getHeading()),
                     "Input: " + EvoRSLib.arrayToStringInputs( robot.getInput() ),
                     controllerStr
                 }
         );
+        
     }
    
 
@@ -242,4 +249,22 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
         draw();
         render();
     }
+    
+	public void setX(double x) {
+		robot.setPosition( new Vec2( x, robot.getPosition().y ) );
+		draw();
+		repaint();
+	}
+
+	public void setY(double y) {
+		robot.setPosition( new Vec2( robot.getPosition().x, y ) );
+		draw();
+		repaint();
+	}
+
+	public void setHeading(double heading) {
+		robot.setHeading( EvoRSLib.headingToPolar(heading));
+		draw();
+		repaint();
+	}
 }

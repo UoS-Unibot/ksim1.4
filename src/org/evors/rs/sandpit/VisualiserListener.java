@@ -13,4 +13,8 @@ public interface VisualiserListener {
     public void restart();
 
     public void speedChanged(double newSpeed);
+    
+    public void setX( double x );
+    public void setY( double y );
+    public void setHeading( double heading );
 }

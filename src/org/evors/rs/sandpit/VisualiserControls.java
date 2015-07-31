@@ -5,9 +5,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.evors.core.geometry.Vec2;
 
 /**
  * Contains controls for the visualiser.
@@ -18,7 +23,11 @@ public class VisualiserControls extends JPanel {
 
     private final JButton btnRun = new JButton("Run");
     private final JButton btnPause = new JButton("Pause");
+    private final JTextField tfX = new JTextField();
+    private final JTextField tfY = new JTextField();
+    private final JTextField tfH = new JTextField();
     private VisualiserListener listener;
+    private DecimalFormat strFormat = new DecimalFormat( "#0.0");
 
     public VisualiserControls() {
         super();
@@ -40,6 +49,24 @@ public class VisualiserControls extends JPanel {
             }
         });
 
+        tfX.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setX();
+            }
+        });
+        
+        tfY.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setY();
+            }
+        });
+        
+        tfH.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setHeading();
+            }
+        });
+        
         GridBagLayout gbl = new GridBagLayout();
         this.setLayout(gbl);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -58,6 +85,15 @@ public class VisualiserControls extends JPanel {
         gbc.gridx = 3;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.BOTH;
+        add( tfX, gbc );
+        gbc.gridx = 4;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        add( tfY, gbc );
+        gbc.gridx = 5;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        add( tfH, gbc );
     }
 
     public VisualiserListener getListener() {
@@ -91,5 +127,24 @@ public class VisualiserControls extends JPanel {
         btnPause.setEnabled(false);
         btnRun.setEnabled(true);
     }
+    
+    void setX() {
+        if (listener != null) {
+            listener.setX( Double.parseDouble( tfX.getText() ));
+        }
+    }
+
+    void setY() {
+        if (listener != null) {
+        	listener.setY( Double.parseDouble( tfY.getText() ));
+        }
+    }
+
+    void setHeading() {
+        if (listener != null) {
+        	listener.setHeading( Double.parseDouble( tfH.getText() ));
+        }
+    }
+
 
 }

@@ -167,4 +167,17 @@ public class VisualiserFrame extends JFrame implements VisualiserListener {
         return new CTRNNController(neurons, sensorIndices,
                 0.1, 0.6, 6, 7);
     }
+
+	public void setX(double x) {
+		trialv.setX(x);
+		
+	}
+
+	public void setY(double y) {
+		trialv.setY(y);
+	}
+
+	public void setHeading(double heading) {
+		trialv.setHeading(heading);
+	}
 }
