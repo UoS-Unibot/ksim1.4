@@ -74,7 +74,13 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         {
         	double startDist = lastSetPosition.distance( referencePosition );
         	double nowDist = getPosition().distance( referencePosition );
-        	cumvf += 1 - ( nowDist / startDist );
+        	if( nowDist < topRadius * 2 )
+        	{
+        		cumvf += 2;
+        	}else
+        	{
+        		cumvf += 1 - ( nowDist / startDist );
+        	}
         }
         
         step++;
