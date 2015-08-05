@@ -10,7 +10,8 @@ public class LiveImageSource implements ImageSource {
 
 	protected String URL = "http://172.19.4.226:8080/?action=snapshot";
 	
-	public LiveImageSource() {
+	public LiveImageSource( String URL ) {
+		this.URL = URL;
 	}
 
 	public BufferedImage getImage() {
