@@ -15,7 +15,7 @@ public interface ProcessedGreyImageSource {
 	 * represented as a two dimensional int array with identical coordinates
 	 * to the original image and the 0-255 intensity
 	 */
-	public int[][] getImage();
+	public int[][] getProcessedGreyImage();
 	
 	/**
 	 * 

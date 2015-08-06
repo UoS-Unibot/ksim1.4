@@ -11,11 +11,11 @@ public class ImageGreyProcessor implements ProcessedGreyImageSource {
 		this.imgSrc = imgSrc;
 	}
 
-	public int[][] getImage() {
+	public int[][] getProcessedGreyImage() {
 		// 1. Convert to greyscale
 		BufferedImage greyimg = new BufferedImage(752, 480, BufferedImage.TYPE_BYTE_GRAY);  
 		Graphics g = greyimg.getGraphics();  
-		g.drawImage( imgSrc.getImage(), 0, 0, null);  
+		g.drawImage( getImageSourceImage(), 0, 0, null);  
 		g.dispose();
 		
 		int[][] rv = new int[ greyimg.getWidth() ][ greyimg.getHeight() ];
@@ -28,6 +28,11 @@ public class ImageGreyProcessor implements ProcessedGreyImageSource {
 		}
 		
 		return rv;
+	}
+	
+	protected BufferedImage getImageSourceImage()
+	{
+		return imgSrc.getImage();
 	}
 
 	public double getRotation() {

@@ -100,7 +100,7 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			
 			vs.program( bits );
-			int[][] img = pgimgSrc.getImage();
+			int[][] img = pgimgSrc.getProcessedGreyImage();
 			double value = vs.getValue(img, orientation, imgCentre);
 			
 			// ShowImg si = new ShowImg( img ); si.show();
@@ -125,7 +125,7 @@ public class HaarFilterTest extends TestCase {
 			vs2.program( bits );
 			
 			fakeImgSrc.setID( fl );
-			int[][] img = fakepgImgSrc.getImage();
+			int[][] img = fakepgImgSrc.getProcessedGreyImage();
 			
 			double value = vs2.getValue( img, orientation, fakeImgCentre);
 			//try { ShowImg si = new ShowImg( img ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
@@ -158,7 +158,7 @@ public class HaarFilterTest extends TestCase {
 			vs2.program( bits );
 			
 			fakeImgSrc.setID( fl );
-			int[][] img = fakepgImgSrc.getImage();
+			int[][] img = fakepgImgSrc.getProcessedGreyImage();
 			
 			double value = vs2.getValue( img, orientation, fakeImgCentre);
 			// if( fl==0) try { ShowImg si = new ShowImg( img ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}

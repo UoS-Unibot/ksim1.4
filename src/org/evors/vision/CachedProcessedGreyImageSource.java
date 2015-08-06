@@ -13,11 +13,11 @@ public class CachedProcessedGreyImageSource implements ProcessedGreyImageSource 
 		this.imgSrc = imgSrc;
 	}
 
-	public int[][] getImage() {
+	public int[][] getProcessedGreyImage() {
 		Object key = cacheKeyGen.getKey();
 		if( imgCache.get(key) == null )
 		{
-			imgCache.put(key, imgSrc.getImage() );
+			imgCache.put(key, imgSrc.getProcessedGreyImage() );
 		}
 		return ( int[][] ) imgCache.get(key);
 	}

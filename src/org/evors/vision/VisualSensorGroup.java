@@ -78,7 +78,7 @@ public class VisualSensorGroup implements Programmable {
 		double[] rv = new double[ DEFAULT_SENSOR_COUNT ];
 		
 		// 1.
-		int[][] greyimg = imgSource.getImage();
+		int[][] greyimg = imgSource.getProcessedGreyImage();
 		double rotation = imgSource.getRotation();
 		
 		// 2.
