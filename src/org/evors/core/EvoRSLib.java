@@ -46,7 +46,7 @@ public abstract class EvoRSLib {
 	
 	public static SimulationWorld getDemoArena()
 	{
-		SimulationWorld w = new SimulationWorld( new Vec2( 66, 114 ), true );
+		SimulationWorld w = new SimulationWorld( new Vec2( 85, 114 ), true );
 		return w;
 	}
 	

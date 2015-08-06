@@ -63,9 +63,16 @@ public class HaarFilter implements VisualFilter {
 		// Setup variables
 		int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
 		
+		// Bias height so in 0.5 -> 2.0 range
+		
+		
+		// ***
+		if( debugImage != null ) debugImage.setRGB( (int) imgCentre.x, (int) imgCentre.y, Color.WHITE.getRGB() );
+		// ***
+		
 		// Use polar coordinates (orientation is "heading")
 		
-		// 1. Find centre
+		// 1. Find sensor centre
 		
 		// Image is vertical inverted, so left is right, right is left
 		double sensorPolarCentreAngle = ( filterCentrePerc.x - 0.25 ) * 2 * Math.PI;
@@ -78,9 +85,8 @@ public class HaarFilter implements VisualFilter {
 		// Need to find r_max, r_min, theta_max, theta_min
 		double y_min = filterCentrePerc.y - heightPerc / 2; double y_max = filterCentrePerc.y + heightPerc / 2; // may be outside range
 		double r_min = r_in + ( r_out - r_in ) * y_min; double r_max = r_in + ( r_out - r_in ) * y_max;
-		double magicConstant = 2.0; // Experimentally derived
+		double magicConstant = 0.5; // Experimentally derived
 		double widthAngle = magicConstant * heightPerc * proportionalDimension.x / ( proportionalDimension.y * Math.PI ); 
-
 		
 		double theta_min = sensorPolarCentreAngle - widthAngle / 2;
 		double theta_max = sensorPolarCentreAngle + widthAngle / 2;

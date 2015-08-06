@@ -64,6 +64,8 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 	
 	public Vec2 getImageFileCoordinates()
 	{
+		double dX = 6.5, dY = 5;
+		
 		// 1. Convert position into image coordinate system
 		Vec2 robotPosition = locationSource.getPosition();
 		double robotHeading = locationSource.getOrientation();
@@ -72,8 +74,8 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 		Vec2 cameraPosition = robotPosition.translatePolar( EvoRSLib.headingToPolar(robotHeading), CAMERA_FROM_CENTRE );
 		
 		// 1b. Find stored photo position
-		double storedPhoto_x = Math.min(STORED_X_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.x - 6.35 ) / 5 ) ) );
-		double storedPhoto_y = Math.min(STORED_Y_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.y - 10 - CAMERA_FROM_CENTRE ) / 5 ) ) );
+		double storedPhoto_x = Math.min(STORED_X_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.x - 6.35 ) / dX ) ) );
+		double storedPhoto_y = Math.min(STORED_Y_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.y - 10 - CAMERA_FROM_CENTRE ) / dY ) ) );
 		
 		return new Vec2( storedPhoto_x, storedPhoto_y );
 	}

@@ -28,7 +28,7 @@ public class VisualSensorGroup implements Programmable {
 	public static final int BITS_SENSOR = BITS_FILTER_TYPE + BITS_CENTRE_X + BITS_CENTRE_Y + BITS_HEIGHT;
 	public static final int BITS_BLOCK = BITS_SENSOR + BITS_MIN_THRESHOLD;
 	
-	public static int IMG_WIDTH = 752, IMG_HEIGHT = 480, IMG_GUESS_CENTRE_X = 404, IMG_GUESS_CENTRE_Y = 260, IMG_DISC_RADIUS = 120, IMG_OUTER_RADIUS = 258;
+	public static int IMG_WIDTH = 752, IMG_HEIGHT = 480, IMG_GUESS_CENTRE_X = 404, IMG_GUESS_CENTRE_Y = 260, IMG_DISC_RADIUS = 170, IMG_OUTER_RADIUS = 220; // 120,258 **** old img disc radius
 	protected static int IMG_CENTRE_RING_THRESHOLD = 0; // How dark the ring is
 	
 	public VisualSensorGroup( ProcessedGreyImageSource imgSource )  {
