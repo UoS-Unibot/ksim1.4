@@ -62,12 +62,13 @@ public class HaarFilter implements VisualFilter {
 	{
 		// Setup variables
 		int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
+		double shrinkFactor = 1; // *** Need to shrink centre, radiuses etc..
 		
 		// Bias height so in 0.5 -> 2.0 range
-		
+		heightPerc = heightPerc * 1.5 + 0.5;
 		
 		// ***
-		if( debugImage != null ) debugImage.setRGB( (int) imgCentre.x, (int) imgCentre.y, Color.WHITE.getRGB() );
+		if( debugImage != null ) debugImage.setRGB( (int) (imgCentre.x/shrinkFactor), (int) (imgCentre.y/shrinkFactor), Color.WHITE.getRGB() );
 		// ***
 		
 		// Use polar coordinates (orientation is "heading")
@@ -115,21 +116,21 @@ public class HaarFilter implements VisualFilter {
 					Vec2 invOffset = new Vec2( offset.x, -1 * offset.y );
 					Vec2 rayPoint = imgCentre.add( invOffset );
 					rayPoint = new Vec2( rayPoint.x, Math.max(0, Math.min( img[0].length - 1, rayPoint.y)) );
-					int blue = img[ (int) rayPoint.x ][ (int) rayPoint.y ];
+					int blue = img[ (int) ( rayPoint.x / shrinkFactor ) ][ (int) ( rayPoint.y / shrinkFactor ) ];
 					
 					// Add to totals
 					pixelCount++;
 					if( filterMap[ column ][ row ] )
 					{
 						valueCountRaw += blue; // light area
-						if( debugImage != null ) { debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.WHITE.getRGB() ); }
+						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x/shrinkFactor), (int) (rayPoint.y/shrinkFactor), Color.WHITE.getRGB() ); }
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
 					else
 					{
 						valueCountRaw += ( 255 - blue ); // dark area
-						if( debugImage != null ) { debugImage.setRGB((int) rayPoint.x, (int) rayPoint.y, Color.BLACK.getRGB() ); }
+						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x/shrinkFactor), (int) (rayPoint.y/shrinkFactor), Color.BLACK.getRGB() ); }
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 					}
 				}
