@@ -165,4 +165,13 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
 	public void program(BitSet bits) {
 		visualSensorGroup.program(bits);
 	}
+	
+    public String toString()
+    {
+    	StringBuffer rv = new StringBuffer();
+    	rv.append( "SimulatedKJunior with\n" );
+    	rv.append("\t\tTime Step = " + this.getTimeStep() );
+    	rv.append("\n\t\tWorld Bounds = " + this.getWorld().getBounds() );
+    	return rv.toString();
+    }
 }
