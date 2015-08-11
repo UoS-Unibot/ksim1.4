@@ -50,15 +50,21 @@ public abstract class EvoRSLib {
 		return w;
 	}
 	
-    public static String arrayToString( double[] arr )
+	public static String arrayToString( double[] arr )
+	{
+		return arrayToString( arr, true );
+	}
+	
+    public static String arrayToString( double[] arr, boolean showBrackets )
     {
-    	StringBuffer sb = new StringBuffer( "{ " );
+    	StringBuffer sb = new StringBuffer();
+    	if( showBrackets ) sb.append("{ " );
     	if( arr.length > 0 ) sb.append( arr[ 0 ] ); 
     	for( int i = 1; i < arr.length; i++ )
     	{
     		sb.append(", "); sb.append( arr[ i ] );
     	}
-    	sb.append( " }" );
+    	if( showBrackets )sb.append( " }" );
     	return sb.toString();
     }
     
