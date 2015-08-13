@@ -59,7 +59,7 @@ public class PhilTest {
 		world.checkCollisions( robot );
 				
 		robot.setPosition( new Vec2( 5, -35 ) );
-		robot.setHeading( Math.PI / 2 ); // N
+		robot.setPolarOrientation( Math.PI / 2 ); // N
 		
 		RunController sim = new RunController( new PhilController( consoleOutput ), robot );
 		
@@ -68,7 +68,7 @@ public class PhilTest {
 			sim.step();
 			
 			Vec2 robpos = robot.getPosition().add( WORLD_OFFSET );
-			if( consoleOutput ) System.out.println( "rob: " + robpos.x + " " + robpos.y + " " + trigToBearing( robot.getHeading()) );
+			if( consoleOutput ) System.out.println( "rob: " + robpos.x + " " + robpos.y + " " + trigToBearing( robot.getPolarOrientation()) );
 			if( !consoleOutput ) System.out.println( robpos.x +  " " + robpos.y );
 			double[] robirs = robot.getInput();
 			String irs = "";

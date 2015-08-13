@@ -38,10 +38,10 @@ public class KJuniorPhilRegressionTest extends TestCase  {
         IRBeam.IR_NOISE = PhilSim.IRNOISE = 0;
          
         robotKS.setPosition( new Vec2( 5, -35 ) );
-        robotKS.setHeading( Math.PI / 2 ); // N
+        robotKS.setPolarOrientation( Math.PI / 2 ); // N
         
         robotPhil.setPosition( new Vec2( 5, -35 ) );
-        robotPhil.setHeading( 0 );
+        robotPhil.setPolarOrientation( 0 );
     }
 	
 	double Philrob_speed(double x)
@@ -68,13 +68,13 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 		ls = Philrob_speed(ml);  // convert to actuall cm/s speeds of rob
 		rs = Philrob_speed(mr);
 		v = (ls + rs)/2;
-		dx = v*Math.sin( robotPhil.getHeading() )*DT;  // change in posn from decomposed linear motion
-		dy= v*Math.cos( robotPhil.getHeading() )*DT; 
+		dx = v*Math.sin( robotPhil.getPolarOrientation() )*DT;  // change in posn from decomposed linear motion
+		dy= v*Math.cos( robotPhil.getPolarOrientation() )*DT; 
 		
 		Vec2 rv = new Vec2( robotPhil.getPosition().x + dx , robotPhil.getPosition().y + dy );
 		dtheta = (ls - rs)*DT/WHEEL_SEP;    // change in orientation from decomposed rotational movement  v=wr etc
 
-		robotPhil.setHeading( ForceAngleInCircle( robotPhil.getHeading() + dtheta ) );
+		robotPhil.setPolarOrientation( ForceAngleInCircle( robotPhil.getPolarOrientation() + dtheta ) );
 		robotPhil.setPosition( rv );
 		return rv;
 	}
@@ -112,13 +112,13 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 	public void testIRReading()
 	{
         robotKS.setPosition( new Vec2( 740, 740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
+ 		robotKS.setPolarOrientation( 3 * Math.PI / 4 ); // NW
  		
  		robotPhil.setPosition( new Vec2( 740, 740 ) );
- 		robotPhil.setHeading( 7 * Math.PI / 4 ); // NW
+ 		robotPhil.setPolarOrientation( 7 * Math.PI / 4 ); // NW
  		
  		double ksIR = robotKS.getIRReading( 0 );
- 		double pIR = ir_reading( robotPhil.getHeading() );
+ 		double pIR = ir_reading( robotPhil.getPolarOrientation() );
  		
  		assertEquals(ksIR, pIR, 1.5 );
 	}
@@ -127,25 +127,25 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 	{
 		System.out.println("====Top====");
         robotKS.setPosition( new Vec2( 740, 740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
+ 		robotKS.setPolarOrientation( 3 * Math.PI / 4 ); // NW
  		robotPhil.setPosition( new Vec2( 740, 740 ) );
- 		robotPhil.setHeading( 7 * Math.PI / 4 ); // NW
+ 		robotPhil.setPolarOrientation( 7 * Math.PI / 4 ); // NW
  		
  		int n = 100;
  		double dA = 0.1;
  		for( int i = 0; i < n; i++ )
  		{
  			double ksIR = robotKS.getIRReading( 0 );
- 	 		double pIR = ir_reading( robotPhil.getHeading() );
+ 	 		double pIR = ir_reading( robotPhil.getPolarOrientation() );
  	 		if( Math.abs( ksIR - pIR ) > 1.5 )
  	 		{
- 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
+ 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getPolarOrientation());
  	 		}
  	 		assertEquals( ksIR, pIR, 1.5 );
  	 		
  	 		
- 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
- 	 		robotPhil.setHeading( this.ForceAngleInCircle( robotPhil.getHeading() - dA ) );
+ 	 		robotKS.setPolarOrientation( ( robotKS.getPolarOrientation() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotPhil.setPolarOrientation( this.ForceAngleInCircle( robotPhil.getPolarOrientation() - dA ) );
  		}
  		
 	}
@@ -154,25 +154,25 @@ public class KJuniorPhilRegressionTest extends TestCase  {
 	{
 		System.out.println("===Bottom===");
         robotKS.setPosition( new Vec2( -300, -740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 2 ); // S
+ 		robotKS.setPolarOrientation( 3 * Math.PI / 2 ); // S
  		robotPhil.setPosition( new Vec2( -300, -740 ) );
- 		robotPhil.setHeading( Math.PI  ); // S
+ 		robotPhil.setPolarOrientation( Math.PI  ); // S
  		
  		int n = 100;
  		double dA = 0.1;
  		for( int i = 0; i < n; i++ )
  		{
  			double ksIR = robotKS.getIRReading( 0 );
- 	 		double pIR = ir_reading( robotPhil.getHeading() );
+ 	 		double pIR = ir_reading( robotPhil.getPolarOrientation() );
  	 		if( Math.abs( ksIR - pIR ) > 1.5 )
  	 		{
- 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
+ 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getPolarOrientation());
  	 		}
  	 		assertEquals( ksIR, pIR, 1.5 );
  	 		
  	 		
- 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
- 	 		robotPhil.setHeading( this.ForceAngleInCircle( robotPhil.getHeading() - dA ) );
+ 	 		robotKS.setPolarOrientation( ( robotKS.getPolarOrientation() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotPhil.setPolarOrientation( this.ForceAngleInCircle( robotPhil.getPolarOrientation() - dA ) );
  		}
  		
 	}

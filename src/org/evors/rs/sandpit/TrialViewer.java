@@ -221,7 +221,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
                 new String[]{
                     "Time: " + timeF.format(time),
                     "Robot pos: " + posF.format(robot.getPosition().x) + ", " + posF.format(robot.getPosition().y),
-                    "Heading: " + headF.format(robot.getHeading()),
+                    "Heading: " + headF.format(robot.getPolarOrientation()),
                     "Input: " + EvoRSLib.arrayToStringInputs( robot.getInput() ),
                     controllerStr
                 }
@@ -263,7 +263,7 @@ public class TrialViewer extends SandPitCanvas implements Runnable {
 	}
 
 	public void setHeading(double heading) {
-		robot.setHeading( EvoRSLib.headingToPolar(heading));
+		robot.setPolarOrientation( EvoRSLib.headingToPolar(heading));
 		draw();
 		repaint();
 	}

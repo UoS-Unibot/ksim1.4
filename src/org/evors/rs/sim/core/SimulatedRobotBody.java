@@ -12,7 +12,7 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
     private Vec2 position;
     protected Vec2 lastSetPosition;
     protected Vec2 referencePosition;
-    private double heading;
+    private double polarOrientation;
     private SimulationWorld world;
     private final Shape2D shape;
     private boolean live = true;
@@ -23,7 +23,7 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
             double timeStepLength) {
         this.timeStepLength = timeStepLength;
         position = Vec2.ZERO;
-        heading = 0;
+        polarOrientation = 0;
         this.world = world;
         this.shape = shape;
     }
@@ -51,11 +51,11 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
     }
     
     /**
-     * This is actually in polar coordinates (confusing)
+     * This is actually in polar coordinates
      * @return
      */
-    public double getHeading() {
-        return heading;
+    public double getPolarOrientation() {
+        return polarOrientation;
     }
     
     /**
@@ -63,12 +63,12 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
      */
     public double getOrientation()
     {
-    	return EvoRSLib.polarToHeading( getHeading() );
+    	return EvoRSLib.polarToHeading( getPolarOrientation() );
     }
     
-    public void setHeading( double heading )
+    public void setPolarOrientation( double polarOrientation )
     {
-    	this.heading = heading;
+    	this.polarOrientation = polarOrientation;
     }
 
     public Shape2D getShape() {
@@ -85,8 +85,8 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
         }
         //Calculate movement vector
         double dist = velocity * timeStepLength;
-        Vec2 changeV = new Vec2(dist * Math.cos(heading), dist * Math.
-                sin(heading));
+        Vec2 changeV = new Vec2(dist * Math.cos(polarOrientation), dist * Math.
+                sin(polarOrientation));
         shape.translate(changeV);
         position = position.add(changeV);
         
@@ -95,7 +95,7 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
         //Calculate actual rotation
         double changeA = (angularVelocity * timeStepLength) % (2 * Math.PI);
         shape.rotate(changeA);
-        heading += changeA;
+        polarOrientation += changeA;
         
         world.checkCollisions(this);
     }

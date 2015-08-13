@@ -91,7 +91,7 @@ public class VisualiserFrame extends JFrame implements VisualiserListener {
         SimulatedKJunior robot = new SimulatedKJunior(world, 0.1);
 
         robot.setPosition(new Vec2(5, -35));
-        robot.setHeading(Math.PI / 2); // N
+        robot.setPolarOrientation(Math.PI / 2); // N
 
         //CTRNNController nn = getController();
         RobotController nn = new PhilController();

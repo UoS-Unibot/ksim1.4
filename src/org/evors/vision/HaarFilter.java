@@ -67,9 +67,7 @@ public class HaarFilter implements VisualFilter {
 		// Bias height so in 0.5 -> 2.0 range
 		heightPerc = heightPerc * 1.5 + 0.5;
 		
-		// ***
 		if( debugImage != null ) debugImage.setRGB( (int) (imgCentre.x/shrinkFactor), (int) (imgCentre.y/shrinkFactor), Color.WHITE.getRGB() );
-		// ***
 		
 		// Use polar coordinates (orientation is "heading")
 		

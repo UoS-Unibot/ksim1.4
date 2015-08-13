@@ -32,7 +32,7 @@ public class KSimPSimRegression extends TestCase {
         IRBeam.IR_NOISE = PhilSim.IRNOISE = 0;
          
         robotKS.setPosition( new Vec2( 5, -35 ) );
-        robotKS.setHeading( Math.PI / 2 ); // N
+        robotKS.setPolarOrientation( Math.PI / 2 ); // N
         
         robotPhil.position = new Vec2( 5, -35 );
         robotPhil.orientation = 0;
@@ -63,7 +63,7 @@ public class KSimPSimRegression extends TestCase {
 	public void testIRReading()
 	{
         robotKS.setPosition( new Vec2( 740, 740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
+ 		robotKS.setPolarOrientation( 3 * Math.PI / 4 ); // NW
  		
  		robotPhil.position = new Vec2( 740, 740 );
  		robotPhil.orientation = 7 * Math.PI / 4; // NW
@@ -79,7 +79,7 @@ public class KSimPSimRegression extends TestCase {
 	{
 		System.out.println("===Top===");
         robotKS.setPosition( new Vec2( 740, 740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 4 ); // NW
+ 		robotKS.setPolarOrientation( 3 * Math.PI / 4 ); // NW
 		robotPhil.position = new Vec2( 740, 740 );
  		robotPhil.orientation = 7 * Math.PI / 4; // NW
   		
@@ -93,11 +93,11 @@ public class KSimPSimRegression extends TestCase {
  	 		
  	 		if( Math.abs( ksIR - pIR ) > 0.5 )
  	 		{
- 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
+ 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getPolarOrientation());
  	 		}
  	 		assertEquals( ksIR, pIR, 1.1 );
  	 		
- 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotKS.setPolarOrientation( ( robotKS.getPolarOrientation() + dA ) % ( Math.PI * 2 ) );
  	 		robotPhil.orientation = PhilSim.ForceAngleInCircle( robotPhil.orientation - dA );
  		}
  		
@@ -107,7 +107,7 @@ public class KSimPSimRegression extends TestCase {
 	{
 		System.out.println("===Bottom===");
         robotKS.setPosition( new Vec2( -300, -740 ) );
- 		robotKS.setHeading( 3 * Math.PI / 2 ); // S
+ 		robotKS.setPolarOrientation( 3 * Math.PI / 2 ); // S
  		robotPhil.position = new Vec2( -300, -740 );
  		robotPhil.orientation= Math.PI ; // S
  		
@@ -119,12 +119,12 @@ public class KSimPSimRegression extends TestCase {
  	 		double pIR = ps.ir_reading( robotPhil.orientation );
  	 		if( Math.abs( ksIR - pIR ) > 0.5 )
  	 		{
- 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getHeading());
+ 	 			System.out.println( ksIR + " " + pIR + " " + i + " " + robotKS.getPolarOrientation());
  	 		}
  	 		assertEquals( ksIR, pIR, 1.1 );
  	 		
  	 		
- 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotKS.setPolarOrientation( ( robotKS.getPolarOrientation() + dA ) % ( Math.PI * 2 ) );
  	 		robotPhil.orientation = PhilSim.ForceAngleInCircle( robotPhil.orientation - dA );
  		}
  		
@@ -146,7 +146,7 @@ public class KSimPSimRegression extends TestCase {
 		robotKS.setWorld( simWorld );
 		
         robotKS.setPosition( new Vec2( 36, 6 ) );
- 		robotKS.setHeading( bearingToTrig( 2.9191 ) );
+ 		robotKS.setPolarOrientation( bearingToTrig( 2.9191 ) );
  		robotPhil.position = new Vec2( 36, 6 );
  		robotPhil.orientation= 2.9191;
  		
@@ -158,7 +158,7 @@ public class KSimPSimRegression extends TestCase {
  	 		double pIR = ps.ir_reading( robotPhil.orientation );
  	 		assertEquals( ksIR, pIR, 1.1 );
  	 		
- 	 		robotKS.setHeading( ( robotKS.getHeading() + dA ) % ( Math.PI * 2 ) );
+ 	 		robotKS.setPolarOrientation( ( robotKS.getPolarOrientation() + dA ) % ( Math.PI * 2 ) );
  	 		robotPhil.orientation = PhilSim.ForceAngleInCircle( robotPhil.orientation - dA );
  		}
 	}

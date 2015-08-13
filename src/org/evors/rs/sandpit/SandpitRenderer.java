@@ -99,7 +99,7 @@ public class SandpitRenderer {
 
         //draw heading
         Line arrowLine = Line.fromPolarVec(robot.getPosition(), robot.
-                getHeading(), 5.75);
+                getPolarOrientation(), 5.75);
         g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(0.5f));
         g2.draw(new Line2D.Double(arrowLine.p1.x, arrowLine.p1.y, arrowLine.p2.x,

@@ -90,11 +90,11 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     }
 
     public Vec2 getIRBase(double angle) {
-        return getPosition().translatePolar(getHeading() + angle, topRadius);
+        return getPosition().translatePolar(getPolarOrientation() + angle, topRadius);
     }
 
     public double getIRReading(double angle) {
-        return new KJuniorIRBeam( getIRBase(angle), getHeading() + angle, getWorld() ).getReading();
+        return new KJuniorIRBeam( getIRBase(angle), getPolarOrientation() + angle, getWorld() ).getReading();
     }
     
     public double[] getVisualSensorReading()
