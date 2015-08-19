@@ -13,19 +13,28 @@ import org.evors.core.geometry.Vec2;
 public class StoredImageSource implements ImageSource, KeyGenerator {
 
 	protected double CAMERA_FROM_CENTRE = 3.7; // radius of camera from centre of robot
-	protected int STORED_Y_MAX = 20;
-	protected int STORED_X_MAX = 12;
+	protected int STORED_Y_MAX = 19;
+	protected int STORED_X_MAX = 13;
 	
 	protected String imagePath;
 	protected final String imageExtension = ".jpg";
-	protected PositionOrientationSource locationSource; // Assuming KSIM coordinate system
+	protected PositionOrientationSource locationSource;
 	protected boolean cache = false;
+
+	protected double worldSampledHeading = 0; // Heading 0 = N
+	protected Vec2 worldSampledCameraOffset;
 	
 	protected BufferedImage[][] imgCache = new BufferedImage[ STORED_X_MAX + 1 ][ STORED_Y_MAX + 1 ];
 	
-	public StoredImageSource( String imagePath, PositionOrientationSource locationSource ) {
+	public StoredImageSource( String imagePath, PositionOrientationSource locationSource, double worldSampledHeading )
+	{
 		this.imagePath = imagePath;
 		this.locationSource = locationSource;
+		worldSampledCameraOffset = new Vec2( CAMERA_FROM_CENTRE * Math.sin( worldSampledHeading ), CAMERA_FROM_CENTRE * Math.cos( worldSampledHeading ) );
+	}
+	
+	public StoredImageSource( String imagePath, PositionOrientationSource locationSource ) {
+		this( imagePath, locationSource, 0 );
 	}
 
 	public BufferedImage getImage() {
@@ -64,7 +73,13 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 	
 	public Vec2 getImageFileCoordinates()
 	{
-		double dX = 6.5, dY = 5;
+		// Arena is 85, 114
+		// (0,0) is at 6.8, 9 (+4 for N facing camera)
+		// There are 14 x and 20 y samples
+		// Means there's a gap of 7.2 at the end of x, and 5 at the end of y
+		
+		double dX = 5, dY = 5;
+		Vec2 zeroZeroCentreRobot = new Vec2( 6.8, 9 );
 		
 		// 1. Convert position into image coordinate system
 		Vec2 robotPosition = locationSource.getPosition();
@@ -74,14 +89,15 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 		Vec2 cameraPosition = robotPosition.translatePolar( EvoRSLib.headingToPolar(robotHeading), CAMERA_FROM_CENTRE );
 		
 		// 1b. Find stored photo position
-		double storedPhoto_x = Math.min(STORED_X_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.x - 6.35 ) / dX ) ) );
-		double storedPhoto_y = Math.min(STORED_Y_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.y - 10 - CAMERA_FROM_CENTRE ) / dY ) ) );
+		
+		double storedPhoto_x = Math.min(STORED_X_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.x - zeroZeroCentreRobot.x - worldSampledCameraOffset.x ) / dX ) ) );
+		double storedPhoto_y = Math.min(STORED_Y_MAX + 0.0, Math.max(0, Math.round( ( cameraPosition.y - zeroZeroCentreRobot.y - worldSampledCameraOffset.y ) / dY ) ) );
 		
 		return new Vec2( storedPhoto_x, storedPhoto_y );
 	}
 
 	public double getRotation() {
-		return locationSource.getOrientation();
+		return ( locationSource.getOrientation() + this.worldSampledHeading ) % ( 2 * Math.PI );
 	}
 
 	public Object getKey() {
