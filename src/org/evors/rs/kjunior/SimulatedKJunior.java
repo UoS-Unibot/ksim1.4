@@ -171,7 +171,6 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     	StringBuffer rv = new StringBuffer();
     	rv.append( "SimulatedKJunior with\n" );
     	rv.append("\t\tTime Step = " + this.getTimeStep() );
-    	rv.append("\n\t\tWorld Bounds = " + this.getWorld().getBounds() );
     	rv.append("\n\t\tVisual Sensor Group: " + this.visualSensorGroup );
     	return rv.toString();
     }
