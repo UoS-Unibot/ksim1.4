@@ -123,5 +123,42 @@ public class StoredImageSourceTest extends TestCase {
 			TestUtils.assertVEq( imgCoord[ ll ], imgSrc.getImageFileCoordinates());
 		}
 	}
+	
+	public void testSouthSampledMultipleAngles()
+	{
+		Vec2[] locations = {
+			new Vec2( 6.8 + 5*3, 9 + 5*4 ), 
+			new Vec2( 6.8 + 5*3, 9 + 5*4 ),  
+			new Vec2( 6.8 + 5*3, 9 + 5*4 ),
+			new Vec2( 6.8 + 5*3, 9 + 5*4 ),
+			new Vec2( 6.8 + 5*3, 9 + 5*4 )
+		};
+
+		double[] orientation = {
+			0,				// 3,5
+			Math.PI / 4,  	// 4,5
+			Math.PI * 3 / 4,// 4,5
+			Math.PI,		// 3,4
+			Math.PI * 5/4,	// 2,4
+			Math.PI * 7/4	// 2,5
+		};
+
+		Vec2[] imgCoord = {
+			new Vec2( 3,5 ),
+			new Vec2( 4,5 ),
+			new Vec2( 4,4 ),
+			new Vec2( 3,4 ),
+			new Vec2( 2,4 ),
+			new Vec2( 2,5 )
+		};
+		
+		for( int ll = 0; ll < locations.length; ll++ )
+		{
+			posSrc.setPosition( locations[ ll ] );
+			posSrc.setOrientation( orientation[ ll ]);
+			
+			TestUtils.assertVEq( imgCoord[ ll ], imgSSrc.getImageFileCoordinates());
+		}
+	}
 
 }

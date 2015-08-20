@@ -10,8 +10,13 @@ import junit.framework.TestCase;
 
 public class HaarFilterTest extends TestCase {
 
-	ImageSource imgSource = VisionTestLib.getImageSource();
+	protected static String imgPath = "/Users/michaelgarvie/git/trainingData/vision/arena19Aug/";
+	FakePositionOrientationSource posSrc = new FakePositionOrientationSource();
+	StoredImageSource imgSource = new StoredImageSource(imgPath, posSrc);
+	StoredImageSource imgSSource = new StoredImageSource( imgPath, posSrc, Math.PI, "S" );
+	
 	ProcessedMultiChannelImageSource pgimgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( imgSource );
+	ProcessedMultiChannelImageSource pgSimgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( imgSSource );
 	VisualSensorGroup vsg = new VisualSensorGroup( pgimgSrc );
 	VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT, VisualSensorGroup.BITS_CHANNEL );
 	Vec2 imgCentre = new Vec2( VisualSensorGroup.IMG_GUESS_CENTRE_X, VisualSensorGroup.IMG_GUESS_CENTRE_Y );
@@ -90,10 +95,10 @@ public class HaarFilterTest extends TestCase {
 		}
 	}
 
-	
 	public void testFilterPosition()
 	{
-		double orientation = Math.PI / 2;
+		double orientation = Math.PI * 3 / 2;
+		posSrc.setOrientation(orientation);
 		for( int fl = 0; fl < encoded.length; fl++ )
 		{
 			BitSet bits = new BitSet();
@@ -102,13 +107,32 @@ public class HaarFilterTest extends TestCase {
 			vs.program( bits );
 			int[][][] img = pgimgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = this.imgSource.getImage();
-			double value = vs.getValue(img, orientation, imgCentre, debugImg);
+			double value = vs.getValue(img, pgimgSrc.getRotation(), imgCentre, debugImg);
 			
-			//ShowImg si = new ShowImg( debugImg ); si.show();
+			ShowImg si = new ShowImg( debugImg ); si.show(); si.setLocation(400, 400 );
+		}
+		try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
+	}
+
+	public void testFilterPositionSouthFacing()
+	{
+		double orientation = Math.PI * 3 / 2;
+		posSrc.setOrientation(orientation);
+		for( int fl = 0; fl < encoded.length; fl++ )
+		{
+			BitSet bits = new BitSet();
+			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
+			
+			vs.program( bits );
+			int[][][] img = pgSimgSrc.getProcessedMultiChannelImage();
+			BufferedImage debugImg = this.imgSSource.getImage();
+			double value = vs.getValue(img, pgSimgSrc.getRotation(), imgCentre, debugImg);
+			
+			ShowImg si = new ShowImg( debugImg ); si.show();
 		}
 		//try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 	}
-
+	
 	
 	public void testValuePositive()
 	{
