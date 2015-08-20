@@ -75,4 +75,9 @@ public class ImageWhiteBalanceBaseGreyRedProcessor implements ProcessedMultiChan
 		return debugImage;
 	}
 	
+	public String toString()
+	{
+		return "Image White Balance Base Grey Red Processor with Inner Source = " + this.imgSrc.toString();
+	}
+	
 }

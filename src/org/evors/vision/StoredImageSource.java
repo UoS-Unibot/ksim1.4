@@ -106,5 +106,15 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 	public Object getKey() {
 		return getImageFileCoordinates();
 	}
+	
+	public String toString()
+	{
+		StringBuffer rv = new StringBuffer();
+		rv.append("Stored Image Source with:");
+		rv.append("\n\t\t\t\t\tPath = " + this.imagePath );
+		rv.append("\n\t\t\t\t\tSample Orientation = " + this.worldSampledHeading );
+		rv.append("\n\t\t\t\t\tFile name append = " + this.ext );
+		return rv.toString();
+	}
 
 }

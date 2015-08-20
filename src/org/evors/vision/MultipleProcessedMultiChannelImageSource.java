@@ -10,6 +10,7 @@ import java.util.Random;
 public class MultipleProcessedMultiChannelImageSource implements ProcessedMultiChannelImageSource {
 	
 	public static final int RESOLVE_RANDOM = 0, RESOLVE_ITERATE = 1;
+	public static final String[] RESOLUTION_METHOD_LABELS = { "Random", "Iterative" };
 	protected int resolutionMethod = RESOLVE_RANDOM;
 	protected ProcessedMultiChannelImageSource[] sources;
 	protected int lastSource = -1;
@@ -49,4 +50,16 @@ public class MultipleProcessedMultiChannelImageSource implements ProcessedMultiC
 		rnd.setSeed(seed);
 	}
 
+	public String toString()
+	{
+		StringBuffer rv= new StringBuffer();
+		rv.append("Multiple Processed Multi Channel Image Source with:");
+		rv.append("\n\t\t\t\tResolution Method = " + this.RESOLUTION_METHOD_LABELS[ this.resolutionMethod ] );
+		for( int i = 0; i < this.sources.length; i++ )
+		{
+			rv.append("\n\t\t\t\tSource " + i + ": " + sources[ i ].toString() );
+		}
+		return rv.toString();
+	}
+	
 }

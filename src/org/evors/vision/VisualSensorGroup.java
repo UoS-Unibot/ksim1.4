@@ -184,5 +184,15 @@ public class VisualSensorGroup implements Programmable {
 		Vec2 imgCentre = new Vec2( ringLeft + ( ringRight - ringLeft ) / 2, ringTop + ( ringBottom - ringTop ) / 2 );
 		return imgCentre;
 	}
+	
+	public String toString()
+	{
+		StringBuffer rv= new StringBuffer();
+		rv.append( "Visual Sensor Group with:");
+		rv.append("\n\t\t\tSensor count = " + this.getSensorCount() );
+		rv.append("\n\t\t\tConfiguration bits per block = " + this.BITS_BLOCK );
+		rv.append("\n\t\t\tProcessed Image Source: " + this.imgSource.toString() );
+		return rv.toString();
+	}
 
 }

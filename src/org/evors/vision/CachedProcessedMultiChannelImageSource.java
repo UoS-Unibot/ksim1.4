@@ -26,4 +26,9 @@ public class CachedProcessedMultiChannelImageSource implements ProcessedMultiCha
 		return imgSrc.getRotation();
 	}
 
+	public String toString()
+	{
+		return "Cached Processed Multi Channel Image Source with Inner Source:" + imgSrc.toString();
+	}
+	
 }
