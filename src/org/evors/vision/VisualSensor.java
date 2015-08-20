@@ -9,7 +9,7 @@ import org.evors.core.geometry.Vec2;
 
 public class VisualSensor implements Programmable {
 
-	protected int bitsFilterType, bitsCentreX, bitsCentreY, bitsHeight;
+	protected int bitsFilterType, bitsCentreX, bitsCentreY, bitsHeight, bitsChannel;
 	
 	public static final VisualFilter[] FILTER_MAPPING = new VisualFilter[]
 			{ 
@@ -27,30 +27,34 @@ public class VisualSensor implements Programmable {
 	protected double heightPerc;
 	protected VisualFilter filter;
 	protected VisualSensorGroup group;
+	protected int channelIx = 0;
 		
-	public VisualSensor( VisualSensorGroup group,int bitsFilterType,int bitsCentreX,int bitsCentreY,int bitsHeight ) {
+	public VisualSensor( VisualSensorGroup group,int bitsFilterType,int bitsCentreX,int bitsCentreY,int bitsHeight,int bitsChannel ) {
 		this.group = group;
 		this.bitsFilterType = bitsFilterType;
 		this.bitsCentreX = bitsCentreX;
 		this.bitsCentreY = bitsCentreY;
 		this.bitsHeight = bitsHeight;
+		this.bitsChannel = bitsChannel;
 	}
 
 	public void program(BitSet bits) {
 		int currentBit = 0;
-		filter = FILTER_MAPPING[ EvoRSLib.bitsToInt(bits, currentBit, bitsFilterType)];  currentBit += bitsFilterType;
+		filter = FILTER_MAPPING[ EvoRSLib.bitsToInt(bits, currentBit, currentBit + bitsFilterType)];  currentBit += bitsFilterType;
 		centrePerc = new Vec2( EvoRSLib.getProportionGreyValue(bits, currentBit, currentBit + bitsCentreX ),
 							   EvoRSLib.getProportionGreyValue(bits, currentBit + bitsCentreX, currentBit + bitsCentreX + bitsCentreY ) );
 		currentBit += bitsCentreX + bitsCentreY;
 		heightPerc = EvoRSLib.getProportionGreyValue(bits, currentBit, currentBit+bitsHeight);
+		currentBit += bitsHeight;
+		channelIx = EvoRSLib.bitsToInt( bits, currentBit, currentBit + bitsChannel );
 	}
 	
-	public double getValue( int[][] img, double rotation, Vec2 imgCentre, BufferedImage debugImage )
+	public double getValue( int[][][] img, double rotation, Vec2 imgCentre, BufferedImage debugImage )
 	{
-		return filter.getValue( img, rotation, imgCentre, centrePerc, heightPerc, debugImage );
+		return filter.getValue( img, rotation, imgCentre, centrePerc, heightPerc, channelIx, debugImage );
 	}
 	
-	public double getValue( int[][] img, double rotation, Vec2 imgCentre )
+	public double getValue( int[][][] img, double rotation, Vec2 imgCentre )
 	{
 		return getValue( img, rotation, imgCentre, null );
 	}
@@ -66,6 +70,7 @@ public class VisualSensor implements Programmable {
 		rv.append("\n\tFilter = " + filter);
 		rv.append("\n\tCentre% = " + centrePerc );
 		rv.append("\n\tHeight% = " + heightPerc );
+		rv.append("\n\tChannel = " + channelIx );
 		return rv.toString();
 	}
 

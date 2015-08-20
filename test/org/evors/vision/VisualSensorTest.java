@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 
 public class VisualSensorTest extends TestCase {
 	
-	VisualSensorGroup vsg = new VisualSensorGroup( new ImageGreyProcessor( VisionTestLib.getImageSource() ) );
+	VisualSensorGroup vsg = new VisualSensorGroup( new ImageWhiteBalanceBaseGreyRedProcessor( VisionTestLib.getImageSource() ) );
 	
 	public VisualSensorTest( String name) {
 		super( name );
@@ -61,7 +61,7 @@ public class VisualSensorTest extends TestCase {
 	
 	public void testDecode()
 	{	
-		VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
+		VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT, VisualSensorGroup.BITS_CHANNEL );
 		
 		for( int fl = 0; fl < encoded.length; fl++ )
 		{

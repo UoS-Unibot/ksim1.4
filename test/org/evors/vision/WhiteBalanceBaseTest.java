@@ -21,6 +21,7 @@ public class WhiteBalanceBaseTest extends TestCase {
 	public WhiteBalanceBaseTest( String name) {
 		super(name);
 		showImg.show();
+		procImgSrc.debugMode = procSImgSrc.debugMode = true;
 	}
 	
 	public void testFindingColourPoints()

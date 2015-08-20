@@ -11,9 +11,9 @@ import junit.framework.TestCase;
 public class HaarFilterTest extends TestCase {
 
 	ImageSource imgSource = VisionTestLib.getImageSource();
-	ProcessedGreyImageSource pgimgSrc = new ImageGreyProcessor( imgSource );
+	ProcessedMultiChannelImageSource pgimgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( imgSource );
 	VisualSensorGroup vsg = new VisualSensorGroup( pgimgSrc );
-	VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
+	VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT, VisualSensorGroup.BITS_CHANNEL );
 	Vec2 imgCentre = new Vec2( VisualSensorGroup.IMG_GUESS_CENTRE_X, VisualSensorGroup.IMG_GUESS_CENTRE_Y );
 	
 	HaarFilter[] filterMapping = new HaarFilter[]
@@ -29,12 +29,12 @@ public class HaarFilterTest extends TestCase {
 			};
 	
 	String[] encoded = {
-			"0110100000100010000",
-			"0100110010110001101",
-			"0000001000010000100",
-			"1101011000100001000",
-			"1001101001000101000",
-			"1010100000100001000"
+			"01101000001000100000",
+			"01001100101100011011",
+			"00000010000100001000",
+			"11010110001000010001",
+			"10011010010001010000",
+			"10101000001000010001"
 	};
 	
 	public HaarFilterTest( String name) {
@@ -100,10 +100,11 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			
 			vs.program( bits );
-			int[][] img = pgimgSrc.getProcessedGreyImage();
-			double value = vs.getValue(img, orientation, imgCentre);
+			int[][][] img = pgimgSrc.getProcessedMultiChannelImage();
+			BufferedImage debugImg = this.imgSource.getImage();
+			double value = vs.getValue(img, orientation, imgCentre, debugImg);
 			
-			// ShowImg si = new ShowImg( img ); si.show();
+			//ShowImg si = new ShowImg( debugImg ); si.show();
 		}
 		//try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 	}
@@ -113,10 +114,10 @@ public class HaarFilterTest extends TestCase {
 	{
 		double orientation = Math.PI / 2;
 		FakeImageSource fakeImgSrc = new FakeImageSource();
-		ProcessedGreyImageSource fakepgImgSrc = new ImageGreyProcessor( fakeImgSrc );
+		ImageWhiteBalanceBaseGreyRedProcessor fakepgImgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( fakeImgSrc );
 		VisualSensorGroup vsg2 = new VisualSensorGroup( fakepgImgSrc );
-		VisualSensor vs2 = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
-		Vec2 fakeImgCentre = new Vec2( 404, 238 );
+		VisualSensor vs2 = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT, VisualSensorGroup.BITS_CHANNEL );
+		Vec2 fakeImgCentre =  new Vec2( 404, 238 );
 		
 		for( int fl = 0; fl < encoded.length; fl++ )
 		{
@@ -124,11 +125,12 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			vs2.program( bits );
 			
-			fakeImgSrc.setID( fl );
-			int[][] img = fakepgImgSrc.getProcessedGreyImage();
+			fakeImgSrc.setID( fl + 10 );
+			int[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
+			BufferedImage debugImg = fakeImgSrc.getImage();
 			
-			double value = vs2.getValue( img, orientation, fakeImgCentre);
-			//try { ShowImg si = new ShowImg( img ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
+			double value = vs2.getValue( img, orientation, fakeImgCentre, debugImg);
+			//try { ShowImg si = new ShowImg( debugImg ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 			assertEquals( 1, value, 0.15 );
 		}
 	}
@@ -136,19 +138,19 @@ public class HaarFilterTest extends TestCase {
 	public void testValueNegative()
 	{
 		String[] negEncoded = {
-				"1000100000100010000",
-				"0010110010110001101",
-				"1110001000010000100",
-				"1011011000100001000",
-				"0111101001000101000",
-				"1100100000100001000"
+				"10001000001000100000",
+				"00101100101100011011",
+				"11100010000100001000",
+				"10110110001000010001",
+				"01111010010001010000",
+				"11001000001000010001"
 		};
 		
 		double orientation = Math.PI / 2;
 		FakeImageSource fakeImgSrc = new FakeImageSource();
-		ProcessedGreyImageSource fakepgImgSrc = new ImageGreyProcessor( fakeImgSrc );
+		ImageWhiteBalanceBaseGreyRedProcessor fakepgImgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( fakeImgSrc );
 		VisualSensorGroup vsg2 = new VisualSensorGroup( fakepgImgSrc );
-		VisualSensor vs2 = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT );
+		VisualSensor vs2 = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT, VisualSensorGroup.BITS_CHANNEL );
 		Vec2 fakeImgCentre = new Vec2( 404, 238 );
 		
 		for( int fl = 0; fl < negEncoded.length; fl++ )
@@ -157,11 +159,12 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < negEncoded[fl ].length(); bl++ ) if( negEncoded[fl].charAt(bl)=='1') bits.set(bl);
 			vs2.program( bits );
 			
-			fakeImgSrc.setID( fl );
-			int[][] img = fakepgImgSrc.getProcessedGreyImage();
+			fakeImgSrc.setID( fl + 10);
+			int[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
+			BufferedImage debugImg = fakeImgSrc.getImage();
 			
-			double value = vs2.getValue( img, orientation, fakeImgCentre);
-			// if( fl==0) try { ShowImg si = new ShowImg( img ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
+			double value = vs2.getValue( img, orientation, fakeImgCentre, debugImg);
+			//if( fl==0) try { ShowImg si = new ShowImg( debugImg ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 			
 			assertEquals( 0, value, 0.15 );
 		}

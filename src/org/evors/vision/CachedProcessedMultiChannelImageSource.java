@@ -5,10 +5,10 @@ import java.util.Hashtable;
 public class CachedProcessedMultiChannelImageSource implements ProcessedMultiChannelImageSource {
 
 	protected KeyGenerator cacheKeyGen;
-	protected ProcessedGreyImageSource imgSrc;
+	protected ProcessedMultiChannelImageSource imgSrc;
 	protected Hashtable imgCache = new Hashtable();
 	
-	public CachedProcessedMultiChannelImageSource( ProcessedGreyImageSource imgSrc, KeyGenerator cacheKeyGen ) {
+	public CachedProcessedMultiChannelImageSource( ProcessedMultiChannelImageSource imgSrc, KeyGenerator cacheKeyGen ) {
 		this.cacheKeyGen = cacheKeyGen;
 		this.imgSrc = imgSrc;
 	}
@@ -17,7 +17,7 @@ public class CachedProcessedMultiChannelImageSource implements ProcessedMultiCha
 		Object key = cacheKeyGen.getKey();
 		if( imgCache.get(key) == null )
 		{
-			imgCache.put(key, imgSrc.getProcessedGreyImage() );
+			imgCache.put(key, imgSrc.getProcessedMultiChannelImage() );
 		}
 		return ( int[][][] ) imgCache.get(key);
 	}

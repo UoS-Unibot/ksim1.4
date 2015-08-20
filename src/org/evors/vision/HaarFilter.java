@@ -15,6 +15,7 @@ import org.evors.core.geometry.Vec2;
 public class HaarFilter implements VisualFilter {
 
 	protected static final boolean debug = false; // TODO should be false *** Should optimise away
+	protected Color[] debugActiveColours = { Color.WHITE, Color.RED };
 	protected String filter;
 	protected Vec2 proportionalDimension;
 	protected boolean[][] filterMap; // in top left 0,0 coordinates, true is light
@@ -53,12 +54,12 @@ public class HaarFilter implements VisualFilter {
 		}
 	}
 
-	public double getValue( int[][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc )
+	public double getValue( int[][][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc, int channel )
 	{
-		return getValue( img, rotation, imgCentre, filterCentrePerc, heightPerc, null );
+		return getValue( img, rotation, imgCentre, filterCentrePerc, heightPerc, channel, null );
 	}
 	
-	public double getValue( int[][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc, BufferedImage debugImage )
+	public double getValue( int[][][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc, int channel, BufferedImage debugImage )
 	{
 		// Setup variables
 		int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
@@ -114,14 +115,14 @@ public class HaarFilter implements VisualFilter {
 					Vec2 invOffset = new Vec2( offset.x, -1 * offset.y );
 					Vec2 rayPoint = imgCentre.add( invOffset );
 					rayPoint = new Vec2( rayPoint.x, Math.max(0, Math.min( img[0].length - 1, rayPoint.y)) );
-					int blue = img[ (int) ( rayPoint.x / shrinkFactor ) ][ (int) ( rayPoint.y / shrinkFactor ) ];
+					int blue = img[ (int) ( rayPoint.x / shrinkFactor ) ][ (int) ( rayPoint.y / shrinkFactor ) ][ channel ];
 					
 					// Add to totals
 					pixelCount++;
 					if( filterMap[ column ][ row ] )
 					{
 						valueCountRaw += blue; // light area
-						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x/shrinkFactor), (int) (rayPoint.y/shrinkFactor), Color.WHITE.getRGB() ); }
+						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x/shrinkFactor), (int) (rayPoint.y/shrinkFactor), debugActiveColours[ channel ].getRGB() ); }
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
