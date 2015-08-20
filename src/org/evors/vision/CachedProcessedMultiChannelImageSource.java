@@ -13,13 +13,13 @@ public class CachedProcessedMultiChannelImageSource implements ProcessedMultiCha
 		this.imgSrc = imgSrc;
 	}
 
-	public int[][][] getProcessedMultiChannelImage() {
+	public short[][][] getProcessedMultiChannelImage() {
 		Object key = cacheKeyGen.getKey();
 		if( imgCache.get(key) == null )
 		{
 			imgCache.put(key, imgSrc.getProcessedMultiChannelImage() );
 		}
-		return ( int[][][] ) imgCache.get(key);
+		return ( short[][][] ) imgCache.get(key);
 	}
 
 	public double getRotation() {

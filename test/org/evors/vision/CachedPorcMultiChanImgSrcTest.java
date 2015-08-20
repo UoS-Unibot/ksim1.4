@@ -39,11 +39,11 @@ public class CachedPorcMultiChanImgSrcTest extends TestCase {
 				3
 		};
 		
-		int[][][] lastOne = null;
+		short[][][] lastOne = null;
 		for( int i = 0; i < locations.length; i++ )
 		{
 			posSrc.setPosition( locations[i]);
-			int[][][] thisOne = cachedProcImgSrc.getProcessedMultiChannelImage();
+			short[][][] thisOne = cachedProcImgSrc.getProcessedMultiChannelImage();
 			if( i > 0 && procCount[i]==procCount[i-1])
 			{
 				assertEquals( lastOne, thisOne );

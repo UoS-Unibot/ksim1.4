@@ -1,5 +1,6 @@
 package org.evors.vision;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.BitSet;
 
@@ -10,6 +11,7 @@ import org.evors.core.geometry.Vec2;
 public class VisualSensor implements Programmable {
 
 	protected int bitsFilterType, bitsCentreX, bitsCentreY, bitsHeight, bitsChannel;
+	protected Color[] debugActiveColours = { Color.WHITE, Color.RED };
 	
 	public static final VisualFilter[] FILTER_MAPPING = new VisualFilter[]
 			{ 
@@ -49,12 +51,12 @@ public class VisualSensor implements Programmable {
 		channelIx = EvoRSLib.bitsToInt( bits, currentBit, currentBit + bitsChannel );
 	}
 	
-	public double getValue( int[][][] img, double rotation, Vec2 imgCentre, BufferedImage debugImage )
+	public double getValue( short[][][] img, double rotation, Vec2 imgCentre, BufferedImage debugImage )
 	{
-		return filter.getValue( img, rotation, imgCentre, centrePerc, heightPerc, channelIx, debugImage );
+		return filter.getValue( img[ channelIx ], rotation, imgCentre, centrePerc, heightPerc, debugImage, this.debugActiveColours[ channelIx ] );
 	}
 	
-	public double getValue( int[][][] img, double rotation, Vec2 imgCentre )
+	public double getValue( short[][][] img, double rotation, Vec2 imgCentre )
 	{
 		return getValue( img, rotation, imgCentre, null );
 	}

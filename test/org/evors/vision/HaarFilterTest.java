@@ -107,7 +107,7 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			
 			vs.program( bits );
-			int[][][] img = pgimgSrc.getProcessedMultiChannelImage();
+			short[][][] img = pgimgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = this.imgSource.getImage();
 			double value = vs.getValue(img, pgimgSrc.getRotation(), imgCentre, debugImg);
 			
@@ -126,7 +126,7 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			
 			vs.program( bits );
-			int[][][] img = pgSimgSrc.getProcessedMultiChannelImage();
+			short[][][] img = pgSimgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = this.imgSSource.getImage();
 			double value = vs.getValue(img, pgSimgSrc.getRotation(), imgCentre, debugImg);
 			
@@ -145,13 +145,13 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			
 			vs.program( bits );
-			int[][][] img = pgSimgSrc.getProcessedMultiChannelImage();
+			short[][][] img = pgSimgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = this.imgWSource.getImage();
 			double value = vs.getValue(img, pgWimgSrc.getRotation(), imgCentre, debugImg);
 			
 			ShowImg si = new ShowImg( debugImg ); si.show();
 		}
-		try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
+		//try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 	}
 	
 	public void testValuePositive()
@@ -170,7 +170,7 @@ public class HaarFilterTest extends TestCase {
 			vs2.program( bits );
 			
 			fakeImgSrc.setID( fl + 10 );
-			int[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
+			short[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = fakeImgSrc.getImage();
 			
 			double value = vs2.getValue( img, orientation, fakeImgCentre, debugImg);
@@ -204,7 +204,7 @@ public class HaarFilterTest extends TestCase {
 			vs2.program( bits );
 			
 			fakeImgSrc.setID( fl + 10);
-			int[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
+			short[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = fakeImgSrc.getImage();
 			
 			double value = vs2.getValue( img, orientation, fakeImgCentre, debugImg);

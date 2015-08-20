@@ -43,27 +43,27 @@ public class WhiteBalanceBaseTest extends TestCase {
 		for( int i = 0; i < locations.length; i++ )
 		{
 			posSrc.setPosition( locations[ i ] );
-			int[][][] pImg = srcs[ i ].getProcessedMultiChannelImage();
+			short[][][] pImg = srcs[ i ].getProcessedMultiChannelImage();
 			int darkest = Integer.MAX_VALUE;
 			Vec2 darkestP = null;
 			int reddest = -1;
 			Vec2 reddestP = null;
-			for( int x = 0; x < pImg.length; x++ )
+			for( int x = 0; x < pImg[0].length; x++ )
 			{
-				for( int y = 0; y < pImg[0].length; y++ )
+				for( int y = 0; y < pImg[0][0].length; y++ )
 				{
 					Vec2 p = new Vec2( x,y );
 					double r = p.distance( centre );
 					if( r > IMG_DISC_RADIUS && r < IMG_OUTER_RADIUS )
 					{
-						if( pImg[x][y][ImageWhiteBalanceBaseGreyRedProcessor.IX_GREY] < darkest )
+						if( pImg[ImageWhiteBalanceBaseGreyRedProcessor.IX_GREY][x][y] < darkest )
 						{
-							darkest = pImg[x][y][ImageWhiteBalanceBaseGreyRedProcessor.IX_GREY];
+							darkest = pImg[ImageWhiteBalanceBaseGreyRedProcessor.IX_GREY][x][y];
 							darkestP = p;
 						}
-						if( pImg[x][y][ImageWhiteBalanceBaseGreyRedProcessor.IX_RED] > reddest )
+						if( pImg[ImageWhiteBalanceBaseGreyRedProcessor.IX_RED][x][y] > reddest )
 						{
-							reddest = pImg[x][y][ImageWhiteBalanceBaseGreyRedProcessor.IX_RED];
+							reddest = pImg[ImageWhiteBalanceBaseGreyRedProcessor.IX_RED][x][y];
 							reddestP = p;
 						}
 					}

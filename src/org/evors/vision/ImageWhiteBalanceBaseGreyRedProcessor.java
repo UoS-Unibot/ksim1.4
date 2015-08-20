@@ -16,12 +16,12 @@ public class ImageWhiteBalanceBaseGreyRedProcessor implements ProcessedMultiChan
 		this.imgSrc = imgSrc;
 	}
 
-	public int[][][] getProcessedMultiChannelImage() {
+	public short[][][] getProcessedMultiChannelImage() {
 		
 		BufferedImage img = getImageSourceImage();
 		if( debugMode ) { debugImage = img; processedCount++; }
 		
-		int[][][] rv = new int[ img.getWidth() ][ img.getHeight() ][ 2 ];
+		short[][][] rv = new short[ 2 ][ img.getWidth() ][ img.getHeight() ];
 		
 		int totalRed = 0, totalBlue = 0, totalGreen = 0;
 		for( int x = 0; x < img.getWidth(); x++ )
@@ -53,8 +53,8 @@ public class ImageWhiteBalanceBaseGreyRedProcessor implements ProcessedMultiChan
 				double green = Math.max(0,Math.min(255, ((pixel.getGreen() - greenBase) * greenRatio * extraRatio)));
 				double blue = Math.max(0,Math.min(255, ((pixel.getBlue() - blueBase) * blueRatio * extraRatio)));
 				if( debugMode ) debugImage.setRGB(x, y, new Color( (int)red,(int)green,(int)blue).getRGB() );
-				rv[ x ][ y ][ IX_GREY ] = (int)( red * 0.2989 + green * 0.587 + blue * 0.1140 );
-				rv[ x ][ y ][ IX_RED ] = (int)( red * ( Math.min( 1, red / ( green + blue ) ) ) );
+				rv[ IX_GREY ][ x ][ y ] = (short)( red * 0.2989 + green * 0.587 + blue * 0.1140 );
+				rv[ IX_RED ][ x ][ y ] = (short)( red * ( Math.min( 1, red / ( green + blue ) ) ) );
 			}
 		}
 		

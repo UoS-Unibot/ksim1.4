@@ -26,7 +26,7 @@ public class MultipleProcessedMultiChannelImageSource implements ProcessedMultiC
 		this( sources, RESOLVE_RANDOM );
 	}
 
-	public int[][][] getProcessedMultiChannelImage() {
+	public short[][][] getProcessedMultiChannelImage() {
 		int sourceIx;
 		if( resolutionMethod == RESOLVE_RANDOM )
 		{
@@ -36,7 +36,7 @@ public class MultipleProcessedMultiChannelImageSource implements ProcessedMultiC
 			lastSource = ( lastSource + 1 ) % sources.length;
 			sourceIx = lastSource;
 		}
-		int[][][] rv = sources[ sourceIx ].getProcessedMultiChannelImage();
+		short[][][] rv = sources[ sourceIx ].getProcessedMultiChannelImage();
 		rotation = sources[ sourceIx ].getRotation();
 		return rv;
 	}

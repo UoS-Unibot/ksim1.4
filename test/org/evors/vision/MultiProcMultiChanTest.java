@@ -23,7 +23,7 @@ public class MultiProcMultiChanTest extends TestCase {
 		
 		for( int i = 0; i < 10; i++ )
 		{
-			int[][][] pImg = mpmci.getProcessedMultiChannelImage();
+			short[][][] pImg = mpmci.getProcessedMultiChannelImage();
 			double orientation = mpmci.getRotation();
 			
 			double desOrientation = pImg[0][0][0] > 123 ? 0 : Math.PI;
@@ -37,7 +37,7 @@ public class MultiProcMultiChanTest extends TestCase {
 		
 		for( int i = 0; i < 10; i++ )
 		{
-			int[][][] pImg = mpmci.getProcessedMultiChannelImage();
+			short[][][] pImg = mpmci.getProcessedMultiChannelImage();
 			double orientation = mpmci.getRotation();
 			
 			double desOrientation = i % 2 == 0 ? 0 : Math.PI;

@@ -2,8 +2,10 @@ package org.evors.vision;
 
 /**
  * All images are represented by a three-dimensional int array
- * matching the x,y coordinates of the original image and each sub array value representing
- * the 0-255 intensity in each channel
+ * matching the x,y coordinates of the original image. The first indexer selects
+ * the 0-255 intensity in each channel.
+ * 
+ * So [channel][x][y]
  * 
  * @author michaelgarvie
  *
@@ -16,7 +18,7 @@ public interface ProcessedMultiChannelImageSource {
 	 * represented as a three dimensional int array with identical coordinates
 	 * to the original image and the 0-255 intensity in each channel
 	 */
-	public int[][][] getProcessedMultiChannelImage();
+	public short[][][] getProcessedMultiChannelImage();
 	
 	/**
 	 * 

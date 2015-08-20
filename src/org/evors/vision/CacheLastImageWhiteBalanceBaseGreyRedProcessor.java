@@ -10,7 +10,7 @@ public class CacheLastImageWhiteBalanceBaseGreyRedProcessor extends ImageWhiteBa
 		super(imgSrc);
 	}
 	
-	public synchronized int[][][] getProcessedMultiChannelImage() // No real need for synchronisation right now as a single thread calls these one after the other
+	public synchronized short[][][] getProcessedMultiChannelImage() // No real need for synchronisation right now as a single thread calls these one after the other
 	{
 		return super.getProcessedMultiChannelImage();
 	}
