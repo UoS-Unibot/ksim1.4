@@ -11,6 +11,7 @@ public class FakeImageSource implements ImageSource {
 	protected String path = "/Users/michaelgarvie/git/ksim1.4/test/org/evors/vision/img/";
 	protected String ext = ".png";
 	protected int id = 0;
+	protected double rotation = 0;
 	
 	public FakeImageSource() {
 		// TODO Auto-generated constructor stub
@@ -31,9 +32,13 @@ public class FakeImageSource implements ImageSource {
 		return img;
 	}
 
+	public void setRotation( double rotation )
+	{
+		this.rotation = rotation;
+	}
+	
 	public double getRotation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return rotation;
 	}
 
 }

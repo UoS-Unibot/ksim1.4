@@ -12,12 +12,17 @@ public class MultipleProcessedMultiChannelImageSource implements ProcessedMultiC
 	public static final int RESOLVE_RANDOM = 0, RESOLVE_ITERATE = 1;
 	protected int resolutionMethod = RESOLVE_RANDOM;
 	protected ProcessedMultiChannelImageSource[] sources;
-	protected int lastSource = 0;
+	protected int lastSource = -1;
 	protected double rotation = 0;
 	protected Random rnd = new Random();
 
-	public MultipleProcessedMultiChannelImageSource( ProcessedMultiChannelImageSource[] sources ) {
+	public MultipleProcessedMultiChannelImageSource( ProcessedMultiChannelImageSource[] sources, int resolutionMethod ) {
 		this.sources = sources;
+		this.resolutionMethod = resolutionMethod;
+	}		
+	
+	public MultipleProcessedMultiChannelImageSource( ProcessedMultiChannelImageSource[] sources ) {
+		this( sources, RESOLVE_RANDOM );
 	}
 
 	public int[][][] getProcessedMultiChannelImage() {

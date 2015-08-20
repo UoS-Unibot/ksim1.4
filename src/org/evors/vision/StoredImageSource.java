@@ -22,19 +22,22 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 	protected boolean cache = false;
 
 	protected double worldSampledHeading = 0; // Heading 0 = N
+	protected String ext = "N";
 	protected Vec2 worldSampledCameraOffset;
 	
 	protected BufferedImage[][] imgCache = new BufferedImage[ STORED_X_MAX + 1 ][ STORED_Y_MAX + 1 ];
 	
-	public StoredImageSource( String imagePath, PositionOrientationSource locationSource, double worldSampledHeading )
+	public StoredImageSource( String imagePath, PositionOrientationSource locationSource, double worldSampledHeading, String ext )
 	{
 		this.imagePath = imagePath;
 		this.locationSource = locationSource;
+		this.worldSampledHeading = worldSampledHeading;
+		this.ext = ext;
 		worldSampledCameraOffset = new Vec2( CAMERA_FROM_CENTRE * Math.sin( worldSampledHeading ), CAMERA_FROM_CENTRE * Math.cos( worldSampledHeading ) );
 	}
 	
 	public StoredImageSource( String imagePath, PositionOrientationSource locationSource ) {
-		this( imagePath, locationSource, 0 );
+		this( imagePath, locationSource, 0, "N" );
 	}
 
 	public BufferedImage getImage() {
@@ -51,7 +54,7 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 		if( imgCache[ storedPhoto_x ][ storedPhoto_y ] == null ) 
 		{
 			// 2b. Read image
-			String imageFile = imagePath + storedPhoto_y + "_" + storedPhoto_x + ".jpg"; // [sic] bad day when captured!..
+			String imageFile = imagePath + storedPhoto_x + "_" + storedPhoto_y + "-" + ext + ".jpg"; // [sic] bad day when captured!..
 			
 			try {
 				rv = ImageIO.read(new File( imageFile ));
