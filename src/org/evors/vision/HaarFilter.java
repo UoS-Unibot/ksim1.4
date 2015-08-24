@@ -53,21 +53,30 @@ public class HaarFilter implements VisualFilter {
 		}
 	}
 
-	public double getValue( short[][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc )
+	public double getValue( short[][] img, double rotation, Vec2 filterCentrePerc, double heightPerc )
 	{
-		return getValue( img, rotation, imgCentre, filterCentrePerc, heightPerc, null, null );
+		return getValue( img, rotation, filterCentrePerc, heightPerc, null, null );
 	}
 	
-	public double getValue( short[][] img, double rotation, Vec2 imgCentre, Vec2 filterCentrePerc, double heightPerc, BufferedImage debugImage, Color debugChannelColour )
+	public double getValue( short[][] img, double rotation, Vec2 filterCentrePerc, double heightPerc, BufferedImage debugImage, Color debugChannelColour )
 	{
 		// Setup variables
 		int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
-		double shrinkFactor = 1; // *** Need to shrink centre, radiuses etc..
+		Vec2 imgCentre = new Vec2( VisualSensorGroup.IMG_GUESS_CENTRE_X, VisualSensorGroup.IMG_GUESS_CENTRE_Y );
+		
+		double shrinkFactor = 1;
+		if( img.length != VisualSensorGroup.IMG_WIDTH )
+		{
+			shrinkFactor = ( ( double ) VisualSensorGroup.IMG_WIDTH ) / img.length;
+			r_in /= shrinkFactor;
+			r_out /= shrinkFactor;
+			imgCentre = new Vec2( imgCentre.x / shrinkFactor, imgCentre.y / shrinkFactor );
+		}
 		
 		// Bias height so in 0.5 -> 2.0 range
 		heightPerc = heightPerc * 1.5 + 0.5;
 		
-		if( debugImage != null ) debugImage.setRGB( (int) (imgCentre.x/shrinkFactor), (int) (imgCentre.y/shrinkFactor), Color.WHITE.getRGB() );
+		if( debugImage != null ) debugImage.setRGB( (int) (imgCentre.x), (int) (imgCentre.y), Color.WHITE.getRGB() );
 		
 		// Use polar coordinates (orientation is "heading")
 		
@@ -104,7 +113,7 @@ public class HaarFilter implements VisualFilter {
 			// then along line from r_min (near ceiling) to r_max (near floor)
 			for( double rayR = r_min; rayR < r_max; rayR++ )
 			{
-				if( rayR > VisualSensorGroup.IMG_DISC_RADIUS && rayR < VisualSensorGroup.IMG_OUTER_RADIUS )
+				if( rayR > r_in && rayR < r_out )
 				{
 					int row = ( int ) ( ( rayR - r_min ) * proportionalDimension.y / ( r_max - r_min ) );
 				
@@ -121,14 +130,14 @@ public class HaarFilter implements VisualFilter {
 					if( filterMap[ column ][ row ] )
 					{
 						valueCountRaw += blue; // light area
-						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x/shrinkFactor), (int) (rayPoint.y/shrinkFactor), debugChannelColour.getRGB() ); }
+						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), debugChannelColour.getRGB() ); }
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
 					else
 					{
 						valueCountRaw += ( 255 - blue ); // dark area
-						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x/shrinkFactor), (int) (rayPoint.y/shrinkFactor), Color.BLACK.getRGB() ); }
+						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), Color.BLACK.getRGB() ); }
 						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 					}
 				}

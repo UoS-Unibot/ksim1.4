@@ -85,14 +85,14 @@ public class VisualSensorGroup implements Programmable {
 		// 2.
 		
 		// 2iii. Find centre
-		Vec2 imgCentre = new Vec2( this.IMG_GUESS_CENTRE_X, this.IMG_GUESS_CENTRE_Y );
+		// Glued now!
 		
 		// 3 & 4.
 		
 		BufferedImage debugWorkImage = this.debugImgSource == null ? null : debugImgSource.getImage();
 		for( int sl = 0; sl < DEFAULT_SENSOR_COUNT; sl++ )
 		{
-			rv[ sl ] = thresholds[ sl ].threshold( sensors[ sl ].getValue( pImg, rotation, imgCentre, debugWorkImage ) );
+			rv[ sl ] = thresholds[ sl ].threshold( sensors[ sl ].getValue( pImg, rotation, debugWorkImage ) );
 			rv[ sl ] += EvoRSLib.uniformNoise( 0.10 ); // *** was 0.15
 			rv[ sl ] = Math.max( 0.0, Math.min( 1.0, rv[ sl ]) );
 		}

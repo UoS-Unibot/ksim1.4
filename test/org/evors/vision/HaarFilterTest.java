@@ -15,10 +15,12 @@ public class HaarFilterTest extends TestCase {
 	StoredImageSource imgSource = new StoredImageSource(imgPath, posSrc);
 	StoredImageSource imgSSource = new StoredImageSource( imgPath, posSrc, Math.PI, "S" );
 	StoredImageSource imgWSource = new StoredImageSource( imgPath, posSrc, Math.PI / 2, "W" );
+	StoredImageSource quarterImgSource = new StoredImageSource( imgPath + "quarter/", posSrc );
 	
 	ProcessedMultiChannelImageSource pgimgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( imgSource );
 	ProcessedMultiChannelImageSource pgSimgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( imgSSource );
 	ProcessedMultiChannelImageSource pgWimgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( imgWSource );
+	ProcessedMultiChannelImageSource quarterPGImgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( quarterImgSource );
 	VisualSensorGroup vsg = new VisualSensorGroup( pgimgSrc );
 	VisualSensor vs = new VisualSensor( vsg, VisualSensorGroup.BITS_FILTER_TYPE, VisualSensorGroup.BITS_CENTRE_X, VisualSensorGroup.BITS_CENTRE_Y, VisualSensorGroup.BITS_HEIGHT, VisualSensorGroup.BITS_CHANNEL );
 	Vec2 imgCentre = new Vec2( VisualSensorGroup.IMG_GUESS_CENTRE_X, VisualSensorGroup.IMG_GUESS_CENTRE_Y );
@@ -36,14 +38,21 @@ public class HaarFilterTest extends TestCase {
 			};
 	
 	String[] encoded = {
-			"01101000001000100000",
+			"01101000001000100000", // 011 0100
 			"01001100101100011011",
 			"00000010000100001000",
 			"11010110001000010001",
 			"10011010010001010000",
 			"10101000001000010001"
 	};
-	
+	/*
+	Vec2{0.49206349206349204,0.4838709677419355}
+	Vec2{0.2698412698412698,0.25806451612903225}
+	Vec2{0.1111111111111111,0.22580645161290322}
+	Vec2{0.873015873015873,0.4838709677419355}
+	Vec2{0.6190476190476191,0.967741935483871}
+	Vec2{0.49206349206349204,0.4838709677419355}
+	*/
 	public HaarFilterTest( String name) {
 		super(name);
 	}
@@ -109,9 +118,9 @@ public class HaarFilterTest extends TestCase {
 			vs.program( bits );
 			short[][][] img = pgimgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = this.imgSource.getImage();
-			double value = vs.getValue(img, pgimgSrc.getRotation(), imgCentre, debugImg);
+			double value = vs.getValue(img, pgimgSrc.getRotation(), debugImg);
 			
-			//ShowImg si = new ShowImg( debugImg ); si.show(); si.setLocation(400, 400 );
+			//ShowImg si = new ShowImg( debugImg ); si.show(); si.setLocation(400, 300 );
 		}
 		//try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 	}
@@ -128,7 +137,7 @@ public class HaarFilterTest extends TestCase {
 			vs.program( bits );
 			short[][][] img = pgSimgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = this.imgSSource.getImage();
-			double value = vs.getValue(img, pgSimgSrc.getRotation(), imgCentre, debugImg);
+			double value = vs.getValue(img, pgSimgSrc.getRotation(), debugImg);
 			
 			//ShowImg si = new ShowImg( debugImg ); si.show();
 		}
@@ -147,16 +156,35 @@ public class HaarFilterTest extends TestCase {
 			vs.program( bits );
 			short[][][] img = pgSimgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = this.imgWSource.getImage();
-			double value = vs.getValue(img, pgWimgSrc.getRotation(), imgCentre, debugImg);
+			double value = vs.getValue(img, pgWimgSrc.getRotation(), debugImg);
 			
-			ShowImg si = new ShowImg( debugImg ); si.show();
+			//ShowImg si = new ShowImg( debugImg ); si.show();
 		}
 		//try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 	}
 	
+	public void testFilterPositionQuarter()
+	{
+		double orientation = Math.PI * 3 / 2;
+		posSrc.setOrientation(orientation);
+		for( int fl = 0; fl < encoded.length; fl++ )
+		{
+			BitSet bits = new BitSet();
+			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
+			
+			vs.program( bits );
+			short[][][] img = quarterPGImgSrc.getProcessedMultiChannelImage();
+			BufferedImage debugImg = this.quarterImgSource.getImage();
+			double value = vs.getValue(img, quarterPGImgSrc.getRotation(), debugImg);
+			
+			ShowImg si = new ShowImg( debugImg ); si.show();
+		}
+		try { Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
+	}
+	
 	public void testValuePositive()
 	{
-		double orientation = Math.PI / 2;
+		double orientation = Math.PI * 3 / 2;
 		FakeImageSource fakeImgSrc = new FakeImageSource();
 		ImageWhiteBalanceBaseGreyRedProcessor fakepgImgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( fakeImgSrc );
 		VisualSensorGroup vsg2 = new VisualSensorGroup( fakepgImgSrc );
@@ -169,11 +197,11 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < encoded[fl ].length(); bl++ ) if( encoded[fl].charAt(bl)=='1') bits.set(bl);
 			vs2.program( bits );
 			
-			fakeImgSrc.setID( fl + 10 );
+			fakeImgSrc.setID( fl + 20 );
 			short[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = fakeImgSrc.getImage();
 			
-			double value = vs2.getValue( img, orientation, fakeImgCentre, debugImg);
+			double value = vs2.getValue( img, orientation, debugImg);
 			//try { ShowImg si = new ShowImg( debugImg ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 			assertEquals( 1, value, 0.15 );
 		}
@@ -190,7 +218,7 @@ public class HaarFilterTest extends TestCase {
 				"11001000001000010001"
 		};
 		
-		double orientation = Math.PI / 2;
+		double orientation = Math.PI * 3 / 2;
 		FakeImageSource fakeImgSrc = new FakeImageSource();
 		ImageWhiteBalanceBaseGreyRedProcessor fakepgImgSrc = new ImageWhiteBalanceBaseGreyRedProcessor( fakeImgSrc );
 		VisualSensorGroup vsg2 = new VisualSensorGroup( fakepgImgSrc );
@@ -203,11 +231,11 @@ public class HaarFilterTest extends TestCase {
 			for( int bl = 0; bl < negEncoded[fl ].length(); bl++ ) if( negEncoded[fl].charAt(bl)=='1') bits.set(bl);
 			vs2.program( bits );
 			
-			fakeImgSrc.setID( fl + 10);
+			fakeImgSrc.setID( fl + 20);
 			short[][][] img = fakepgImgSrc.getProcessedMultiChannelImage();
 			BufferedImage debugImg = fakeImgSrc.getImage();
 			
-			double value = vs2.getValue( img, orientation, fakeImgCentre, debugImg);
+			double value = vs2.getValue( img, orientation, debugImg);
 			//if( fl==0) try { ShowImg si = new ShowImg( debugImg ); si.show();Thread.currentThread().sleep( 1000 * 600 );} catch (InterruptedException e) {}
 			
 			assertEquals( 0, value, 0.15 );

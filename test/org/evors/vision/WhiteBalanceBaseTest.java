@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 
 public class WhiteBalanceBaseTest extends TestCase {
 	
-	protected static String imgPath = "/Users/michaelgarvie/git/trainingData/vision/arena19Aug/";
+	protected static String imgPath = "/Users/michaelgarvie/git/trainingData/vision/arena19Aug/quarter/";
 	FakePositionOrientationSource posSrc = new FakePositionOrientationSource();
 	StoredImageSource imgSrc = new StoredImageSource(imgPath, posSrc);
 	StoredImageSource imgSSrc = new StoredImageSource( imgPath, posSrc, Math.PI, "S" );
@@ -28,8 +28,8 @@ public class WhiteBalanceBaseTest extends TestCase {
 	{
 		Vec2[] locations = {
 				new Vec2( 6.8, 9 ), // 0,0
-				new Vec2( 6.8 + 5*6, 9 + 5*12 ),
-				new Vec2( 6.8 + 5*3, 9-3.7*2+5*13 )
+				new Vec2( 6.8 + 5*6, 9 + 5*12 ), // 6,12
+				new Vec2( 6.8 + 5*3, 9-3.7*2+5*13 ) // 
 		};
 		
 		ImageWhiteBalanceBaseGreyRedProcessor[] srcs = {
@@ -39,6 +39,10 @@ public class WhiteBalanceBaseTest extends TestCase {
 		};
 		
 		Vec2 centre = new Vec2( IMG_GUESS_CENTRE_X, IMG_GUESS_CENTRE_Y );
+		double r_out = IMG_OUTER_RADIUS, r_in = IMG_DISC_RADIUS;
+		double scale = 4;
+		centre = new Vec2( centre.x/scale, centre.y/scale );
+		r_out /= scale; r_in /= scale;
 		
 		for( int i = 0; i < locations.length; i++ )
 		{
@@ -54,7 +58,7 @@ public class WhiteBalanceBaseTest extends TestCase {
 				{
 					Vec2 p = new Vec2( x,y );
 					double r = p.distance( centre );
-					if( r > IMG_DISC_RADIUS && r < IMG_OUTER_RADIUS )
+					if( r > r_in && r < r_out )
 					{
 						if( pImg[ImageWhiteBalanceBaseGreyRedProcessor.IX_GREY][x][y] < darkest )
 						{
@@ -89,7 +93,7 @@ public class WhiteBalanceBaseTest extends TestCase {
 			posSrc.setPosition( locations[ i ] );
 			procImgSrc.getProcessedMultiChannelImage();
 			showImg.setImage( procImgSrc.debugImage );
-			//Thread.currentThread().sleep( 10000 );
+			//Thread.currentThread().sleep( 5000 );
 		}
 	}
 

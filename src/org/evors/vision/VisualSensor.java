@@ -51,14 +51,14 @@ public class VisualSensor implements Programmable {
 		channelIx = EvoRSLib.bitsToInt( bits, currentBit, currentBit + bitsChannel );
 	}
 	
-	public double getValue( short[][][] img, double rotation, Vec2 imgCentre, BufferedImage debugImage )
+	public double getValue( short[][][] img, double rotation, BufferedImage debugImage )
 	{
-		return filter.getValue( img[ channelIx ], rotation, imgCentre, centrePerc, heightPerc, debugImage, this.debugActiveColours[ channelIx ] );
+		return filter.getValue( img[ channelIx ], rotation, centrePerc, heightPerc, debugImage, this.debugActiveColours[ channelIx ] );
 	}
 	
-	public double getValue( short[][][] img, double rotation, Vec2 imgCentre )
+	public double getValue( short[][][] img, double rotation )
 	{
-		return getValue( img, rotation, imgCentre, null );
+		return getValue( img, rotation, null );
 	}
 	
 	public Vec2 getCentrePerc(){ return centrePerc; }

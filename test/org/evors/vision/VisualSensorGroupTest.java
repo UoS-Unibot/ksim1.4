@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 
 public class VisualSensorGroupTest extends TestCase {
 
-	protected static String imgPath = "/Users/michaelgarvie/Documents/eh/camera/arena/";
+	protected static String imgPath = "/Users/michaelgarvie/git/trainingData/vision/arenaJune/";
 	protected static FakePositionOrientationSource posSrc = new FakePositionOrientationSource();
 	protected static StoredImageSource imgSrc = new StoredImageSource( imgPath, posSrc );
 	
