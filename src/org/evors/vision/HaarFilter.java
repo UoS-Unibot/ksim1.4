@@ -123,7 +123,7 @@ public class HaarFilter implements VisualFilter {
 					Vec2 invOffset = new Vec2( offset.x, -1 * offset.y );
 					Vec2 rayPoint = imgCentre.add( invOffset );
 					rayPoint = new Vec2( rayPoint.x, Math.max(0, Math.min( img[0].length - 1, rayPoint.y)) );
-					int blue = img[ (int) ( rayPoint.x / shrinkFactor ) ][ (int) ( rayPoint.y / shrinkFactor ) ];
+					int blue = img[ (int) ( rayPoint.x ) ][ (int) ( rayPoint.y ) ];
 					
 					// Add to totals
 					pixelCount++;
@@ -131,22 +131,18 @@ public class HaarFilter implements VisualFilter {
 					{
 						valueCountRaw += blue; // light area
 						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), debugChannelColour.getRGB() ); }
-						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
 					else
 					{
 						valueCountRaw += ( 255 - blue ); // dark area
 						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), Color.BLACK.getRGB() ); }
-						//blue = img.getRGB( (int) rayPoint.x, (int) rayPoint.y ) & 0xff;
 					}
 				}
 			}
 		}
 		
 		double zeroToOneValue = pixelCount == 0 ? 0 : valueCountRaw / ( 255.0 * pixelCount );
-		
-		//double zeroToOneValue = minusOneToOneValue / 2 + 1;
 		
 		return Math.min(1.0, zeroToOneValue);
 	}
