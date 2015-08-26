@@ -50,8 +50,8 @@ public class ImageWhiteBalanceBaseGreyRedProcessor implements ProcessedMultiChan
 			{
 				Color pixel = new Color( img.getRGB(x, y));
 				double red = Math.max(0,Math.min(255, (( pixel.getRed() - redBase )* redRatio * extraRatio) ));
-				double green = Math.max(0,Math.min(255, ((pixel.getGreen() - greenBase) * greenRatio * extraRatio)));
-				double blue = Math.max(0,Math.min(255, ((pixel.getBlue() - blueBase) * blueRatio * extraRatio)));
+				double green = Math.max(0.0000001,Math.min(255, ((pixel.getGreen() - greenBase) * greenRatio * extraRatio)));
+				double blue = Math.max(0.0000001,Math.min(255, ((pixel.getBlue() - blueBase) * blueRatio * extraRatio)));
 				if( debugMode ) debugImage.setRGB(x, y, new Color( (int)red,(int)green,(int)blue).getRGB() );
 				rv[ IX_GREY ][ x ][ y ] = (short)( red * 0.2989 + green * 0.587 + blue * 0.1140 );
 				rv[ IX_RED ][ x ][ y ] = (short)( red * ( Math.min( 1, red / ( green + blue ) ) ) );
