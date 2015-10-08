@@ -103,15 +103,20 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     }
 
     public double[] getInput() {
-        double[] input = new double[ NUM_IRs + visualSensorGroup.getSensorCount() ];
+    	int inputChannels = NUM_IRs;
+    	if( visualSensorGroup != null ) inputChannels += visualSensorGroup.getSensorCount();
+        double[] input = new double[ inputChannels ];
         for (int i = 0; i < NUM_IRs; i++) {
             input[i] = getIRReading(irAngles[i]);
             maxIR = Math.max( maxIR, input[i]);
         }
-        double[] visualSensors = visualSensorGroup.getReadings();
-        for( int i = NUM_IRs; i < input.length; i++ )
+        if( visualSensorGroup != null )
         {
-        	input[i] = visualSensors[ i - NUM_IRs ];
+	        double[] visualSensors = visualSensorGroup.getReadings();
+	        for( int i = NUM_IRs; i < input.length; i++ )
+	        {
+	        	input[i] = visualSensors[ i - NUM_IRs ];
+	        }
         }
         return input;
     }
