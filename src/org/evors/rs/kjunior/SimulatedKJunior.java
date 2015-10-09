@@ -123,7 +123,9 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
 
     public double convertSpeed(double x) {
         double y = 0;
-
+        
+        if( x * x < 9 ) x = 0; // Values < 3 ignored
+        
         if (x <= 15 && x >= -15) {
             y = 0.6 * x;
         } else if (x > 15 || x < -15) {
