@@ -12,7 +12,6 @@ import org.evors.core.geometry.Vec2;
 
 public class StoredImageSource implements ImageSource, KeyGenerator {
 
-	protected double CAMERA_FROM_CENTRE = 3.7; // radius of camera from centre of robot
 	protected int STORED_Y_MAX = 19;
 	protected int STORED_X_MAX = 13;
 	
@@ -33,7 +32,7 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 		this.locationSource = locationSource;
 		this.worldSampledHeading = worldSampledHeading;
 		this.ext = ext;
-		worldSampledCameraOffset = new Vec2( CAMERA_FROM_CENTRE * Math.sin( worldSampledHeading ), CAMERA_FROM_CENTRE * Math.cos( worldSampledHeading ) );
+		worldSampledCameraOffset = new Vec2( VisionLib.CAMERA_FROM_CENTRE * Math.sin( worldSampledHeading ), VisionLib.CAMERA_FROM_CENTRE * Math.cos( worldSampledHeading ) );
 	}
 	
 	public StoredImageSource( String imagePath, PositionOrientationSource locationSource ) {
@@ -89,7 +88,7 @@ public class StoredImageSource implements ImageSource, KeyGenerator {
 		double robotHeading = locationSource.getOrientation();
 		
 		// 1a. Find simulated camera position
-		Vec2 cameraPosition = robotPosition.translatePolar( EvoRSLib.headingToPolar(robotHeading), CAMERA_FROM_CENTRE );
+		Vec2 cameraPosition = robotPosition.translatePolar( EvoRSLib.headingToPolar(robotHeading), VisionLib.CAMERA_FROM_CENTRE );
 		
 		// 1b. Find stored photo position
 		
