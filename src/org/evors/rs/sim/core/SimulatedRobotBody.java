@@ -1,12 +1,18 @@
 package org.evors.rs.sim.core;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.evors.core.EvoRSLib;
 import org.evors.core.PositionOrientationSource;
 import org.evors.core.RobotBody;
+import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Shape2D;
 import org.evors.core.geometry.Vec2;
+import org.evors.vision.CircleCollectionSource;
 
-public abstract class SimulatedRobotBody implements RobotBody, PositionOrientationSource {
+public abstract class SimulatedRobotBody implements RobotBody, PositionOrientationSource, CircleCollectionSource {
 
     private final double timeStepLength;
     private Vec2 position;
@@ -128,5 +134,15 @@ public abstract class SimulatedRobotBody implements RobotBody, PositionOrientati
     {
     	graphData = new StringBuffer();
     }
+    
+	public Collection getCircles() {
+		Vector circles = new Vector(); // *** cache for speed?
+		for( Iterator worldObjIt = world.getObjects().iterator(); worldObjIt.hasNext(); )
+		{
+			Object obj = worldObjIt.next();
+			if( obj instanceof Circle ) circles.add( obj );
+		}
+		return circles;
+	}
 
 }

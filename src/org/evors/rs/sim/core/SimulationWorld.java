@@ -101,7 +101,7 @@ public class SimulationWorld {
      *
      * @param object WorldObj to add.
      */
-    public void createWorldObject(Polygon object) {
+    public void createWorldObject(Shape2D object) {
         objects.add(object);
     }
 

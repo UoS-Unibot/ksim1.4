@@ -8,14 +8,15 @@ import org.evors.core.PositionOrientationSource;
 import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Vec2;
 
-public class CylinderCGIInsertionPMCIS implements ProcessedMultiChannelImageSource, ImageSource {
+public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSource, ImageSource {
 
 	protected ProcessedMultiChannelImageSource yokePMCIS;
 	protected ColourCollectionSource colourSource;
 	protected CircleCollectionSource circleSource;
 	protected PositionOrientationSource locationSource;
+	short[][][] lastImg;
 	
-	public CylinderCGIInsertionPMCIS( ProcessedMultiChannelImageSource yokePMCIS, CircleCollectionSource circleSource, ColourCollectionSource colourSource, PositionOrientationSource locationSource ) {
+	public CylinderCGIInjectionPMCIS( ProcessedMultiChannelImageSource yokePMCIS, CircleCollectionSource circleSource, ColourCollectionSource colourSource, PositionOrientationSource locationSource ) {
 		this.yokePMCIS = yokePMCIS;
 		this.colourSource = colourSource;
 		this.circleSource = circleSource;
@@ -98,12 +99,21 @@ public class CylinderCGIInsertionPMCIS implements ProcessedMultiChannelImageSour
 				}
 			}
 		}
-		return img;
+		lastImg = img;
+		return lastImg;
 	}
 	
 	public BufferedImage getImage() {
-		// TODO Generate debug image - assume called after getPMCI
-		return null;
+		BufferedImage img = new BufferedImage( lastImg[ 0 ].length, lastImg[ 0 ][ 0 ].length, BufferedImage.TYPE_INT_RGB );
+		for( int x = 0; x < lastImg[ 0 ].length; x++ )
+		{
+			for( int y = 0; y < lastImg[ 0 ][ 0 ].length; y++ )
+			{
+				Color pixel = new Color( lastImg[ ImageWhiteBalanceBaseGreyRedProcessor.IX_RED ][ x ][ y ], lastImg[ ImageWhiteBalanceBaseGreyRedProcessor.IX_GREY ][ x ][ y ], lastImg[ ImageWhiteBalanceBaseGreyRedProcessor.IX_GREY ][ x ][ y ] );
+				img.setRGB(x, y, pixel.getRGB());
+			}
+		}
+		return img;
 	}
 
 	public double getRotation() {
