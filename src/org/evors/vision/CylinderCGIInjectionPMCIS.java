@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
+import org.evors.core.EvoRSLib;
 import org.evors.core.PositionOrientationSource;
 import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Vec2;
@@ -41,7 +42,7 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 			Vec2 robotCentre = locationSource.getPosition();
 			double robotHeading = locationSource.getOrientation();
 			double imageSourceRotation = yokePMCIS.getRotation();
-			double worldSampledHeading = ( imageSourceRotation - robotHeading ) % ( 2 * Math.PI );
+			double worldSampledHeading = EvoRSLib.twoPIRange( imageSourceRotation - robotHeading );
 			Vec2 worldSampledCameraOffset = new Vec2( VisionLib.CAMERA_FROM_CENTRE * Math.sin( worldSampledHeading ), VisionLib.CAMERA_FROM_CENTRE * Math.cos( worldSampledHeading ) );
 			Vec2 cameraLocation = robotCentre.add( worldSampledCameraOffset );
 	
@@ -53,10 +54,12 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 			
 			// 3. Calculate w - angle of location of cylinder in field of view
 			// 3a. From N 
-			double w = Math.atan( Math.abs( circle.getCenter().x - cameraLocation.x ) / Math.abs( circle.getCenter().y - cameraLocation.y ) );
+			double w = Math.atan2( circle.getCenter().x - cameraLocation.x, circle.getCenter().y - cameraLocation.y );
 			
 			// 3b. Adjust according to world sample offset
-			w = ( w + worldSampledHeading ) % ( 2 * Math.PI );
+			w = EvoRSLib.twoPIRange( w + worldSampledHeading );
+			w = 2 * Math.PI - w; // Inverted in 360 mirror
+			w = EvoRSLib.headingToPolar( w ); // Standard trigonometry
 			
 			// 4. Overlay shape
 			int r_in = VisualSensorGroup.IMG_DISC_RADIUS, r_out = VisualSensorGroup.IMG_OUTER_RADIUS;
@@ -71,7 +74,7 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 				imgCentre = new Vec2( imgCentre.x / shrinkFactor, imgCentre.y / shrinkFactor );
 			}
 			
-			double thetaStep = 1 / r_out;
+			double thetaStep = 1.0 / r_out;
 			
 			for( double rayTheta = w - phi/2; rayTheta < w + phi/2; rayTheta += thetaStep )
 			{
@@ -84,7 +87,7 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 						Vec2 invOffset = new Vec2( offset.x, -1 * offset.y );
 						Vec2 rayPoint = imgCentre.add( invOffset );
 						rayPoint = new Vec2( rayPoint.x, Math.max(0, Math.min( img[0][0].length - 1, rayPoint.y)) );
-						for( int chIx = 0; chIx < Math.max(3,img.length ); chIx++ )
+						for( int chIx = 0; chIx < Math.min(3,img.length ); chIx++ )
 						{ 
 							int channelValue;
 							switch( chIx )

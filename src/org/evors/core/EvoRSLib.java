@@ -114,12 +114,17 @@ public abstract class EvoRSLib {
     {
     	double rv = ( 2 * Math.PI - polar ) + Math.PI / 2;
     	if( rv < 0 ) rv += Math.PI * 2; // % is remainder, not modulus in java
-    	return rv % ( 2 * Math.PI );
+    	return twoPIRange( rv );
     }
     
     public static double headingToPolar( double heading )
     {
     	double rv = ( Math.PI / 2 ) - heading;
+    	return twoPIRange( rv );
+    }
+    
+    public static double twoPIRange( double rv )
+    {
     	if( rv < 0 ) rv += Math.PI * 2; // % is remainder, not modulus in java
     	return rv % ( 2 * Math.PI );
     }
