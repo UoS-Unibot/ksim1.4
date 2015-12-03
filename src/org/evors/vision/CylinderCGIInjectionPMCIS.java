@@ -15,18 +15,32 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 	protected ColourCollectionSource colourSource;
 	protected CircleCollectionSource circleSource;
 	protected PositionOrientationSource locationSource;
-	short[][][] lastImg;
+	protected short[][][] lastImg;
+	protected boolean staticWorld = false;
 	
-	public CylinderCGIInjectionPMCIS( ProcessedMultiChannelImageSource yokePMCIS, CircleCollectionSource circleSource, ColourCollectionSource colourSource, PositionOrientationSource locationSource ) {
+	public CylinderCGIInjectionPMCIS( ProcessedMultiChannelImageSource yokePMCIS, CircleCollectionSource circleSource, ColourCollectionSource colourSource, PositionOrientationSource locationSource, boolean staticWorld ) {
 		this.yokePMCIS = yokePMCIS;
 		this.colourSource = colourSource;
 		this.circleSource = circleSource;
 		this.locationSource = locationSource;
+		this.staticWorld = staticWorld;
 	}
 
+	java.util.Hashtable done = new java.util.Hashtable();
+	
 	public short[][][] getProcessedMultiChannelImage() {
 		// 1. Copy image
-		short[][][] img = ( short[][][] ) yokePMCIS.getProcessedMultiChannelImage().clone();
+		short[][][] img = staticWorld ? yokePMCIS.getProcessedMultiChannelImage() :
+										( short[][][] ) yokePMCIS.getProcessedMultiChannelImage().clone();
+		
+		if( staticWorld && done.get( img ) != null )
+		{
+			lastImg = img;
+			return img;
+		}else
+		{
+			done.put(img, this);
+		}
 
 		// Iterate over cylinders
 		Iterator colours = colourSource.getColours().iterator();
