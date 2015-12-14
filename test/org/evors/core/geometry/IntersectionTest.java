@@ -27,8 +27,9 @@ public class IntersectionTest extends TestCase {
             parallelA, parallelB,
             interAt1_1A, interAt1_1B,
             interAt4_4A, interAt4_4B,
-            notIntersectingA, notIntersectingB,rotationLine,lineDist4A,lineDist4B;
-    static Circle circle;
+            notIntersectingA, notIntersectingB,rotationLine,lineDist4A,lineDist4B,
+            line03_43, line03_37;
+    static Circle circle, circleA, circleB;
 
     protected void setUp() {
         collinearDisjointA = Line.fromCoords(0, 0, 1, 1);
@@ -54,6 +55,12 @@ public class IntersectionTest extends TestCase {
         lineDist4A = Line.fromCoords(0, 0, 0, 5);
         lineDist4B = Line.fromCoords(-2, 4, 2, 4);
         circle = Circle.getFromCenter(Vec2.ZERO, 2);
+        
+        circleA = Circle.getFromCenter( new Vec2( 4,3 ), 1 );
+        circleB = Circle.getFromCenter( new Vec2( 3,6 ), 1 );
+        
+        line03_43 = Line.fromCoords(0, 3, 4, 3);
+        line03_37 = Line.fromCoords(0, 3, 3, 7);
     }
 
 
@@ -159,5 +166,19 @@ public class IntersectionTest extends TestCase {
         Line line = Line.fromCoords(0.8, 0.8, 1.2, 0.8);
         assertFalse(circle.intersectsWith(line));
     }
+    
+    public void testCircleALineA() 
+    {
+    	//assertTrue( circleA.intersectsWith( line03_43 ) );
+    	Intersection i = circleA.getSmallestIntersection( this.line03_43 );
+    	assertEquals( 3, i.getSmallestLineDist(), 0.001 );
+    }
+    
+    public void testCircleBLineB() 
+    {
+    	Intersection i = circleB.getSmallestIntersection( this.line03_37 );
+    	assertEquals( 3.6, i.getSmallestLineDist(), 0.1 );
+    }
+    
     
 }

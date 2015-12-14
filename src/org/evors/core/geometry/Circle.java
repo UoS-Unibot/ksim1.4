@@ -90,7 +90,7 @@ public class Circle implements Shape2D {
         } else if (shape instanceof Line) {
             Line line = (Line) shape;
             if (intersectsWithLine(line)) {
-                // System.out.println("intersection, circle at " + getCenter().toString() + ",line at " + line.toString());
+                //System.out.println("intersection, circle at " + getCenter().toString() + ",line at " + line.toString());
             }
             return intersectsWithLine(line);
         } else if (shape instanceof Polygon) {

@@ -211,40 +211,40 @@ public class Intersection {
          */
         public static CircleLine calculate(Circle circle, Line line) {
 
-            //Implemented from http://mathworld.wolfram.com/Circle-LineIntersection.html
-            Vec2 intersectp1, intersectp2;
-            double linedistP1, linedistP2,
-                    x1, y1, x2, y2;
-            double dx = line.p2.x - line.p1.x,
-                    dy = line.p2.y - line.p1.y,
-                    dr = Math.sqrt(dx * dx + dy * dy),
-                    D = line.p1.x * line.p2.y - line.p1.y
-                    * line.p2.x,
-                    discrim = circle.getRadius() * circle.getRadius() * dr * dr
-                    - D * D;
-            if (discrim < 0) { //no intersection
+            double baX = line.p2.x - line.p1.x;
+            double baY = line.p2.y - line.p1.y;
+            double caX = circle.getCenter().x - line.p1.x;
+            double caY = circle.getCenter().y - line.p1.y;
+
+            double a = baX * baX + baY * baY;
+            double bBy2 = baX * caX + baY * caY;
+            double c = caX * caX + caY * caY - circle.getRadius() * circle.getRadius();
+
+            double pBy2 = bBy2 / a;
+            double q = c / a;
+
+            double disc = pBy2 * pBy2 - q;
+            if (disc < 0) {
                 return new CircleLine();
-            } else if (discrim == 0) {
-                //line is a tangent to the circle
-                intersectp1 = new Vec2((D * dy) / (dr * dr), (D * dx) / (dr
-                        * dr));
-                intersectp2 = Vec2.NaN;
-                linedistP1 = intersectp1.subtract(line.p1).getNorm();
-                linedistP2 = line.p2.subtract(intersectp1).getNorm();
-                return new CircleLine(intersectp1, intersectp2, true, linedistP1,
-                        linedistP2);
             }
-            double sqrtDiscrim = Math.sqrt(discrim);
-            x1 = (D * dy + sgn(dy) * dx * sqrtDiscrim) / (dr * dr);
-            x2 = (D * dy - sgn(dy) * dx * sqrtDiscrim) / (dr * dr);
-            y1 = (-D * dx + Math.abs(dy) * sqrtDiscrim) / (dr * dr);
-            y2 = (-D * dx - Math.abs(dy) * sqrtDiscrim) / (dr * dr);
-            intersectp1 = new Vec2(x1, y1);
-            intersectp2 = new Vec2(x2, y2);
-            linedistP1 = intersectp1.subtract(line.p1).getNorm();
-            linedistP2 = line.p2.subtract(intersectp2).getNorm();
-            return new CircleLine(intersectp1, intersectp2, false, linedistP1,
-                    linedistP2);
+            // if disc == 0 ... dealt with later
+            double tmpSqrt = Math.sqrt(disc);
+            double abScalingFactor1 = -pBy2 + tmpSqrt;
+            double abScalingFactor2 = -pBy2 - tmpSqrt;
+
+            Vec2 intersectp1 = new Vec2(line.p1.x - baX * abScalingFactor1, line.p1.y
+                    - baY * abScalingFactor1);
+            if (disc == 0) { // abScalingFactor1 == abScalingFactor2
+            	double linedistP1 = intersectp1.subtract(line.p1).getNorm();
+                double linedistP2 = line.p2.subtract(intersectp1).getNorm();
+                return new CircleLine( intersectp1, Vec2.NaN, true, linedistP1, linedistP2 );
+            }
+            Vec2 intersectp2 = new Vec2(line.p1.x - baX * abScalingFactor2, line.p1.y
+                    - baY * abScalingFactor2);
+            
+            double linedistP1 = intersectp1.subtract(line.p1).getNorm();
+            double linedistP2 = line.p2.subtract(intersectp2).getNorm();
+            return new CircleLine(intersectp1, intersectp2, false, linedistP1, linedistP2);
         }
 
         private static int sgn(double x) {
