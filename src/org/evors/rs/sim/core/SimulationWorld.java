@@ -83,19 +83,32 @@ public class SimulationWorld {
     }
 
     public void checkCollisions(SimulatedRobotBody robot) {
-        for (Iterator it = objects.iterator(); it.hasNext();) {
-            Shape2D obj = (Shape2D)it.next();
-            if (obj.intersectsWith(robot.getShape())) {
-                for (Iterator it2 = listeners.iterator(); it2.hasNext();) {
-                    CollisionListener cl = (CollisionListener) it2.next();
-                    if(cl.collisionOccured())
-                        break;
-                }
-                robot.doCollision(obj);
+    	Shape2D obj;
+    	if( ( obj = checkIntersects( robot.getShape() ) ) != null )
+    	{
+            for (Iterator it2 = listeners.iterator(); it2.hasNext();) {
+                CollisionListener cl = (CollisionListener) it2.next();
+                if(cl.collisionOccured())
+                    break;
             }
-        }
+            robot.doCollision(obj);
+    	}
     }
-
+    
+    /** Checks if this shape intersects with any object in the world
+     * 
+     * @param shape
+     * @return Null if no intersection or the intersecting object if there is
+     */
+    public Shape2D checkIntersects( Shape2D shape )
+    {
+    	for (Iterator it = objects.iterator(); it.hasNext();) {
+            Shape2D obj = (Shape2D)it.next();
+            if (obj.intersectsWith( shape ) ) return obj;
+    	}
+    	return null;
+    }
+    
     /**
      * Adds a single WorldObj to the world.
      *

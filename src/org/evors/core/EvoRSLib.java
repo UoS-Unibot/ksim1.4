@@ -222,4 +222,16 @@ public abstract class EvoRSLib {
         
         return rv;
     }
+    
+    public static String arr2String( Object[] table )
+    {
+        String rv = "[ ";
+        for( int tl = 0; tl < table.length; tl++ )
+        {
+            rv += table[ tl ] + ", ";
+        }
+        rv = rv.substring( 0, rv.length() - 2 );
+        rv += " ]";
+        return rv;
+    }
 }

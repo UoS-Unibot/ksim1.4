@@ -136,5 +136,17 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 	public double getRotation() {
 		return yokePMCIS.getRotation();
 	}
+	
+	public String toString()
+	{
+		StringBuffer rv= new StringBuffer();
+		rv.append("Cylinder CGI Injection Processed Multi Channel Image Source with:");
+		rv.append("\n\t\t\t\tColour Source = " + this.colourSource );
+		rv.append("\n\t\t\t\tCircle Source = " + this.circleSource );
+		rv.append("\n\t\t\t\tLocation Source = " + this.locationSource );
+		rv.append("\n\t\t\t\tStatic World = " + this.staticWorld );
+		rv.append("\n\t\t\t\tYoke PMCIS = " + this.yokePMCIS );
+		return rv.toString();
+	}
 
 }

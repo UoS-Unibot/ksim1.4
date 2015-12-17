@@ -25,6 +25,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     private final double[][] ROB_CTRL_INPUT_RANGES = { { -20, 20 } };
     private final double[][] ROB_CONTROLLER_INPUT_RANGES = { { 0, 3500 },{ 0, 3500 },{ 0, 3500 },{ 0, 3500 },{ 0, 3500 },{ 0, 3500 },{ 0, 1},{0,1},{0,1},{0,1},{0,1} };
     private final double MAX_IR_LENGTH = 25;
+    public static final double ROBOT_RADIUS = 6.5;
 
     protected static final Random rand = EvoRSLib.random;
 
@@ -38,7 +39,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     
     public SimulatedKJunior(SimulationWorld world,
             double timeStepLength ) {
-        super(world, Circle.getFromCenter(Vec2.ZERO, 6.5), timeStepLength); //radius of 6.5cm
+        super(world, Circle.getFromCenter(Vec2.ZERO, ROBOT_RADIUS ), timeStepLength); //radius of 6.5cm
         topRadius = 5.75;
         irAngles = new double[] {0.785,0.349,0,5.934,5.498,3.142};
     }

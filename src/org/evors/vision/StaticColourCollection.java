@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Vector;
 
+import org.evors.core.EvoRSLib;
+
 public class StaticColourCollection implements ColourCollectionSource {
 
 	protected Vector colours = new Vector();
@@ -14,6 +16,11 @@ public class StaticColourCollection implements ColourCollectionSource {
 
 	public Collection getColours() {
 		return colours;
+	}
+	
+	public String toString()
+	{
+		return EvoRSLib.arr2String( colours.toArray( ) );
 	}
 
 }
