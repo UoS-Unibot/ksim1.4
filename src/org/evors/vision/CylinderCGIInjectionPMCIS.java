@@ -141,9 +141,9 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 	{
 		StringBuffer rv= new StringBuffer();
 		rv.append("Cylinder CGI Injection Processed Multi Channel Image Source with:");
-		rv.append("\n\t\t\t\tColour Source = " + this.colourSource );
-		rv.append("\n\t\t\t\tCircle Source = " + this.circleSource );
-		rv.append("\n\t\t\t\tLocation Source = " + this.locationSource );
+		rv.append("\n\t\t\t\tColour Source = " + this.colourSource.getClass().getName() );
+		rv.append("\n\t\t\t\tCircle Source = " + this.circleSource.getClass().getName() );
+		rv.append("\n\t\t\t\tLocation Source = " + this.locationSource.getClass().getName() );
 		rv.append("\n\t\t\t\tStatic World = " + this.staticWorld );
 		rv.append("\n\t\t\t\tYoke PMCIS = " + this.yokePMCIS );
 		return rv.toString();
