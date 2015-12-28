@@ -1,13 +1,16 @@
 package org.evors.core;
 
 import java.util.BitSet;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.Random;
 
+import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Rectangle;
 import org.evors.core.geometry.Vec2;
 import org.evors.rs.sim.core.SimulationWorld;
+import org.evors.vision.StaticColourCollection;
 
 /**
  * Library file with shared objects and functions
@@ -48,6 +51,30 @@ public abstract class EvoRSLib {
 	{
 		SimulationWorld w = new SimulationWorld( new Vec2( 85, 114 ), true );
 		return w;
+	}
+	
+	public static void addCylMaze( SimulationWorld world )
+	{
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 0, 0 ), 40 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 80, 80 ), 20 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 65, 60 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 55, 50 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 0, 85 ), 7 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 10, 85 ), 7 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 20, 85 ), 7 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 30, 85 ), 7 ) );
+		StaticColourCollection circleColours = new StaticColourCollection( new Color[]{ new Color( 100, 100, 0 ), new Color( 250, 0, 0 ), new Color( 250, 0, 0 ), new Color( 250, 0, 0 ), new Color( 100, 100, 0 ), new Color( 0, 0, 0 ) , new Color( 255, 0, 0 ), new Color( 0, 0, 0 ) } );
+		
+	}
+	
+	public static void addBlackMarkers( SimulationWorld world )
+	{
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 42, -5 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( -5, 38 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( -5, 76 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 90, 38 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 90, 76 ), 10 ) );
+		StaticColourCollection circleColours = new StaticColourCollection( new Color[]{ new Color( 0, 0, 0 ) } );
 	}
 	
 	public static String arrayToString( double[] arr )
