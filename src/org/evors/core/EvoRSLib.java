@@ -69,12 +69,26 @@ public abstract class EvoRSLib {
 	
 	public static void addBlackMarkers( SimulationWorld world )
 	{
-		world.createWorldObject( Circle.getFromCenter( new Vec2( 42, -5 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 42, -5 ), 5 ) );
 		world.createWorldObject( Circle.getFromCenter( new Vec2( -5, 38 ), 10 ) );
-		world.createWorldObject( Circle.getFromCenter( new Vec2( -5, 76 ), 10 ) );
-		world.createWorldObject( Circle.getFromCenter( new Vec2( 90, 38 ), 10 ) );
-		world.createWorldObject( Circle.getFromCenter( new Vec2( 90, 76 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( -5, 76 ), 5 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 90, 38 ), 15 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 90, 76 ), 5 ) );
 		StaticColourCollection circleColours = new StaticColourCollection( new Color[]{ new Color( 0, 0, 0 ) } );
+	}
+	
+	public static void addWhiteMarkers( SimulationWorld world )
+	{
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 21, -5 ), 5 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 63, -5 ), 10 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( -5, 57 ), 5 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 90, 57 ), 10 ) );
+		
+		//Only white
+		StaticColourCollection circleColours = new StaticColourCollection( new Color[]{ new Color( 255, 50, 0 ) } );
+		
+		//Black & White
+		StaticColourCollection circleColoursBW = new StaticColourCollection( new Color[]{ new Color( 0, 0, 0 ), new Color( 0, 0, 0 ), new Color( 0, 0, 0 ), new Color( 0, 0, 0 ), new Color( 0, 0, 0 ), new Color( 255, 50, 0 ) } );
 	}
 	
 	public static String arrayToString( double[] arr )
