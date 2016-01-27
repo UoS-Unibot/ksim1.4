@@ -12,12 +12,13 @@ import org.evors.vision.ImageSource;
 import org.evors.vision.VisualSensorGroup;
 import org.evors.core.EvoRSLib;
 import org.evors.core.Programmable;
+import org.evors.core.SignalListener;
 
 /**
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public class SimulatedKJunior extends SimulatedRobotBody implements Programmable {
+public class SimulatedKJunior extends SimulatedRobotBody implements Programmable, SignalListener {
 
     private final double AXLE_WIDTH = 10; //equivalent to WHEEL_SEP in Phil's code
     public static double MOTOR_NOISE = 1; //noise to add to motor signals - public for testing (was 0.6)
@@ -36,6 +37,8 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     protected int step;
     
     protected VisualSensorGroup visualSensorGroup;
+    
+    protected Object currentSignal = null, chargeSignal = new Integer( 0 );
     
     public SimulatedKJunior(SimulationWorld world,
             double timeStepLength ) {
@@ -69,7 +72,9 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         double instD = ( Math.abs( vR - vL ) ) * getTimeStep();
         totV += instV;
         totD += instD;
-        cumf += instV * ( 1 - Math.sqrt( instD ) );
+        
+        double deltaCumF = instV * ( 1 - Math.sqrt( instD ) ), deltaCumVF = 0;
+        if( currentSignal == null || !currentSignal.equals(chargeSignal ) ) { cumf += deltaCumF; System.out.println( "cumf = " + cumf ); }
         
         if( this.referencePosition != null )
         {
@@ -77,12 +82,13 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         	double nowDist = getPosition().distance( referencePosition );
         	if( nowDist < topRadius * 2 )
         	{
-        		cumvf += 2;
+        		deltaCumVF = 2;
         	}else
         	{
-        		cumvf += 1 - ( nowDist / startDist );
+        		deltaCumVF = 1 - ( nowDist / startDist );
         	}
         }
+        if( currentSignal == null || currentSignal.equals( chargeSignal ) ){ cumvf += deltaCumVF; System.out.println( "cumvf = " + cumvf ); }
         
         step++;
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
@@ -109,7 +115,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         double[] input = new double[ inputChannels ];
         for (int i = 0; i < NUM_IRs; i++) {
             input[i] = getIRReading(irAngles[i]);
-            maxIR = Math.max( maxIR, input[i]);
+            if( currentSignal == null || !currentSignal.equals(chargeSignal ) ) { maxIR = Math.max( maxIR, input[i] ); System.out.println( "maxIR="+maxIR); } 
         }
         if( visualSensorGroup != null )
         {
@@ -167,6 +173,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     public void newRun()
     {
     	cumvf = cumf = totV = totD = maxIR = step = 0;
+    	currentSignal = null;
     	super.newRun();
     }
 
@@ -182,4 +189,8 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     	rv.append("\n\t\tVisual Sensor Group: " + this.visualSensorGroup );
     	return rv.toString();
     }
+
+	public void signal(Object signal) {
+		this.currentSignal = signal;
+	}
 }
