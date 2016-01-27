@@ -74,7 +74,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         totD += instD;
         
         double deltaCumF = instV * ( 1 - Math.sqrt( instD ) ), deltaCumVF = 0;
-        if( currentSignal == null || !currentSignal.equals(chargeSignal ) ) { cumf += deltaCumF; System.out.println( "cumf = " + cumf ); }
+        if( currentSignal == null || !currentSignal.equals(chargeSignal ) ) { cumf += deltaCumF; }
         
         if( this.referencePosition != null )
         {
@@ -88,7 +88,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         		deltaCumVF = 1 - ( nowDist / startDist );
         	}
         }
-        if( currentSignal == null || currentSignal.equals( chargeSignal ) ){ cumvf += deltaCumVF; System.out.println( "cumvf = " + cumvf ); }
+        if( currentSignal == null || currentSignal.equals( chargeSignal ) ){ cumvf += deltaCumVF; }
         
         step++;
         //we've converted to cm/s forward velocity and r/s angular, let the superclass deal with odometry
@@ -115,7 +115,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
         double[] input = new double[ inputChannels ];
         for (int i = 0; i < NUM_IRs; i++) {
             input[i] = getIRReading(irAngles[i]);
-            if( currentSignal == null || !currentSignal.equals(chargeSignal ) ) { maxIR = Math.max( maxIR, input[i] ); System.out.println( "maxIR="+maxIR); } 
+            if( currentSignal == null || !currentSignal.equals(chargeSignal ) ) { maxIR = Math.max( maxIR, input[i] ); } 
         }
         if( visualSensorGroup != null )
         {
