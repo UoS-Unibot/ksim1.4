@@ -192,5 +192,7 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
 
 	public void signal(Object signal) {
 		this.currentSignal = signal;
+		// Update last set position
+		this.lastSetPosition = this.getPosition();
 	}
 }
