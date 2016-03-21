@@ -191,8 +191,26 @@ public abstract class EvoRSLib {
     
     public static double getProportionGreyValue( BitSet bits, int first, int last )
     {
+    	return getProportionGreyValue( bits, first, last, true );
+    }
+    
+    /**
+     * Gets value of grey code value encoded by bits as proportional to maximum encodable value.
+     * @param bits
+     * @param first bit
+     * @param last bit
+     * @param fullRange if 0 and 1 should be included in result
+     * @return Value from 0 to 1 for fullRange = true, otherwise range in between excluding ends.
+     */
+    public static double getProportionGreyValue( BitSet bits, int first, int last, boolean fullRange )
+    {
     	double top = fromGreyCode( bitsToInt( bits, first, last ) );
     	double bottom = ( 1 << ( last - first ) ) - 1; // eg. max for 5 bits is 31
+    	if( !fullRange )
+    	{
+    		top += 1;
+    		bottom += 2;
+    	}
     	return top / bottom;
     }
     
@@ -275,4 +293,5 @@ public abstract class EvoRSLib {
         rv += " ]";
         return rv;
     }
+
 }
