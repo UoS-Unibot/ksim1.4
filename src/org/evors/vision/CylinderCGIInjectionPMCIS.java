@@ -2,7 +2,9 @@ package org.evors.vision;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.evors.core.EvoRSLib;
 import org.evors.core.PositionOrientationSource;
@@ -43,12 +45,25 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 		}
 
 		// Iterate over cylinders
+		Vector ccds = new Vector();
+		
 		Iterator colours = colourSource.getColours().iterator();
 		Color colour = null;
 		for( Iterator circles = circleSource.getCircles().iterator(); circles.hasNext(); )
 		{
 			Circle circle = ( Circle ) circles.next();
 			if( colours.hasNext() ) colour = ( Color ) colours.next();
+			double distance = locationSource.getPosition().distance( circle.getCenter() );
+			ccds.add( new CircleColourDistance( circle, colour, distance ) );
+		}
+		
+		Collections.sort( ccds );
+		
+		for( Iterator ccdsI = ccds.iterator(); ccdsI.hasNext(); )
+		{
+			CircleColourDistance ccd = ( CircleColourDistance ) ccdsI.next();
+			Circle circle = ccd.getCircle();
+			colour = ccd.getColour();
 			
 			// 2. Calculate phi - angle of field of view obscured by cylinder
 			// 2a. Calculate x - distance from camera to center of cylinder
@@ -149,4 +164,29 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 		return rv.toString();
 	}
 
+	protected class CircleColourDistance implements Comparable
+	{
+		Circle circle;
+		Color colour;
+		double distance;
+		
+		public CircleColourDistance( Circle circle, Color colour, double distance )
+		{
+			this.circle = circle;
+			this.colour = colour;
+			this.distance = distance;
+		}
+		
+		public int compareTo( Object o )
+		{
+			CircleColourDistance occd = ( CircleColourDistance ) o;
+			// Descending order
+			return Double.compare( occd.distance, distance );
+		}
+		
+		public Circle getCircle(){ return circle; }
+		
+		public Color getColour(){ return colour; }
+	}
+	
 }
