@@ -13,6 +13,11 @@ public class FakeImageSource implements ImageSource {
 	protected int id = 0;
 	protected double rotation = 0;
 	
+	public FakeImageSource( String path )
+	{
+		this.path = path;
+	}
+	
 	public FakeImageSource() {
 		// TODO Auto-generated constructor stub
 	}

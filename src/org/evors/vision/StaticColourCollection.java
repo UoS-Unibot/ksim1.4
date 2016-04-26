@@ -22,5 +22,12 @@ public class StaticColourCollection implements ColourCollectionSource {
 	{
 		return EvoRSLib.arr2String( colours.toArray( ) );
 	}
+	
+	public Color getColor( int ix ){ return ( Color ) colours.get( ix ); }
+	
+	public void setColor( Color c, int ix )
+	{
+		colours.setElementAt( c, ix );
+	}
 
 }

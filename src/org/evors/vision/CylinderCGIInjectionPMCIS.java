@@ -3,6 +3,7 @@ package org.evors.vision;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -150,6 +151,16 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 
 	public double getRotation() {
 		return yokePMCIS.getRotation();
+	}
+	
+	public void clearCache()
+	{
+		done = new Hashtable();
+	}
+	
+	public ColourCollectionSource getColourSource()
+	{
+		return this.colourSource;
 	}
 	
 	public String toString()
