@@ -32,7 +32,7 @@ public class BuggyIRSimulatedKJunior extends SimulatedKJunior
 			front = ( front - delta ) * ( d_0 - front ) / ( d_0 - d_th );
 		}
 		
-		rv[ FRONT_IR_IX ] = front;
+		rv[ FRONT_IR_IX ] = 0; // *** front;
 		
 		return rv;
 	}
