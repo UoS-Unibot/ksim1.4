@@ -49,7 +49,7 @@ public class BuggyIRSimulatedKJunior extends SimulatedKJunior
 	public String toString()
 	{
 		String rv = "BuggyIRSimulatedKJunior with bug type = " + bugTypeStr[ bugTypeIx ];
-		rv += "\r\n\t\t\tinner robot: " + super.toString();
+		rv += "\r\n\tinner robot: " + super.toString();
 		return rv;
 	}
 	
