@@ -16,7 +16,7 @@ import org.evors.core.geometry.Vec2;
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public class SimulationWorld {
+public class SimulationWorld implements Cloneable {
 
     private final LinkedList objects = new LinkedList();
     private final LinkedList listeners = new LinkedList();
@@ -178,6 +178,17 @@ public class SimulationWorld {
     	public double getDistance() { return dist; }
     	
     	public Shape2D getObject() { return obj; }
+    }
+    
+    public Object clone()
+    {
+    	try
+    	{
+    		return super.clone();
+    	}catch( CloneNotSupportedException e )
+    	{
+    		return null;
+    	}
     }
 
 }
