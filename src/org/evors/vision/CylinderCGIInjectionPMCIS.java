@@ -36,13 +36,16 @@ public class CylinderCGIInjectionPMCIS implements ProcessedMultiChannelImageSour
 		short[][][] img = staticWorld ? yokePMCIS.getProcessedMultiChannelImage() :
 										( short[][][] ) yokePMCIS.getProcessedMultiChannelImage().clone();
 		
-		if( staticWorld && done.get( img ) != null )
+		if( staticWorld )
 		{
-			lastImg = img;
-			return img;
-		}else
-		{
-			done.put(img, this);
+			if(  done.get( img ) != null )
+			{
+				lastImg = img;
+				return img;
+			}else
+			{
+				done.put(img, this);
+			}
 		}
 
 		// Iterate over cylinders
