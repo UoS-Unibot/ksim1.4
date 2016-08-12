@@ -14,7 +14,8 @@ import org.evors.core.geometry.Vec2;
  */
 public class HaarFilter implements VisualFilter {
 
-	protected static final boolean debug = false; // TODO should be false *** Should optimise away
+	public static boolean overlayFilterOnDebugImage = true;
+	
 	protected String filter;
 	protected Vec2 proportionalDimension;
 	protected boolean[][] filterMap; // in top left 0,0 coordinates, true is light
@@ -130,13 +131,13 @@ public class HaarFilter implements VisualFilter {
 					if( filterMap[ column ][ row ] )
 					{
 						valueCountRaw += blue; // light area
-						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), debugChannelColour.getRGB() ); }
+						if( debugImage != null && overlayFilterOnDebugImage ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), debugChannelColour.getRGB() ); }
 						//System.out.println( "post light area " + blue + " rawTotal " + valueCountRaw );
 					}
 					else
 					{
 						valueCountRaw += ( 255 - blue ); // dark area
-						if( debugImage != null ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), Color.BLACK.getRGB() ); }
+						if( debugImage != null && overlayFilterOnDebugImage ) { debugImage.setRGB((int) (rayPoint.x), (int) (rayPoint.y), Color.BLACK.getRGB() ); }
 					}
 				}
 			}
