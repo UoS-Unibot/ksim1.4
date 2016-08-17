@@ -8,7 +8,7 @@ package org.evors.core.geometry;
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public class Intersection {
+public class Intersection implements java.io.Serializable {
 
     /**
      * Point of intersection. Is NaN if there is no intersection.

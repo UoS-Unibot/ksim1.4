@@ -5,7 +5,7 @@ package org.evors.core.geometry;
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public class Vec2 {
+public class Vec2 implements java.io.Serializable {
 
     public final double x;
     public final double y;

@@ -61,8 +61,8 @@ public abstract class EvoRSLib {
 		world.createWorldObject( Circle.getFromCenter( new Vec2( 55, 50 ), 10 ) );
 		world.createWorldObject( Circle.getFromCenter( new Vec2( 0, 85 ), 7 ) );
 		world.createWorldObject( Circle.getFromCenter( new Vec2( 10, 85 ), 7 ) );
-		world.createWorldObject( Circle.getFromCenter( new Vec2( 20, 85 ), 7 ) );
-		world.createWorldObject( Circle.getFromCenter( new Vec2( 30, 85 ), 7 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 20, 85 ), 6 ) );
+		world.createWorldObject( Circle.getFromCenter( new Vec2( 30, 85 ), 8 ) );
 		StaticColourCollection circleColours = new StaticColourCollection( new Color[]{ new Color( 100, 100, 0 ), new Color( 250, 0, 0 ), new Color( 250, 0, 0 ), new Color( 250, 0, 0 ), new Color( 100, 100, 0 ), new Color( 0, 0, 0 ) , new Color( 255, 0, 0 ), new Color( 0, 0, 0 ) } );
 	}
 

@@ -3,6 +3,7 @@ package org.evors.rs.sim.core;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import org.evors.core.UnoptimisedDeepCopy;
 import org.evors.core.geometry.Intersection;
 import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Polygon;
@@ -16,7 +17,7 @@ import org.evors.core.geometry.Vec2;
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public class SimulationWorld implements Cloneable {
+public class SimulationWorld implements Cloneable,java.io.Serializable {
 
     private final LinkedList objects = new LinkedList();
     private final LinkedList listeners = new LinkedList();
@@ -182,13 +183,7 @@ public class SimulationWorld implements Cloneable {
     
     public Object clone()
     {
-    	try
-    	{
-    		return super.clone();
-    	}catch( CloneNotSupportedException e )
-    	{
-    		return null;
-    	}
+    	return UnoptimisedDeepCopy.copy( this );
     }
 
 }

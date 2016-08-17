@@ -6,7 +6,7 @@ package org.evors.core.geometry;
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public interface Shape2D {
+public interface Shape2D extends java.io.Serializable {
 
     /**
      * Gets the center point of this Polygon.
