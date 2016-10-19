@@ -38,6 +38,8 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
     
     protected VisualSensorGroup visualSensorGroup;
     
+    protected boolean simulateLowMotorNoMovement = true;
+    
     protected Object currentSignal = null, chargeSignal = new Integer( 0 );
     
     public SimulatedKJunior(SimulationWorld world,
@@ -63,6 +65,9 @@ public class SimulatedKJunior extends SimulatedRobotBody implements Programmable
      */
     public void step(double[] controlInputs) {
         //convert motor signals to actual velocities in cm/s
+    	if( simulateLowMotorNoMovement && Math.abs( controlInputs[ 0 ] ) < 5 ) controlInputs[ 0 ] = 0;
+    	if( simulateLowMotorNoMovement && Math.abs( controlInputs[ 1 ] ) < 5 ) controlInputs[ 1 ] = 0;
+    	
         double mL = controlInputs[0], mR = controlInputs[1];
         double vL = convertSpeed(mL), vR = convertSpeed(mR);
         double forwardV = (vL + vR) / 2;
