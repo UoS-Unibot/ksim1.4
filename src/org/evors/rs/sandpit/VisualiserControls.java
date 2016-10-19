@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.evors.core.geometry.Vec2;
+import org.evors.vision.HaarFilter;
 
 /**
  * Contains controls for the visualiser.
@@ -22,7 +23,7 @@ import org.evors.core.geometry.Vec2;
 public class VisualiserControls extends JPanel {
 
     private final JButton btnRun = new JButton("Run");
-    private final JButton btnPause = new JButton("Pause");
+    private final JButton btnOverlay = new JButton("Sensor Overlay");
     private final JTextField tfX = new JTextField();
     private final JTextField tfY = new JTextField();
     private final JTextField tfH = new JTextField();
@@ -34,7 +35,7 @@ public class VisualiserControls extends JPanel {
         setPreferredSize(new Dimension(800, 70));
         setBorder(BorderFactory.createEtchedBorder());
 
-        btnPause.setEnabled(false);
+        btnOverlay.setEnabled(true);
         btnRun.setEnabled(true);
         btnRun.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -43,9 +44,9 @@ public class VisualiserControls extends JPanel {
 
         });
 
-        btnPause.addActionListener(new ActionListener() {
+        btnOverlay.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                pause();
+                overlayonoff();
             }
         });
 
@@ -80,7 +81,7 @@ public class VisualiserControls extends JPanel {
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        add(btnPause, gbc);
+        add(btnOverlay, gbc);
 
         gbc.gridx = 3;
         gbc.gridy = 1;
@@ -105,26 +106,33 @@ public class VisualiserControls extends JPanel {
     }
 
     void run() {
-        if (listener != null) {
-            listener.setRunning(true);
-        }
-        btnRun.setEnabled(false);
-        btnPause.setEnabled(true);
+    	if( btnRun.getText().equals("Run") )
+    	{
+	        if (listener != null) {
+	            listener.setRunning(true);
+	            btnRun.setText( "Pause" );
+	        }
+    	}else
+    	{
+    		 if (listener != null) {
+    	            listener.setRunning(false);
+    	        }
+    		 btnRun.setText("Run");
+    	}
+        
+//        btnRun.setEnabled(false);
+  //      btnPause.setEnabled(true);
     }
 
-    void pause() {
-        if (listener != null) {
-            listener.setRunning(false);
-        }
-        btnPause.setEnabled(false);
-        btnRun.setEnabled(true);
+    void overlayonoff() {
+    	HaarFilter.overlayFilterOnDebugImage = !HaarFilter.overlayFilterOnDebugImage;
     }
 
     void restart() {
         if (listener != null) {
             listener.restart();
         }
-        btnPause.setEnabled(false);
+        btnOverlay.setEnabled(false);
         btnRun.setEnabled(true);
     }
     
