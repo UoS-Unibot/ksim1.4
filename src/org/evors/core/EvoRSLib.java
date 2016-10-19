@@ -25,9 +25,14 @@ public abstract class EvoRSLib {
 	 */
 	public static final Random random = new Random();
 	
+	public static double uniformNoise( double noiseCoeff, Random rnd )
+	{
+		return ( rnd.nextDouble() * 2 * noiseCoeff - noiseCoeff );
+	}
+	
 	public static double uniformNoise( double noiseCoeff )
 	{
-		return ( random.nextDouble() * 2 * noiseCoeff - noiseCoeff );
+		return uniformNoise( noiseCoeff, random );
 	}
 	
 	public static SimulationWorld getStandardKSimPhilWorld()
@@ -300,6 +305,11 @@ public abstract class EvoRSLib {
         rv = rv.substring( 0, rv.length() - 2 );
         rv += " ]";
         return rv;
+    }
+    
+    public static double limitTo( double value, double min, double max )
+    {
+    	return Math.min( max, Math.max( min, value ) );
     }
 
 }
