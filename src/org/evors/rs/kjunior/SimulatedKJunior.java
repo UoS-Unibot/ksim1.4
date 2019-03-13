@@ -12,13 +12,12 @@ import org.evors.vision.ImageSource;
 import org.evors.vision.VisualSensorGroup;
 import org.evors.core.EvoRSLib;
 import org.evors.core.Programmable;
-import org.evors.core.SignalListener;
 
 /**
  *
  * @author Miles Bryant <mb459 at sussex.ac.uk>
  */
-public class SimulatedKJunior extends SimulatedRobotBody implements Programmable, SignalListener {
+public class SimulatedKJunior extends SimulatedRobotBody implements Programmable {
 
     private final double AXLE_WIDTH = 10; //equivalent to WHEEL_SEP in Phil's code
     public static double MOTOR_NOISE = 1; //noise to add to motor signals - public for testing (was 0.6)

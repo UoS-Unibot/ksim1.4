@@ -25,8 +25,11 @@ public class PathTracer {
     
     public void draw(Graphics2D g2) {
         //draw the path so far
-        g2.setColor(Color.DARK_GRAY);
-        g2.setStroke(new BasicStroke(0.01f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
-        g2.draw(curPath);
+        //g2.setColor(Color.DARK_GRAY);
+        //g2.setStroke(new BasicStroke(0.1f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+        
+    	g2.setColor( Color.RED );
+    	g2.setStroke( new BasicStroke( 1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1f, new float[]{ 1f }, 0f ) );
+    	g2.draw(curPath);        
     }
 }

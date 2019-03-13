@@ -3,7 +3,6 @@ package org.evors.rs.sim.core;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import org.evors.core.UnoptimisedDeepCopy;
 import org.evors.core.geometry.Intersection;
 import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Polygon;
@@ -180,10 +179,4 @@ public class SimulationWorld implements Cloneable,java.io.Serializable {
     	
     	public Shape2D getObject() { return obj; }
     }
-    
-    public Object clone()
-    {
-    	return UnoptimisedDeepCopy.copy( this );
-    }
-
 }

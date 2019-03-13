@@ -17,4 +17,7 @@ public interface VisualiserListener {
     public void setX( double x );
     public void setY( double y );
     public void setHeading( double heading );
+    
+    public void step();
+    
 }

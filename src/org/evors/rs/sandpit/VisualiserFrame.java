@@ -50,6 +50,11 @@ public class VisualiserFrame extends JFrame implements VisualiserListener {
             trialv.stop();
         }
     }
+    
+    public void step()
+    {
+    	trialv.startSingleStep();
+    }
 
     public void restart() {
         trialv.stop();
