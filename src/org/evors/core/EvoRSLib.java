@@ -4,11 +4,13 @@ import java.util.BitSet;
 import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.Random;
+import java.util.Vector;
 
 import org.evors.core.geometry.Circle;
 import org.evors.core.geometry.Line;
 import org.evors.core.geometry.Rectangle;
 import org.evors.core.geometry.Vec2;
+import org.evors.rs.kjunior.SimulatedKJunior;
 import org.evors.rs.sim.core.SimulationWorld;
 import org.evors.vision.StaticColourCollection;
 
@@ -33,6 +35,62 @@ public abstract class EvoRSLib {
 	public static double uniformNoise( double noiseCoeff )
 	{
 		return uniformNoise( noiseCoeff, random );
+	}
+	
+	public static Vector getRightLeftMaze()
+	{
+		double blockWidth = SimulatedKJunior.ROBOT_RADIUS * 2;
+		SimulationWorld world = new SimulationWorld( new Vec2( 11 * blockWidth, 17 * blockWidth ) );
+		addBlockyLine( 0,0,9,0,world,blockWidth);
+		addBlockyLine( 0,0,0,2,world,blockWidth);
+		addBlockyLine( 0,2,2,2,world,blockWidth);
+		addBlockyLine( 2,2,2,1,world,blockWidth);
+		addBlockyLine( 2,1,5,1,world,blockWidth);
+		addBlockyLine( 5,1,5,6,world,blockWidth);
+		addBlockyLine( 6,0,6,5,world,blockWidth);
+		addBlockyLine( 7,0,7,5,world,blockWidth);
+		addBlockyLine( 5,6,8,6,world,blockWidth);
+		addBlockyLine( 8,1,8,9,world,blockWidth);
+		addBlockyLine( 9,0,9,9,world,blockWidth);
+		addBlockyLine( 9,2,11,2,world,blockWidth);
+		addBlockyLine( 11,2,11,4,world,blockWidth);
+		addBlockyLine( 10,4,11,4,world,blockWidth);
+		addBlockyLine( 10,4,10,10,world,blockWidth);
+		addBlockyLine( 10,10,7,10,world,blockWidth);
+		addBlockyLine( 7,7,7,15,world,blockWidth);
+		addBlockyLine( 7,15,8,15,world,blockWidth);
+		addBlockyLine( 8,15,8,17,world,blockWidth);
+		addBlockyLine( 8,17,5,17,world,blockWidth);
+		addBlockyLine( 5,15,5,17,world,blockWidth);
+		addBlockyLine( 5,15,6,15,world,blockWidth);
+		
+		Vector rv = new Vector();
+		rv.add( world );
+		
+		Vec2 startPosition = blockyTranslate( 6, 0, world, blockWidth );
+		startPosition.add( new Vec2( blockWidth / 2, blockWidth / 2 ) );
+		
+		Vec2 targetPosition = blockyTranslate( 6, 16, world, blockWidth );
+		targetPosition.add( new Vec2( blockWidth / 2 , 0 ) );
+		
+				
+		return rv;
+	}
+	
+	protected static Vec2 blockyTranslate( int x, int y, SimulationWorld world, double blockWidth )
+	{
+		double xd = blockWidth * x, yd = blockWidth * y;
+		xd -= ( world.getBounds().x / 2 );
+		yd -= ( world.getBounds().y / 2 );
+		return new Vec2( xd, yd );
+	}
+	
+	protected static void addBlockyLine( int x0, int y0, int x1, int y1, SimulationWorld world, double blockWidth )
+	{
+		Vec2 p0 = blockyTranslate( x0, y0, world, blockWidth );
+		Vec2 p1 = blockyTranslate( x1, y1, world, blockWidth );
+		
+		world.createWorldObject( Line.fromCoords( p0.x, p0.y, p1.x, p1.y ) );
 	}
 	
 	public static SimulationWorld getStandardKSimPhilWorld()
