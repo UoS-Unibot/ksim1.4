@@ -39,7 +39,7 @@ public abstract class EvoRSLib {
 	
 	public static Vector getRightLeftMaze()
 	{
-		double blockWidth = SimulatedKJunior.ROBOT_RADIUS * 2;
+		double blockWidth = SimulatedKJunior.ROBOT_RADIUS * 4;
 		SimulationWorld world = new SimulationWorld( new Vec2( 11 * blockWidth, 17 * blockWidth ) );
 		addBlockyLine( 0,0,9,0,world,blockWidth);
 		addBlockyLine( 0,0,0,2,world,blockWidth);
@@ -63,16 +63,18 @@ public abstract class EvoRSLib {
 		addBlockyLine( 8,17,5,17,world,blockWidth);
 		addBlockyLine( 5,15,5,17,world,blockWidth);
 		addBlockyLine( 5,15,6,15,world,blockWidth);
+		addBlockyLine( 6,6,6,15,world,blockWidth);
 		
 		Vector rv = new Vector();
 		rv.add( world );
 		
 		Vec2 startPosition = blockyTranslate( 6, 0, world, blockWidth );
-		startPosition.add( new Vec2( blockWidth / 2, blockWidth / 2 ) );
+		startPosition = startPosition.add( new Vec2( blockWidth / 2, blockWidth / 2 ) );
+		rv.add( startPosition );
 		
 		Vec2 targetPosition = blockyTranslate( 6, 16, world, blockWidth );
-		targetPosition.add( new Vec2( blockWidth / 2 , 0 ) );
-		
+		targetPosition = targetPosition.add( new Vec2( blockWidth / 2 , 0 ) );
+		rv.add( targetPosition );
 				
 		return rv;
 	}
