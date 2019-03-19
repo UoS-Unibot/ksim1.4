@@ -40,7 +40,7 @@ public abstract class EvoRSLib {
 	public static Vector getRightLeftMaze()
 	{
 		double blockWidth = SimulatedKJunior.ROBOT_RADIUS * 4;
-		SimulationWorld world = new SimulationWorld( new Vec2( 11 * blockWidth, 17 * blockWidth ) );
+		SimulationWorld world = new SimulationWorld( new Vec2( 15 * blockWidth, 17 * blockWidth ) );
 		addBlockyLine( 0,0,9,0,world,blockWidth);
 		addBlockyLine( 0,0,0,2,world,blockWidth);
 		addBlockyLine( 0,2,2,2,world,blockWidth);
@@ -52,10 +52,27 @@ public abstract class EvoRSLib {
 		addBlockyLine( 5,6,8,6,world,blockWidth);
 		addBlockyLine( 8,1,8,9,world,blockWidth);
 		addBlockyLine( 9,0,9,9,world,blockWidth);
-		addBlockyLine( 9,2,11,2,world,blockWidth);
-		addBlockyLine( 11,2,11,4,world,blockWidth);
-		addBlockyLine( 10,4,11,4,world,blockWidth);
-		addBlockyLine( 10,4,10,10,world,blockWidth);
+		
+		addBlockyLine( 10,2,10,10,world,blockWidth);
+		addBlockyLine( 10,2,13,2,world,blockWidth);
+		addBlockyLine( 13,2,13,4,world,blockWidth);
+		addBlockyLine( 13,4,12,5,world,blockWidth);
+		addBlockyLine( 12,5,11,5,world,blockWidth);
+		addBlockyLine( 11,5,12,3,world,blockWidth);
+		addBlockyLine( 10,0,10,1,world,blockWidth);
+		addBlockyLine( 11,0,11,1,world,blockWidth);
+		addBlockyLine( 12,0,12,1,world,blockWidth);
+		addBlockyLine( 13,0,13,1,world,blockWidth);
+		addBlockyLine( 14,0,14,1,world,blockWidth);
+		addBlockyLine( 14,3,15,3,world,blockWidth);
+		addBlockyLine( 14,4,15,4,world,blockWidth);
+		addBlockyLine( 14,5,15,5,world,blockWidth);
+		addBlockyLine( 14,6,15,6,world,blockWidth);
+		addBlockyLine( 10,7,15,7,world,blockWidth);
+		addBlockyLine( 11,7,11,6,world,blockWidth);
+		addBlockyLine( 12,7,12,6,world,blockWidth);
+		addBlockyLine( 13,7,13,6,world,blockWidth);
+		
 		addBlockyLine( 10,10,7,10,world,blockWidth);
 		addBlockyLine( 7,7,7,15,world,blockWidth);
 		addBlockyLine( 7,15,8,15,world,blockWidth);
@@ -72,7 +89,7 @@ public abstract class EvoRSLib {
 		startPosition = startPosition.add( new Vec2( blockWidth / 2, blockWidth / 2 ) );
 		rv.add( startPosition );
 		
-		Vec2 targetPosition = blockyTranslate( 6, 16, world, blockWidth );
+		Vec2 targetPosition = blockyTranslate( 6, 17, world, blockWidth );
 		targetPosition = targetPosition.add( new Vec2( blockWidth / 2 , 0 ) );
 		rv.add( targetPosition );
 				
